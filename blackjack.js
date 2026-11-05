@@ -27,18 +27,21 @@ function cardHTML(c,down,i){
   let a='';if(fresh&&J.animOn())a=down?'deal':(B.seen.has(c.u+'d')?'flip':'deal');
   return J.cardFace(c,{down,anim:a});
 }
-function setDeal(el){const [sx,sy]=rel($('bjShoe'));const [cx,cy]=rel(el);el.style.setProperty('--dx',(sx-cx).toFixed(0)+'px');el.style.setProperty('--dy',(sy-cy).toFixed(0)+'px');}
+let shoeXY=null;
+function setDeal(el){const [sx,sy]=shoeXY||(shoeXY=rel($('bjShoe')));const [cx,cy]=rel(el);el.style.setProperty('--dx',(sx-cx).toFixed(0)+'px');el.style.setProperty('--dy',(sy-cy).toFixed(0)+'px');}
 function totalBadge(cards,extra){const s=score(cards);let cls='';if(s.t>21)cls='bust';else if(extra==='bj')cls='bj';else if(extra==='win')cls='win';return `<span class="total ${cls}">${extra==='bj'?'Blackjack':s.t>21?'Bust '+s.t:(s.soft&&s.t<21&&B.phase==='play'?`${s.t-10} / ${s.t}`:s.t)}</span>`;}
 function render(noAnim){
   // dealer
-  const dEl=$('bjDealer');setDeal(dEl);
-  dEl.innerHTML=B.dealer.map((c,i)=>cardHTML(c,i===1&&!B.holeUp,i)).join('');
+  shoeXY=null;
+  const dEl=$('bjDealer');const dh=B.dealer.map((c,i)=>cardHTML(c,i===1&&!B.holeUp,i)).join('');
+  if(dEl._h!==dh){setDeal(dEl);dEl._h=dh;dEl.innerHTML=dh;}
   const dt=$('bjDTotal');
   if(B.dealer.length){dt.hidden=false;const vis=B.holeUp?B.dealer:B.dealer.slice(0,1);const s=score(vis);dt.textContent=s.t>21?`Bust ${s.t}`:(B.holeUp&&B.dealer.length===2&&s.t===21?'Blackjack':String(s.t)+(B.holeUp?'':' + ?'));dt.className='total'+(s.t>21?' bust':'');}else dt.hidden=true;
   // hands
   const hEl=$('bjHands');
-  hEl.innerHTML=B.hands.map((h,i)=>`<div class="bj-hand${B.phase==='play'&&i===B.active&&B.hands.length>1?' active':''}" data-h="${i}"><div class="bj-cards">${''}</div><div class="hb">${h.cards.length?totalBadge(h.cards,h.res==='bj'?'bj':h.res==='win'?'win':''):''}<span class="betchip"><i class="pchip" style="--c:${CHIPC(h.bet)};width:16px;height:16px;border-width:2px"></i>${num(h.bet)}${h.doubled?' ×2':''}</span></div></div>`).join('');
-  hEl.querySelectorAll('.bj-hand').forEach((el,i)=>{const row=el.querySelector('.bj-cards');setDeal(row);row.innerHTML=B.hands[i].cards.map(c=>cardHTML(c,false)).join('');});
+  const hh=B.hands.map((h,i)=>`<div class="bj-hand${B.phase==='play'&&i===B.active&&B.hands.length>1?' active':''}" data-h="${i}"><div class="bj-cards">${''}</div><div class="hb">${h.cards.length?totalBadge(h.cards,h.res==='bj'?'bj':h.res==='win'?'win':''):''}<span class="betchip"><i class="pchip" style="--c:${CHIPC(h.bet)};width:16px;height:16px;border-width:2px"></i>${num(h.bet)}${h.doubled?' ×2':''}</span></div></div>`).join('');
+  if(hEl._h!==hh){hEl._h=hh;hEl.innerHTML=hh;}
+  hEl.querySelectorAll('.bj-hand').forEach((el,i)=>{const row=el.querySelector('.bj-cards');const rh=B.hands[i].cards.map(c=>cardHTML(c,false)).join('');if(row._h!==rh){setDeal(row);row._h=rh;row.innerHTML=rh;}});
   // spot
   $('bjSpot').hidden=B.phase!=='bet'&&B.hands.length>0;
   renderStack();
