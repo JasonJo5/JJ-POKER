@@ -183,7 +183,8 @@ function setLang(L) {
 window.JJ_I18N = {LANGS, setLang, tr: s => tr(s, lang) || s, get lang() { return lang; }};
 function start() {
   let L = 'en';
-  try { const s = JSON.parse(localStorage.getItem('jj-set') || '{}'); if (s.lang) L = s.lang; else { const n = (navigator.language || '').toLowerCase(); L = n.startsWith('ko') ? 'ko' : n.startsWith('zh') ? 'zh' : n.startsWith('id') ? 'id' : 'en'; } } catch (e) {}
+  // English by default; another language only if the player picked it in Settings
+  try { const s = JSON.parse(localStorage.getItem('jj-set') || '{}'); if (s.lang) L = s.lang; } catch (e) {}
   setLang(L);
   mo.observe(document.body, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTRS});
 }
