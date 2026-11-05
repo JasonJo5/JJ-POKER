@@ -4,8 +4,12 @@ window.JJ = (() => {
 const $ = id => document.getElementById(id);
 const store = {get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(e){}},del(k){try{localStorage.removeItem(k);}catch(e){}}};
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const money = n => '$'+Math.round(n||0).toLocaleString('en-US');
-const num = n => Math.round(n||0).toLocaleString('en-US');
+const NF=new Intl.NumberFormat('en-US');
+const money = n => '$'+NF.format(Math.round(n||0));
+const num = n => NF.format(Math.round(n||0));
+/* Phones and touch tablets get a lighter mode: same look, fewer costly effects. */
+const perf=(()=>{try{return matchMedia('(pointer:coarse)').matches||innerWidth<=820;}catch(e){return false;}})();
+if(perf)document.documentElement.classList.add('perf');
 const cleanName = s => String(s||'').replace(/[\u0000-\u001f\u007f<>]/g,'').trim().slice(0,16);
 const cleanText = s => String(s||'').replace(/[\u0000-\u001f\u007f​-‏‪-‮]/g,'').trim().slice(0,120);
 const sleep = ms => new Promise(r=>setTimeout(r,ms));
@@ -201,8 +205,8 @@ function floatEmoji(el,emoji){
 function confetti(){
   if(!animOn())return;
   const cv=document.createElement('canvas');cv.className='confetti';fxLayer().appendChild(cv);const ctx=cv.getContext('2d');
-  const w=cv.width=innerWidth,h=cv.height=innerHeight;const cols=['#ff6b4a','#ffc83d','#22c995','#2f4be0','#ff9bb3','#ffffff'];
-  const ps=Array.from({length:170},()=>({x:w/2+(Math.random()-.5)*w*.4,y:h*.45,vx:(Math.random()-.5)*14,vy:-Math.random()*13-4,r:Math.random()*7+4,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6,s:(Math.random()-.5)*.3,coin:Math.random()<.28}));
+  const w=cv.width=innerWidth,h=cv.height=innerHeight;if(perf)cv.style.imageRendering='auto';const cols=['#ff6b4a','#ffc83d','#22c995','#2f4be0','#ff9bb3','#ffffff'];
+  const ps=Array.from({length:perf?80:170},()=>({x:w/2+(Math.random()-.5)*w*.4,y:h*.45,vx:(Math.random()-.5)*14,vy:-Math.random()*13-4,r:Math.random()*7+4,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6,s:(Math.random()-.5)*.3,coin:Math.random()<.28}));
   const t0=performance.now();
   const fr=t=>{const e=t-t0;ctx.clearRect(0,0,w,h);ps.forEach(p=>{p.vy+=.32;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);ctx.globalAlpha=Math.max(0,1-e/2200);if(p.coin){ctx.fillStyle='#ffc83d';ctx.beginPath();ctx.ellipse(0,0,p.r,p.r*Math.abs(Math.cos(p.a*2))+.5,0,0,Math.PI*2);ctx.fill();}else{ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);}ctx.restore();});if(e<2200)requestAnimationFrame(fr);else cv.remove();};
   requestAnimationFrame(fr);
@@ -349,6 +353,7 @@ function decorate(el){
     for(let i=0;i<28;i++){const z=R(8,16);h+=`<span class="petal" style="left:${R(-5,100)}%;width:${z}px;height:${z*.8}px;--d:${R(9,18)}s;--dl:${-R(0,18)}s;--x:${R(40,180)}px;--r:${R(200,720)}deg"></span>`;}
   }
   el.innerHTML=h;
+  if(perf)el.querySelectorAll('.bub,.ffly,.petal,.snow,.mote,.star,.spark,.weed,.cloud,.bfly,.vine,.sw-car').forEach((e,i)=>{if(i%3)e.remove();});
 }
 
 /* ---------- Custom sounds (uploaded by the owner, shared with everyone) ---------- */
@@ -406,12 +411,27 @@ function shuffleAvatar(){myAvSeed=String(Math.floor(Math.random()*1e6));store.se
 const screens={};
 let current='home';
 function registerScreen(name,api){screens[name]=api;}
+/* If a game screen still runs slowly, switch on battery saver once and say so. */
+let fpsChecked=false;
+function watchFps(){
+  if(fpsChecked||S.lite||!perf||store.get('jj-autolite'))return;fpsChecked=true;
+  let n=0,last=0,slow=0,sum=0;
+  const f=t=>{if(last){const d=t-last;sum+=d;if(d>34)slow++;n++;}last=t;
+    if(n<150&&current!=='home')return requestAnimationFrame(f);
+    if(n<150){fpsChecked=false;return;}
+    const fps=1000*n/sum;
+    if(fps<42||slow>n*.25){store.set('jj-autolite','1');S.lite=true;saveS();applyS();
+      toast('<span class="t-ic">🔋</span><span><b>Battery saver is on</b><br>The background stopped moving so the game runs smoothly. Turn it off in Settings.</span>','',4500);}
+  };
+  setTimeout(()=>requestAnimationFrame(f),2500);
+}
 function show(name){
   if(current&&screens[current]&&screens[current].hide&&current!==name)screens[current].hide();
   document.querySelectorAll('[data-screen]').forEach(el=>el.hidden=el.dataset.screen!==name);
   document.body.classList.toggle('in-game',name!=='home');
   current=name;window.scrollTo(0,0);
   if(screens[name]&&screens[name].show)screens[name].show();
+  if(name!=='home')watchFps();
 }
 
 setTimeout(initSounds,0);
@@ -460,7 +480,7 @@ function finisher(o){
   if(o.big&&S.sound&&'speechSynthesis' in window){try{const u=new SpeechSynthesisUtterance(`${list[0].name} wins. Flawless victory.`);u.pitch=.4;u.rate=.85;u.volume=.9;setTimeout(()=>speechSynthesis.speak(u),650);}catch(e){}}
   setTimeout(()=>{el.classList.add('out');setTimeout(()=>{el.remove();if(finEl===el)finEl=null;},380);},o.dur||2500);
 }
-return {burst,finisher,speciesOf,SCENES,decorate,SB,playCustom,addSound,removeSound,onSounds:f=>SB.listeners.push(f),$,store,esc,money,num,cleanName,cleanText,sleep,S,saveS,applyS,resolvedTheme,onSettings:f=>listeners.push(f),animOn,
+return {perf,burst,finisher,speciesOf,SCENES,decorate,SB,playCustom,addSound,removeSound,onSounds:f=>SB.listeners.push(f),$,store,esc,money,num,cleanName,cleanText,sleep,S,saveS,applyS,resolvedTheme,onSettings:f=>listeners.push(f),animOn,
   SFX,buzz,MEMES,playMeme,tone,noise,avatarSVG,CROWN,SUITS,RED,NAMES,rl,cardOf,cstr,cardFace,shuffle,hash,
   flyChips,floatText,floatEmoji,confetti,toast,centerPx,
   P,ACH,level,xpFor,addCoins,addXP,unlock,stat,onProfile:f=>profileListeners.push(f),saveP,
