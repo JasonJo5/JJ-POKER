@@ -291,7 +291,7 @@ function resetGame(){G.players.forEach(p=>{if(!p.empty){p.chips=G.start;p.out=fa
 function botAct(i){
   const ps=G.players,p=ps[i],d=p.def;if(G.acting!==i)return;
   const BB=G.bb,opp=ps.filter(q=>q!==p&&!q.folded&&!q.out).length;
-  const eq=equity(p.hole,G.board,opp,G.street===0?200:280);
+  const eq=equity(p.hole,G.board,opp,J.perf?(G.street===0?110:150):(G.street===0?200:280));
   const toCall=Math.min(G.currentBet-p.bet,p.chips),pot=potTotal();
   const odds=toCall>0?toCall/(pot+toCall):0,rel=eq*(opp+1),adj=rel*(1+d.loose)+(Math.random()-.5)*.3,r=Math.random();
   const canRaise=p.chips>toCall&&ps.some(q=>q!==p&&canAct(q));
@@ -477,10 +477,18 @@ function chatNotify(seat,text){
     box.prepend(n);
     while(box.children.length>3)box.lastChild.remove();
   }
-  clearTimeout(n._t);n._t=setTimeout(()=>dismissNotif(n),5200);
+  clearTimeout(n._t);n._t=setTimeout(()=>dismissNotif(n),J.perf?3800:5200);
 }
 function dismissNotif(n){if(!n.isConnected)return;n.classList.add('out');setTimeout(()=>n.remove(),320);}
-$('chatNotifs').addEventListener('click',e=>{const n=e.target.closest('.cn');if(!n)return;$('chatNotifs').innerHTML='';if(matchMedia('(min-width:1180px)').matches)setDockOff(false);else openDock();setTab('chat');});
+/* flick a notification up or sideways to dismiss it */
+{let ns=null;const box=$('chatNotifs');
+ box.addEventListener('pointerdown',e=>{const n=e.target.closest('.cn');if(!n)return;ns={n,x:e.clientX,y:e.clientY,id:e.pointerId,moved:false};});
+ box.addEventListener('pointermove',e=>{if(!ns||e.pointerId!==ns.id)return;const dx=e.clientX-ns.x,dy=Math.min(0,e.clientY-ns.y);if(!ns.moved&&Math.hypot(dx,dy)<8)return;ns.moved=true;ns.n.classList.add('drag');ns.n.style.transform=`translate(${dx}px,${dy}px)`;ns.n.style.opacity=String(Math.max(0,1-Math.hypot(dx,dy)/160));});
+ const up=e=>{if(!ns||e.pointerId!==ns.id)return;const {n,moved}=ns,dx=e.clientX-ns.x,dy=e.clientY-ns.y;ns=null;if(!moved)return;n.classList.remove('drag');
+   if(Math.abs(dx)>70||dy<-30){n.style.transition='transform .2s,opacity .2s';n.style.transform=`translate(${dx*2}px,${Math.min(0,dy)*2}px)`;n.style.opacity='0';setTimeout(()=>n.remove(),200);}else{n.style.transform='';n.style.opacity='';}
+   n._swiped=true;setTimeout(()=>{n._swiped=false;},50);};
+ box.addEventListener('pointerup',up);box.addEventListener('pointercancel',up);}
+$('chatNotifs').addEventListener('click',e=>{if(e.target.closest('.cn')&&e.target.closest('.cn')._swiped)return;const n=e.target.closest('.cn');if(!n)return;$('chatNotifs').innerHTML='';if(matchMedia('(min-width:1180px)').matches)setDockOff(false);else openDock();setTab('chat');});
 function sayBubble(seat,text,meme){
   const who=whoEl(seat);if(!who)return;const [x,y]=centerOf(who);tableEl.querySelectorAll(`.say[data-seat="${seat}"]`).forEach(o=>o.remove());const s=document.createElement('div');s.className='say'+(meme?' meme':'');s.dataset.seat=seat;s.textContent=text;
   let top=y-who.offsetHeight/2-10;const se=who.closest('.seat');
@@ -675,19 +683,24 @@ function renderAll(noAnim){
   const board2=V.b2?V.b2.map(cardOf):null;
   if(V.ho&&board2&&shownP.length)hiSet2=winSet(board2);
   const inHi=id=>(hiSet&&hiSet.has(id))||(hiSet2&&hiSet2.has(id));
-  const shoeR=$('shoe').getBoundingClientRect(),tR=tableEl.getBoundingClientRect();
+  /* read every size we need in one go, before changing anything (avoids repeated layout on phones) */
+  const shoeR=$('shoe').getBoundingClientRect(),tR=tableEl.getBoundingClientRect(),bR0=boardEl.getBoundingClientRect();
+  const seatR=seatEls.map(el=>el.getBoundingClientRect());
   const sx=shoeR.left+shoeR.width/2-tR.left,sy=shoeR.top+shoeR.height/2-tR.top;
+  const setH=(el,h)=>{if(el._h!==h){el._h=h;el.innerHTML=h;}};
+  const setC=(el,c)=>{if(el.className!==c)el.className=c;};
+  const setV=(el,k,v)=>{if(el.style.getPropertyValue(k)!==v)el.style.setProperty(k,v);};
   const nLive=V.p.filter(p=>p.hc>0).length||1;
   V.p.forEach((p,i)=>{
     const el=seatEls[i],d=rot(i),[x,y]=L.seat[d];
-    el.style.left=x+'%';el.style.top=y+'%';
-    if(p.k==='e'){el.className=`seat open pos${d}`;el.hidden=mode==='practice';el.innerHTML=`<div class="cards"></div><div class="who">+</div><div class="plate"><span class="nm">Open seat</span><span class="stk">&nbsp;</span></div>`;prevBubble[i]='';return;}
+    setV(el,'left',x+'%');setV(el,'top',y+'%');
+    if(p.k==='e'){setC(el,`seat open pos${d}`);el.hidden=mode==='practice';setH(el,`<div class="cards"></div><div class="who">+</div><div class="plate"><span class="nm">Open seat</span><span class="stk">&nbsp;</span></div>`);prevBubble[i]='';return;}
     el.hidden=false;
     const isMe=i===mySeat;
     const lowTime=V.acting===i&&V.tl>=0&&(V.tl-(Date.now()-recvAt)/1000)<6;
-    el.className=`seat pos${d}`+(isMe?' me':'')+(p.f&&!p.o?' folded':'')+(p.o?' out':'')+(p.g?' away':'')+(p.w?' win':'')+(V.acting===i?' acting':'')+(V.acting===i&&V.tl<0?' nolimit':'')+(lowTime?' low':'');
-    const er=el.getBoundingClientRect();const cx=er.left+er.width/2-tR.left,cy=er.top+er.height*(d===2?.8:.25)-tR.top;
-    el.style.setProperty('--dx',(sx-cx).toFixed(0)+'px');el.style.setProperty('--dy',(sy-cy).toFixed(0)+'px');
+    setC(el,`seat pos${d}`+(isMe?' me':'')+(p.f&&!p.o?' folded':'')+(p.o?' out':'')+(p.g?' away':'')+(p.w?' win':'')+(V.acting===i?' acting':'')+(V.acting===i&&V.tl<0?' nolimit':'')+(lowTime?' low':''));
+    const er=seatR[i];const cx=er.left+er.width/2-tR.left,cy=er.top+er.height*(d===2?.8:.25)-tR.top;
+    setV(el,'--dx',(sx-cx).toFixed(0)+'px');setV(el,'--dy',(sy-cy).toFixed(0)+'px');
     const ord=(i-V.dealer-1+MAX)%MAX;
     let cards='';
     if(p.hc>0){
@@ -706,22 +719,22 @@ function renderAll(noAnim){
     const avSeed=seedOf(p);
     const eqMax=Math.max(...V.p.map(q=>q.q>=0?q.q:-1));
     const eqHTML=p.q>=0?`<span class="eqb${p.q===eqMax?' lead':''}${p.q===0?' dead':''}">${p.q}%</span>`:'';
-    el.innerHTML=`<div class="cards">${cards}</div>
+    setH(el,`<div class="cards">${cards}</div>
       <div class="who"><div class="ring"></div><span class="av">${avatarSVG(avSeed,p.k==='b')}</span>${bubHTML}${p.w?CROWN:''}${eqHTML}</div>
       <div class="plate"><span class="nm">${esc(p.n||'Player')}${isMe?' <i>(you)</i>':p.k==='b'?' <i>· bot</i>':''}</span><span class="stk">${p.o&&p.c===0?(V.tr&&p.pl?`Out · ${ordS(p.pl)}`:'Busted'):money(p.c)}</span></div>
-      ${ht&&(!isMe||p.w)?`<div class="htxt">${esc(ht)}</div>`:''}`;
+      ${ht&&(!isMe||p.w)?`<div class="htxt">${esc(ht)}</div>`:''}`);
   });
   const started=!!V.st;
   boardEl.hidden=!started;$('shoe').style.visibility=started?'visible':'hidden';
   if(started){
-    const bR=boardEl.getBoundingClientRect();boardEl.style.setProperty('--dx',(sx-(bR.left+bR.width/2-tR.left)).toFixed(0)+'px');boardEl.style.setProperty('--dy',(sy-(bR.top+bR.height/2-tR.top)).toFixed(0)+'px');
+    const bR=bR0.width?bR0:boardEl.getBoundingClientRect();setV(boardEl,'--dx',(sx-(bR.left+bR.width/2-tR.left)).toFixed(0)+'px');setV(boardEl,'--dy',(sy-(bR.top+bR.height/2-tR.top)).toFixed(0)+'px');
     const prevN=PV&&PV.hand===V.hand?PV.board.length:0;
     const rb=Array.isArray(V.rb)?V.rb.map(cardOf):[];
     let bh='';for(let k=0;k<5;k++){
       if(board[k])bh+=cardHTML(board[k],false,`${V.hand}-b${k}-u`,{delay:k>=prevN?(k-prevN)*140:0,cls:hiSet?(hiSet.has(board[k].id)?'hi':'dim'):''});
       else if(rb[k-board.length])bh+=cardHTML(rb[k-board.length],false,`${V.hand}-r${k}-u`,{delay:(k-board.length)*160,cls:'rabbit'});
       else bh+='<div class="slot"></div>';}
-    boardEl.innerHTML=bh;
+    setH(boardEl,bh);
     const b2El=$('board2');
     if(board2){b2El.hidden=false;b2El.style.setProperty('--dx',boardEl.style.getPropertyValue('--dx'));b2El.style.setProperty('--dy',boardEl.style.getPropertyValue('--dy'));b2El.innerHTML='<span class="run-lbl">Run 2</span>'+board2.map((c,k)=>cardHTML(c,false,`${V.hand}-b2${k}-u`,{delay:k*140,cls:hiSet2?(hiSet2.has(c.id)?'hi':'dim'):''})).join('');}
     else{b2El.hidden=true;b2El.innerHTML='';}
@@ -908,8 +921,49 @@ let leaveArm=0;
 $('leaveBtn').onclick=()=>{const b=$('leaveBtn');if(mode==='host'&&G&&G.started&&Date.now()-leaveArm>3000){leaveArm=Date.now();b.textContent='Tap again to close room';b.classList.add('warn');setTimeout(()=>{b.textContent='Leave';b.classList.remove('warn');},3000);return;}b.textContent='Leave';b.classList.remove('warn');leaveTable();};
 
 /* Dock */
-function openDock(){$('chatNotifs').innerHTML='';$('dock').classList.add('open');$('dockBg').hidden=false;setTab(drawerTab);}
-function closeDock(){$('dock').classList.remove('open');$('dockBg').hidden=true;}
+function openDock(){$('chatNotifs').innerHTML='';const d=$('dock');d.style.removeProperty('--dy');d.style.removeProperty('--dx');d.classList.add('open');$('dockBg').hidden=false;setTab(drawerTab);
+  unread=0;$('chatDot').hidden=true;
+  if(!J.store.get('jj-dockhint')&&!matchMedia('(min-width:1180px)').matches){J.store.set('jj-dockhint','1');setTimeout(()=>J.current==='poker'&&J.toast('<span class="t-ic">👆</span><span><b>Swipe the chat away</b><br>Drag the top bar down to close or up for full screen. Swipe sideways to close too.</span>','',4200),400);}}
+function closeDock(){const d=$('dock');d.classList.remove('open','full');d.style.removeProperty('--dy');d.style.removeProperty('--dx');$('dockBg').hidden=true;$('chatIn').blur();}
+/* Drag the chat: on a phone held upright it is a bottom sheet (down closes, up = full screen);
+   held sideways it is a side panel (swipe right closes). Left/right swipes also close the bottom sheet. */
+(()=>{
+  const d=$('dock');let st=null;
+  const sheet=()=>matchMedia('(max-width:760px) and (orientation:portrait),(max-width:560px)').matches;
+  const side=()=>!sheet()&&!matchMedia('(min-width:1180px)').matches;
+  d.addEventListener('pointerdown',e=>{
+    if(!d.classList.contains('open')||e.button>0)return;
+    const onHead=e.target.closest('.dock-head,.dock-grab');const body=$('tabChat');
+    if(e.target.closest('input,button,.chat-form,.quick')&&!onHead)return;
+    if(!onHead&&!(sheet()&&body.scrollTop<=0)&&!side())return;
+    st={x:e.clientX,y:e.clientY,id:e.pointerId,t:performance.now(),mode:null,head:!!onHead};
+  });
+  d.addEventListener('pointermove',e=>{
+    if(!st||e.pointerId!==st.id)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
+    if(!st.mode){if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
+      if(sheet())st.mode=Math.abs(dx)>Math.abs(dy)*1.3?'x':(dy>0||st.head?'y':null);else st.mode=dx>0&&Math.abs(dx)>Math.abs(dy)?'x':null;
+      if(!st.mode){st=null;return;}d.classList.add('drag');try{d.setPointerCapture(e.pointerId);}catch(_){}}
+    e.preventDefault();
+    if(st.mode==='y'){const v=d.classList.contains('full')?Math.max(0,dy):Math.max(dy<0?dy*.35:dy,-80);d.style.setProperty('--dy',v+'px');d.style.opacity='';}
+    else{if(sheet()){d.style.setProperty('--dy','0px');d.style.translate=dx+'px 0';d.style.opacity=String(Math.max(.25,1-Math.abs(dx)/400));}else d.style.setProperty('--dx',Math.max(0,dx)+'px');}
+  });
+  const end=e=>{
+    if(!st||e.pointerId!==st.id)return;const dx=e.clientX-st.x,dy=e.clientY-st.y,dt=performance.now()-st.t,mode=st.mode;st=null;
+    d.classList.remove('drag');
+    if(!mode)return;
+    const fast=dt<260;
+    if(mode==='y'){
+      if(dy>110||(fast&&dy>40)){if(d.classList.contains('full')&&dy<220&&!fast){d.classList.remove('full');d.style.removeProperty('--dy');}else closeDock();}
+      else if(dy<-50){d.classList.add('full');d.style.removeProperty('--dy');}
+      else d.style.removeProperty('--dy');
+    }else{
+      const far=Math.abs(dx)>110||(fast&&Math.abs(dx)>45);
+      if(sheet()){if(far){d.style.transition='translate .25s ease,opacity .25s ease';d.style.translate=(dx>0?'110%':'-110%')+' 0';d.style.opacity='0';setTimeout(()=>{d.style.transition='';d.style.translate='';d.style.opacity='';closeDock();},240);}else{d.style.transition='translate .25s ease,opacity .25s ease';d.style.translate='';d.style.opacity='';setTimeout(()=>d.style.transition='',260);}}
+      else{if(far&&dx>0)closeDock();else d.style.removeProperty('--dx');}
+    }
+  };
+  d.addEventListener('pointerup',end);d.addEventListener('pointercancel',end);
+})();
 function setTab(tab){drawerTab=tab;document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));$('tabChat').hidden=tab!=='chat';$('tabHist').hidden=tab!=='hist';$('chatForm').hidden=tab!=='chat';$('quick').hidden=tab!=='chat';if(tab==='chat'){unread=0;$('chatDot').hidden=true;const b=$('tabChat');b.scrollTop=b.scrollHeight;}}
 const wide=()=>matchMedia('(min-width:1180px)').matches;
 function setDockOff(v){S.dockOff=!!v;J.saveS();$('game').classList.toggle('dock-off',S.dockOff);if(!S.dockOff){unread=0;$('chatDot').hidden=true;}requestAnimationFrame(()=>{fitTable();if(CV){const pv=PV;PV=null;renderAll(true);PV=pv;}});}
