@@ -1,0 +1,10 @@
+{
+  "name": "jj-poker-net",
+  "private": true,
+  "description": "Builds net.js, the peer-to-peer room adapter used when JJ POKER runs outside Claude.",
+  "scripts": {
+    "build": "esbuild net-entry.js --bundle --format=iife --minify --target=es2020 --outfile=../net.js"
+  },
+  "dependencies": { "trystero": "0.26.0" },
+  "devDependencies": { "esbuild": "^0.24.0" }
+}
