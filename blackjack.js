@@ -17,7 +17,7 @@ const isBJ=h=>h.cards.length===2&&score(h.cards).t===21&&!h.split;
 
 /* ---------- layout ---------- */
 const table=$('bjTable');
-function fit(){const st=$('bjStage');const W=st.clientWidth-16,H=st.clientHeight-8;if(W<=0||H<=0)return;const sideways=innerWidth>innerHeight&&innerHeight<540;const tall=W/H<1.1||(!sideways&&W<620&&W/H<1.45);const ratio=tall?.82:1.75;const w=Math.max(200,Math.min(W,H*ratio));table.style.width=w+'px';table.style.height=(w/ratio)+'px';B.tall=tall;table.classList.toggle('tall',tall);}
+function fit(){const st=$('bjStage');const W=st.clientWidth-16,H=st.clientHeight-8;if(W<=0||H<=0)return;const sideways=innerWidth>innerHeight&&innerHeight<540;const tall=W/H<1.1||(!sideways&&W<620&&W/H<1.45);const ratio=tall?Math.max(.6,Math.min(.9,W/H)):Math.max(1.45,Math.min(1.9,W/H));const w=Math.max(200,Math.min(W,H*ratio));table.style.width=w+'px';table.style.height=(w/ratio)+'px';B.tall=tall;table.classList.toggle('tall',tall);}
 new ResizeObserver(()=>{if(J.current==='bj'){fit();render(true);}}).observe($('bjStage'));
 function rel(el){const t=table.getBoundingClientRect(),r=el.getBoundingClientRect();return [r.left+r.width/2-t.left,r.top+r.height/2-t.top];}
 
@@ -134,7 +134,7 @@ async function split(){
 function next(){const i=B.hands.findIndex(h=>!h.done);if(i>=0){B.active=i;render();return;}dealerPlay(false);}
 async function dealerPlay(natural){
   B.phase='dealer';B.busy=true;render();await wait(400);
-  B.holeUp=true;SFX.card();render();await wait(650);
+  B.holeUp=true;SFX.flip();render();await wait(650);
   const live=B.hands.some(h=>h.res!=='bust');
   const anyBJ=B.hands.length===1&&isBJ(B.hands[0]);
   if(live&&!natural&&!anyBJ){while(score(B.dealer).t<17){B.dealer.push(draw());SFX.card();render();await wait(650);}}
