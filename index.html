@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f4f5fa">
+<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JJ POKER">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>JJ POKER</title>
@@ -1264,9 +1270,7 @@ html.cjk .fin-txt b,html.cjk .hero h1{letter-spacing:0}
 .game-card .btn{white-space:normal;min-width:0;line-height:1.15;text-align:center}
 .game-card .row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 .game-card .join-row input{min-width:0}
-.games{grid-template-columns:repeat(4,minmax(0,1fr))}
-@media (max-width:1180px){.games{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){.games{grid-template-columns:1fr}}
+
 .gc-art.sl{background:radial-gradient(ellipse at 50% 20%,#a855f7,#6d28d9 60%,#3b0f7a)}
 .mini-reels{display:flex;gap:6px;padding:10px;border-radius:18px;background:linear-gradient(180deg,#2a0f4a,#14062a);box-shadow:0 0 0 4px #ffc83d,0 0 0 7px #b8860b,0 18px 30px rgba(0,0,0,.45)}
 .mini-reels span{width:50px;height:64px;border-radius:10px;background:linear-gradient(180deg,#fff,#e9e3f5);display:grid;place-items:center;font-size:32px;box-shadow:inset 0 -6px 10px rgba(0,0,0,.12);animation:minir 2.4s ease-in-out infinite}
@@ -1388,6 +1392,260 @@ html.perf .stage{contain:layout}
 }
 .cn.drag{transition:none;animation:none}
 
+.snd-folder{display:grid;gap:10px}.snd-folder code{font-size:12px;background:var(--surface2);padding:1px 6px;border-radius:6px;word-break:break-all}
+
+/* ================= BIG PHONE LAYOUT ================= */
+.emo-btn,.fs-btn{display:none}
+/* bigger cards and avatars on a tall (portrait) table */
+.table-wrap.tall{--cw:clamp(28px,11.5cqw,56px);--bcw:clamp(34px,14cqw,66px);--mcw:clamp(44px,18cqw,82px);--av:clamp(40px,13cqw,62px);--mav:clamp(46px,16cqw,74px);--fs:clamp(11px,3.4cqw,15px);--fsb:clamp(13px,4.4cqw,19px)}
+.tall .seat{width:30cqw}
+.tall .seat.me .cards{gap:4px}
+/* side players' action bubbles sit under their name plate, never over your cards */
+.tall .seat.pos1 .bubble,.tall .seat.pos3 .bubble{top:calc(100% + var(--plate-h,44px) + 6px);transform:none;max-width:29cqw;white-space:normal;line-height:1.15;text-align:center;padding:5px 9px;border-radius:14px}
+.tall .center{top:36%}
+.tall .seat.pos1 .bubble{left:calc(var(--av) / 2 - 13cqw + 1cqw);right:auto}
+.tall .seat.pos3 .bubble{left:auto;right:calc(var(--av) / 2 - 13cqw + 1cqw)}
+.tall .seat.pos1 .bubble::before,.tall .seat.pos3 .bubble::before{left:50%;top:-4px;transform:translateX(-50%) rotate(45deg)}
+.tall .seat.pos1 .bubble.pop,.tall .seat.pos3 .bubble.pop{animation:bpop2 .4s cubic-bezier(.2,1.5,.4,1)}
+@keyframes bpop2{from{transform:scale(.4);opacity:0}}
+.tall .seat.pos1 .eqb,.tall .seat.pos3 .eqb{top:-16px}
+/* landscape phones: bigger cards, your cards beside your avatar */
+.table-wrap.short{--cw:clamp(26px,6.6cqw,58px);--bcw:clamp(32px,8.2cqw,70px);--mcw:clamp(40px,9.6cqw,84px);--av:clamp(38px,7.4cqw,64px);--mav:clamp(44px,9cqw,74px);--fs:clamp(11px,2.2cqw,15px);--fsb:clamp(13px,2.9cqw,19px)}
+.table-wrap.short .seat.me{--cw:var(--mcw)}
+.short .seat{width:clamp(80px,16cqw,150px)}
+.short .seat.pos0 .cards{position:absolute;right:calc(100% + 8px);bottom:4px;min-height:0}
+.short .seat.pos0 .htxt{position:absolute;left:calc(100% + 8px);bottom:8px}
+.short .felt{inset:10% 6% 12%}
+.short .center{top:46%}
+
+/* ---- portrait phones: slim control bar ---- */
+@media (max-width:760px) and (orientation:portrait){
+  .g-top{padding-top:max(6px,env(safe-area-inset-top));padding-bottom:2px}
+  .g-top .icon-btn{width:38px;height:38px}
+  .stage{min-height:0}
+  #game .bar,#bjScreen .bar{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 8px;padding:8px;border-radius:22px;align-items:center}
+  #game .bar .actarea,#bjScreen .bar .actarea{display:contents}
+  #game .bar .mebox,#bjScreen .bar .mebox{grid-column:1;grid-row:1;padding:3px 10px 3px 3px;gap:7px;border-radius:16px;background:var(--surface2)}
+  #game .bar .mebox .av,#bjScreen .bar .mebox .av{width:30px;height:30px}
+  #game .bar .mebox .mi,#bjScreen .bar .mebox .mi{display:grid;gap:0;line-height:1.1}
+  #game .bar .mebox .mi>span,#bjScreen .bar .mebox .mi>span{display:none}
+  #game .bar .mebox .mi>b,#bjScreen .bar .mebox .mi>b{font-size:17px;margin:0}
+  #game .bar .mebox .mi>em,#bjScreen .bar .mebox .mi>em{font-size:10.5px}
+  #game .bar .status,#bjScreen .bar .status{grid-column:2;grid-row:1;font-size:13px;line-height:1.3;min-height:0;flex-wrap:nowrap;gap:4px}
+  #game .bar .status>span:first-child,#bjScreen .bar .status>span:first-child{min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  #game .bar .actarea>*:not(.status),#bjScreen .bar .actarea>*:not(.status){grid-column:1/-1}
+  #game .bar .popover,#bjScreen .bar .popover{grid-column:auto}
+  .emo-btn{display:grid}
+  #game .bar .emojis{display:none}
+  #game .bar.emo-open .emojis{display:flex;position:absolute;right:8px;bottom:calc(100% + 8px);z-index:12;padding:6px;gap:2px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lg);animation:rise .2s ease}
+  #game .bar.emo-open .emojis button{width:40px;height:40px;font-size:22px}
+  #game .btn,#bjScreen .btn{height:48px;font-size:16px}
+  #game .btn3{gap:6px}
+  #game .pre button{height:42px;font-size:12.5px}
+  #game .sheet{gap:8px}
+  #game .sheet .hint{display:none}
+  #game .stepper{width:44px;height:46px}#game .amt input{height:46px;font-size:22px}
+  #game .presets .preset{height:40px}
+  #bjScreen .bj-chips{gap:5px}
+  #bjScreen .bchip{width:46px;height:46px}
+}
+
+/* ---- landscape phones: top bar floats over the table, slimmer side panel ---- */
+@media (orientation:landscape) and (max-height:540px){
+  .gscreen:not(.mj4){grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr) clamp(214px,27vw,262px)}
+  .gscreen:not(.mj4) .g-top{position:absolute;left:0;top:0;width:calc(100% - clamp(214px,27vw,262px));pointer-events:none;padding:max(6px,env(safe-area-inset-top)) 8px 0 max(8px,env(safe-area-inset-left));z-index:9}
+  .gscreen:not(.mj4) .g-top>*{pointer-events:auto}
+  .gscreen:not(.mj4) .g-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .gscreen:not(.mj4) .g-top .grp{flex-direction:row;align-items:center;gap:5px}
+  .gscreen:not(.mj4) .g-top .pill:not(#tourPill),.gscreen:not(.mj4) .g-top .link-btn{display:none!important}
+  .gscreen:not(.mj4) .g-top .icon-btn{width:34px;height:34px;border-radius:11px;opacity:.92}
+  .gscreen:not(.mj4) .stage{grid-row:1;grid-column:1}
+  .gscreen:not(.mj4) .bar{grid-row:1;align-self:center;max-height:calc(100% - 12px);margin:6px max(6px,env(safe-area-inset-right)) 6px 0;padding:8px;gap:6px}
+  .gscreen:not(.mj4) .bar .mebox .mi>span{display:none}
+  .gscreen:not(.mj4) .g-top .hide-sm{display:none}
+  .emo-btn{display:grid}
+  #game .bar .emojis{display:none}
+  #game .bar.emo-open .emojis{display:flex;flex-wrap:wrap;position:absolute;left:8px;right:8px;bottom:calc(100% + 6px);z-index:12;padding:6px;gap:2px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lg);justify-content:center}
+  #game .bar.emo-open .emojis button{width:38px;height:38px;font-size:20px}
+  #game .bar .status{flex-wrap:nowrap}
+  #game .pre{grid-template-columns:1fr}
+  #game .pre button{height:34px;font-size:12px;justify-content:flex-start;padding:0 10px}
+  #game .pre button::before{width:13px;height:13px}
+  .cn{padding:6px 12px 6px 6px;border-radius:999px}.cn-app{display:none}.cn-row{grid-template-columns:28px minmax(0,1fr) auto;gap:8px}.cn .av{width:28px;height:28px}.cn-body{display:flex;gap:6px;align-items:baseline}.cn-t{-webkit-line-clamp:1;font-size:13px}.chat-notifs .cn:nth-child(n+2){display:none}
+  .chat-notifs{width:min(230px,30vw);top:auto;bottom:max(8px,env(safe-area-inset-bottom));left:auto;right:calc(clamp(214px,27vw,262px) + 10px);transform:none}
+  .tour-pill{font-size:11px;height:30px!important;padding:0 8px!important}
+}
+/* full-screen and install hint */
+.fs-tip{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));width:min(420px,calc(100% - 24px));z-index:96;padding:14px 16px;border-radius:20px;background:var(--surface);color:var(--ink);box-shadow:var(--shadow-lg);border:1px solid var(--line);display:grid;gap:8px;font-size:14px;line-height:1.45;animation:rise .3s cubic-bezier(.2,1.3,.4,1)}
+.fs-tip b{font-size:15px}
+.fs-tip button{justify-self:end;height:38px}
+.share-ic{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:var(--surface2);vertical-align:-5px}
+
+/* ================= KING'S CUP ================= */
+.games{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1180px){.games{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.games{grid-template-columns:1fr}}
+.gc-art.kc{background:radial-gradient(ellipse at 50% 30%,#f59e0b,#b45309 60%,#6b2a06)}
+.kc-mini{position:relative;width:130px;height:130px}
+.kc-mini i{position:absolute;left:50%;top:50%;width:30px;height:42px;margin:-21px 0 0 -15px;border-radius:6px;background:var(--back);box-shadow:inset 0 0 0 2px rgba(255,255,255,.9),0 4px 8px rgba(0,0,0,.3);transform:rotate(var(--a)) translateY(-46px);animation:kcmini 6s linear infinite}
+@keyframes kcmini{to{transform:rotate(calc(var(--a) + 360deg)) translateY(-46px)}}
+.kc-mcup{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:44px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+:root[data-scene="default"] #kcScreen .room-bg{background:radial-gradient(ellipse at 50% 45%,#3b1d0b,#1a0c05 70%)}
+.kc-table{position:relative;container-type:inline-size;aspect-ratio:1}
+.kc-felt{position:absolute;inset:4%;border-radius:50%;background:radial-gradient(circle at 50% 40%,#8a5a2b,#5c3716 55%,#3a210c);box-shadow:0 0 0 1.4cqw #2a170a,0 0 0 2.4cqw #a86b2a,0 30px 60px rgba(0,0,0,.5),inset 0 0 6cqw rgba(0,0,0,.45)}
+.kc-felt::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,transparent 0 2cqw,rgba(0,0,0,.06) 2cqw 2.3cqw)}
+.kc-ring{position:absolute;inset:0}
+.kc-c{position:absolute;left:50%;top:50%;width:10.4cqw;margin:-7.3cqw 0 0 -5.2cqw;padding:0;border:0;background:none;transform:rotate(var(--a)) translateY(-36cqw) rotate(var(--w));transform-origin:50% 50%;transition:transform .25s cubic-bezier(.2,1.4,.4,1),opacity .35s;--cw:10.4cqw;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.kc-c .card{display:block;width:100%;pointer-events:none;box-shadow:inset 0 0 0 calc(var(--cw)*.06) rgba(255,255,255,.92),0 3px 6px rgba(0,0,0,.35)}
+.kc-c:hover:not(.gone),.kc-c:focus-visible{transform:rotate(var(--a)) translateY(-39cqw) rotate(var(--w)) scale(1.06);z-index:3}
+.kc-c.gone{opacity:0;transform:rotate(var(--a)) translateY(-20cqw) scale(.6);pointer-events:none}
+.kc-ring.dealt .kc-c{animation:kcdeal .55s cubic-bezier(.2,.9,.3,1.2) var(--d) both}
+@keyframes kcdeal{from{transform:rotate(0) translateY(0) scale(.3);opacity:0}}
+.kc-cup{position:absolute;left:50%;top:50%;width:26cqw;transform:translate(-50%,-55%);--fill:0;z-index:2;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.kc-cup svg{display:block;width:100%}
+.kc-liq{transform:translateY(calc(118px - var(--fill) * 100px));transition:transform .9s cubic-bezier(.3,1.3,.5,1)}
+.kc-foam{transform:translateY(calc(112px - var(--fill) * 100px));transition:transform .9s cubic-bezier(.3,1.3,.5,1)}
+.kc-kings{position:absolute;left:50%;top:100%;transform:translateX(-50%);display:flex;gap:1.2cqw;margin-top:1cqw}
+.kc-kings i{font-style:normal;font-size:5cqw;color:rgba(255,255,255,.25);transition:color .3s,transform .4s cubic-bezier(.2,1.6,.4,1)}
+.kc-kings i.on{color:#ffd24a;text-shadow:0 0 10px rgba(255,200,61,.8);transform:scale(1.2)}
+.kc-show{position:absolute;inset:1%;z-index:10;display:grid;place-items:center;background:radial-gradient(circle,rgba(24,14,8,.94),rgba(14,8,4,.97) 70%);border-radius:50%;box-shadow:0 0 0 2px rgba(255,200,120,.25)}
+.kc-table:has(.kc-show:not([hidden])) .kc-cup{opacity:0;transition:opacity .2s}
+.kc-show.in .kc-show-card{animation:kcin .5s cubic-bezier(.2,1.2,.4,1) both}
+@keyframes kcin{from{transform:scale(.5) rotate(-8deg);opacity:0}}
+.kc-show-card{display:grid;justify-items:center;gap:1.6cqw;text-align:center;color:#fff;width:76cqw;max-height:96%;overflow:auto;scrollbar-width:none}
+.kc-who{display:flex;align-items:center;gap:2cqw;font-weight:600;font-size:max(13px,3.4cqw);opacity:.9}
+.kc-who .av{width:8cqw;height:8cqw;min-width:28px;min-height:28px}
+.kc-big{--cw:23cqw;animation:kcflip .6s cubic-bezier(.3,.7,.3,1) both}
+.kc-big .card{box-shadow:0 0 0 4px rgba(255,255,255,.9),0 20px 40px rgba(0,0,0,.5)}
+@keyframes kcflip{0%{transform:rotateY(180deg) scale(.6)}60%{transform:rotateY(80deg)}100%{transform:none}}
+.kc-show h3{font-family:var(--display);font-weight:800;font-size:max(22px,7.4cqw);line-height:1;letter-spacing:-.01em;margin:0;text-shadow:0 3px 0 rgba(0,0,0,.4)}
+.kc-show p{margin:0;font-size:max(14px,3.7cqw);line-height:1.4;max-width:64cqw;opacity:.95}
+.kc-kingn{font-weight:800;font-size:max(12px,3cqw);letter-spacing:.14em;color:#ffd24a}
+.kc-show.cup h3{font-size:max(30px,10cqw);background:linear-gradient(180deg,#fffbe0,#ffd84a 45%,#ff8a1a);-webkit-background-clip:text;background-clip:text;color:transparent;animation:finslam .5s .3s cubic-bezier(.2,1.4,.4,1) both}
+#kcNext{min-width:44cqw;height:max(44px,10cqw)}
+.kc-show:has(.kc-extra:not(:empty)) .kc-big{--cw:15cqw}
+.kc-show:has(.kc-extra:not(:empty)) h3{font-size:max(20px,6cqw)}
+.kc-show:has(.kc-extra:not(:empty)) .kc-show-card{gap:1.2cqw}
+.kc-rule .btn{flex:none;padding:0 14px;height:40px}
+.kc-extra{display:grid;gap:1.5cqw;justify-items:center;width:100%}
+.kc-ex-t{font-weight:600;opacity:.85}
+.kc-mates{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:70cqw}
+.kc-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px 4px 4px;border-radius:999px;border:0;background:rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:13px}
+.kc-chip .av{width:26px;height:26px}
+.kc-chip:hover{background:rgba(255,255,255,.28)}
+.kc-rule{display:flex;gap:6px;width:min(68cqw,320px)}
+.kc-rule input{flex:1;min-width:0;height:40px}
+.kc-idea{height:34px;font-size:13px;background:rgba(255,255,255,.14);border-color:transparent;color:#fff}
+.kc-bar{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"turn players btns" "side side side";gap:10px 12px}
+.kc-turn{grid-area:turn;display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:18px;background:var(--surface2);min-width:0}
+.kc-turn .av{width:40px;height:40px;flex:none}
+.kc-turn b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kc-players{grid-area:players;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.kc-players::-webkit-scrollbar{display:none}
+.kc-p{display:grid;justify-items:center;gap:2px;flex:none;width:56px;opacity:.55;transition:opacity .2s,transform .2s}
+.kc-p .av{width:34px;height:34px}
+.kc-p b{font-size:11px;max-width:56px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kc-p.on{opacity:1;transform:translateY(-2px)}.kc-p.on .av{box-shadow:0 0 0 3px var(--orange)}
+.kc-p.qm b::after{content:" ❓"}
+.kc-btns{grid-area:btns;display:flex;gap:6px;flex-wrap:wrap}.kc-btns .btn{gap:6px}
+.kc-side{grid-area:side;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:13px}
+.kc-side h4{margin:0 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kc-side ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.kc-side li{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kc-side li.none{color:var(--muted)}
+.kc-addrow{display:flex;gap:8px}.kc-addrow input{flex:1;min-width:0;height:44px}
+.kc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.kc-list li{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 4px;border-radius:14px;background:var(--surface2)}
+.kc-list .av{width:32px;height:32px}
+.kc-list b{flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kc-list .icon-btn{width:30px;height:30px;border-radius:10px}
+.kc-note{margin:0;font-size:12.5px;line-height:1.45;color:var(--muted);padding:10px 12px;border-radius:14px;background:var(--surface2)}
+.kc-rules{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.kc-rules li{display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-areas:"rk t" "rk d";gap:4px 8px;align-items:center}
+.kc-rk{grid-area:rk;width:34px;height:46px;border-radius:8px;background:#fff;color:#1a2233;display:grid;place-items:center;font-family:var(--display);font-weight:800;box-shadow:0 0 0 1px var(--line)}
+.kc-rules input{grid-area:t;height:36px;font-weight:700}
+.kc-rules textarea{grid-area:d;font:inherit;font-size:13px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);resize:vertical}
+.kc-endcup{font-size:54px;animation:bob 1.6s ease-in-out infinite}
+@media (max-width:760px){
+  .kc-bar{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"turn btns" "players players" "side side";padding:8px;gap:8px}
+  .kc-btns .btn{padding:0;width:44px;height:44px;font-size:19px}
+  .kc-btns .tx{display:none}
+  .kc-side{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;font-size:12px}
+  .kc-turn .av{width:34px;height:34px}.kc-turn b{font-size:14px}
+}
+@media (orientation:landscape) and (max-height:540px){
+  .kcs .bar{grid-template-columns:1fr;grid-template-areas:"turn" "players" "btns" "side";align-content:start}
+  .kc-side{grid-template-columns:1fr}
+  .kc-btns .btn{flex:1 1 40%;padding:0 8px;font-size:13px}
+}
+
+/* ===== portrait table: opponents' cards never cover the middle =====
+   Face-down cards are tucked small on the avatar; revealed cards sit over the avatar. */
+.tall .seat:not(.me):not(.open) .cards{position:absolute;left:50%;top:calc(var(--av)*-.12);min-height:0;gap:0;z-index:4;pointer-events:none;--cw:calc(var(--av)*.46);transform:translateX(calc(var(--av)*.22));order:0}
+.tall .seat:not(.me):not(.open) .cards .card{box-shadow:0 0 0 1.5px rgba(255,255,255,.85),0 4px 8px rgba(0,0,0,.35)}
+.tall .seat:not(.me):not(.open) .cards .card:first-child{rotate:-10deg}
+.tall .seat:not(.me):not(.open) .cards .card:last-child{rotate:8deg;margin-left:calc(var(--cw)*-.45)}
+.tall .seat:not(.me):not(.open) .cards.up{--cw:calc(var(--av)*.74);left:50%;top:calc(var(--av)*-.08);transform:translateX(-50%);gap:3px}
+.tall .seat:not(.me):not(.open) .cards.up .card:last-child{margin-left:0}
+.tall .seat:not(.me):not(.open) .cards.up .card{rotate:0deg}
+.tall .seat:not(.me):not(.open) .cards.up .card.hi{transform:translateY(-6px)}
+.tall .seat.pos2 .cards{order:0}
+.tall .seat.pos2:not(.open) .cards.up{left:calc(50% + var(--av)*.56);top:calc(var(--av)*.1);transform:none;--cw:calc(var(--av)*.62)}
+.tall .seat.pos2:has(.cards.up) .bubble{display:none}
+.tall .seat.pos1:has(.htxt) .bubble,.tall .seat.pos3:has(.htxt) .bubble{display:none}
+.tall .seat:not(.me) .htxt{max-width:30cqw;overflow:hidden;text-overflow:ellipsis}
+.tall .center{top:37%}
+.tall .seat.pos1 .eqb,.tall .seat.pos3 .eqb,.tall .seat.pos2 .eqb{top:auto;bottom:-6px;z-index:6}
+
+/* ===== King's Cup: turn on the table, pass screen, drag, history, colours ===== */
+.kc-cup{transform:translate(-50%,-66%)}
+.kc-cup.hot{filter:drop-shadow(0 0 18px rgba(255,210,74,.9)) drop-shadow(0 10px 18px rgba(0,0,0,.45));transform:translate(-50%,-66%) scale(1.08);transition:transform .2s}
+.kc-tturn{position:absolute;left:50%;top:66%;transform:translateX(-50%);z-index:3;display:flex;align-items:center;gap:2cqw;padding:1.2cqw 3.4cqw 1.2cqw 1.2cqw;border-radius:999px;background:rgba(10,6,4,.6);color:#fff;box-shadow:0 0 0 .5cqw rgba(255,200,61,.55),0 8px 20px rgba(0,0,0,.4);max-width:52cqw;pointer-events:none}
+.kc-tturn .av{width:10cqw;height:10cqw;min-width:34px;min-height:34px;flex:none;box-shadow:0 0 0 2px #ffd24a}
+.kc-tturn b{display:block;font-size:max(14px,3.9cqw);font-weight:800;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kc-tturn small{display:block;font-size:max(10px,2.5cqw);opacity:.8;line-height:1.2}
+.kc-tturn.bump{animation:kcbump .6s cubic-bezier(.2,1.5,.4,1)}
+@keyframes kcbump{0%{transform:translateX(-50%) scale(.6);opacity:0}100%{transform:translateX(-50%)}}
+.kc-table:has(.kc-show:not([hidden])) .kc-tturn,.kc-table:has(.kc-pass:not([hidden])) .kc-tturn{opacity:0}
+.kc-ring .kc-c:not(.gone) .card{animation:kcglow 3.2s ease-in-out infinite;animation-delay:calc(var(--d) * 4)}
+@keyframes kcglow{0%,90%,100%{filter:none}95%{filter:brightness(1.25)}}
+html.perf .kc-ring .kc-c .card{animation:none}
+.kc-c{touch-action:none}
+.kc-c.lift{opacity:.15}
+.kc-ghost{position:absolute;left:0;top:0;z-index:20;pointer-events:none;--cw:inherit;filter:drop-shadow(0 18px 20px rgba(0,0,0,.5));transition:none}
+.kc-ghost .card{display:block;width:100%;box-shadow:inset 0 0 0 calc(var(--cw,40px)*.06) rgba(255,255,255,.92)}
+.kc-table.drop-near .kc-felt{box-shadow:0 0 0 1.4cqw #2a170a,0 0 0 2.4cqw #ffd24a,0 0 40px rgba(255,210,74,.4),inset 0 0 6cqw rgba(0,0,0,.45)}
+@keyframes kcflip{0%{transform:translate(var(--fx,0),var(--fy,0)) rotateY(180deg) scale(.45)}55%{transform:translate(calc(var(--fx,0)*.15),calc(var(--fy,0)*.15)) rotateY(90deg) scale(1.08)}100%{transform:none}}
+.kc-pass{position:absolute;inset:1%;z-index:12;border-radius:50%;display:grid;place-items:center;align-content:center;gap:2cqw;background:radial-gradient(circle,rgba(40,22,10,.96),rgba(18,10,4,.98) 70%);color:#fff;text-align:center;cursor:pointer}
+.kc-pass.in{animation:kcpass .4s cubic-bezier(.2,1.2,.4,1)}
+.kc-pass.out{animation:kcpassout .22s ease forwards}
+@keyframes kcpass{from{transform:scale(.85);opacity:0}}
+@keyframes kcpassout{to{transform:scale(1.05);opacity:0}}
+.kc-pass-to{font-size:max(13px,3.4cqw);font-weight:600;opacity:.8;letter-spacing:.04em}
+.kc-pass .av{width:30cqw;height:30cqw;box-shadow:0 0 0 1.2cqw #ffd24a,0 0 40px rgba(255,210,74,.5);animation:kchop 1s ease-in-out infinite}
+@keyframes kchop{50%{transform:translateY(-2.4cqw)}}
+.kc-pass b{font-family:var(--display);font-weight:800;font-size:max(26px,8.4cqw);line-height:1}
+.kc-pass-tap{font-size:max(12px,2.8cqw);opacity:.65}
+.kc-pass::before{content:"📱";position:absolute;top:7%;font-size:7cqw;animation:kcphone 1.2s ease-in-out infinite}
+@keyframes kcphone{0%,100%{transform:translateX(-14cqw) rotate(-12deg)}50%{transform:translateX(14cqw) rotate(12deg)}}
+.kc-show[data-r="14"]{--kc:#ffd24a}.kc-show[data-r="2"],.kc-show[data-r="3"]{--kc:#ff8a6b}.kc-show[data-r="4"],.kc-show[data-r="7"]{--kc:#5ee3c5}.kc-show[data-r="5"],.kc-show[data-r="6"]{--kc:#ff7aa8}.kc-show[data-r="8"]{--kc:#b994ff}.kc-show[data-r="9"],.kc-show[data-r="10"]{--kc:#6fdcff}.kc-show[data-r="11"]{--kc:#ffb347}.kc-show[data-r="12"]{--kc:#c084fc}.kc-show[data-r="13"]{--kc:#ffd24a}
+.kc-show h3{color:var(--kc,#fff)}
+.kc-show{box-shadow:0 0 0 2px var(--kc,rgba(255,200,120,.25)),0 0 40px color-mix(in srgb,var(--kc,#ffb347) 30%,transparent)}
+.kc-big .card{box-shadow:0 0 0 4px #fff,0 0 0 7px var(--kc,#ffd24a),0 20px 40px rgba(0,0,0,.5)}
+.kc-ic{width:20px;height:20px;flex:none}
+.kc-hist{grid-column:1/-1}
+.kc-hrow{display:flex;gap:5px;align-items:center;min-height:42px;--cw:30px}
+.kc-hc{display:inline-flex}.kc-hc .card{box-shadow:0 0 0 1px var(--line),0 3px 6px rgba(0,0,0,.25)}
+.kc-hc.new .card{box-shadow:0 0 0 2px var(--orange),0 3px 8px rgba(0,0,0,.3)}
+.kc-hc:not(.new){opacity:.75}
+.kc-hrow .none{color:var(--muted);font-size:13px}
+@media (max-width:760px){.kc-hrow{--cw:26px;min-height:38px}}
+
+.btn .bsub{display:block;font-size:11px;font-weight:600;opacity:.75;line-height:1;margin-top:2px}
+#bRaise{flex-direction:column;line-height:1.05}
+.bar.tick{animation:bartick .35s ease}
+@keyframes bartick{40%{box-shadow:0 0 0 3px #ff6b4a,0 0 30px rgba(255,107,74,.6),var(--shadow-lg)}}
+
 html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important}
 </style>
 </head>
@@ -1409,6 +1667,11 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
     <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
     <symbol id="i-dice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></symbol>
     <symbol id="i-meme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+    <symbol id="i-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-unfull" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.6-3.6 3.1-5.6 6.2-5.6s5.6 2 6.2 5.6"/><circle cx="17" cy="9" r="2.6"/><path d="M16.2 14.5c2.7.1 4.5 1.9 5 4.9"/></symbol>
+    <symbol id="i-rules" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3.5"/></symbol>
+    <symbol id="i-reshuffle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="9" height="13" rx="2" transform="rotate(-10 8.5 12.5)"/><path d="M15 5.5a6.5 6.5 0 0 1 4.6 9.4"/><path d="M20.5 11.5l-.9 3.4-3.3-1"/></symbol>
     <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></symbol>
   </defs>
 </svg>
@@ -1459,12 +1722,12 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
   </section>
 
   <section class="sec" id="games">
-    <div class="sec-head"><div><h2>Pick your poison</h2><p>Four games, zero real money, unlimited excuses.</p></div></div>
+    <div class="sec-head"><div><h2>Pick your poison</h2><p>Five games, zero real money, unlimited excuses.</p></div></div>
     <div class="games">
       <article class="game-card">
         <div class="gc-art pk"><span class="gc-tag">Online · 1–4 players</span><div class="stack" id="gcPoker"></div></div>
         <div class="gc-body">
-          <h3>Texas Hold'em</h3>
+          <h3>Poker Card</h3>
           <p>Make a room, send the code, deal your friends in. Chat, emojis and meme sounds everyone hears.</p>
           <div class="gc-actions">
             <div class="row2"><button class="btn btn-raise btn-sm" id="createBtn" type="button" disabled>Create room</button><button class="btn btn-fold btn-sm" id="botBtn" type="button">Play bots</button></div>
@@ -1497,6 +1760,14 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
           <h3>Lucky Slots</h3>
           <p>Pull the lever, line up three and watch the coins pour out. Jackpot pays 200×.</p>
           <div class="gc-actions"><button class="btn btn-raise" id="slBtn" type="button">Play slots</button></div>
+        </div>
+      </article>
+      <article class="game-card">
+        <div class="gc-art kc"><span class="gc-tag">Party · one phone · 2–12 players</span><div class="stack" id="gcKC"></div></div>
+        <div class="gc-body">
+          <h3>King's Cup</h3>
+          <p>The classic drinking card game. Pass the phone around, tap a card, do what it says. Whoever draws the 4th king drinks the cup.</p>
+          <div class="gc-actions"><button class="btn btn-violet" id="kcBtn" type="button">Start King's Cup</button></div>
         </div>
       </article>
     </div>
@@ -1576,7 +1847,7 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
   <section class="bar" id="bar" aria-label="Your move">
     <div class="mebox" id="mebox"><span class="av" id="meAv"></span><div class="mi"><span id="meName">You</span><b id="meStack">$0</b><em id="meHand"></em></div></div>
     <div class="actarea">
-      <div class="status"><span id="status" aria-live="polite"></span><span class="tools"><span class="emojis" id="emojis"></span><button class="tool-btn" id="memeBtn" type="button" aria-label="Meme sounds" title="Meme sounds"><svg><use href="#i-meme"/></svg></button></span></div>
+      <div class="status"><span id="status" aria-live="polite"></span><span class="tools"><span class="emojis" id="emojis"></span><button class="tool-btn emo-btn" id="emoBtn" type="button" aria-label="Emoji reactions" title="Emoji reactions">😀</button><button class="tool-btn" id="memeBtn" type="button" aria-label="Meme sounds" title="Meme sounds"><svg><use href="#i-meme"/></svg></button></span></div>
       <div class="rebuy" id="rebuyBox" hidden><span>You're out of money. It happens to the best of us.</span><button class="btn btn-dark btn-sm" id="rebuyBtn" type="button">Get $1,000 more</button></div>
       <div class="btn3" id="mainBtns"><button class="btn btn-fold" id="bFold" type="button">Fold</button><button class="btn btn-call" id="bCall" type="button">Check</button><button class="btn btn-raise" id="bRaise" type="button">Raise</button></div>
       <div class="pre" id="preRow" hidden><button type="button" data-pre="checkfold" aria-pressed="false">Check / Fold</button><button type="button" data-pre="check" aria-pressed="false">Check</button><button type="button" data-pre="callany" aria-pressed="false">Call any</button></div>
@@ -1747,11 +2018,78 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
   </section>
 </div>
 
+
+<!-- ================= KING'S CUP ================= -->
+<div class="gscreen kcs" data-screen="kc" id="kcScreen" hidden>
+  <div class="room-bg" aria-hidden="true" data-label="KING'S CUP" data-sub="DRINK RESPONSIBLY" data-side="1"></div>
+  <div class="g-top">
+    <div class="grp">
+      <button class="icon-btn" type="button" data-leave aria-label="Back to home"><svg><use href="#i-back"/></svg></button>
+      <span class="pill ttl"><b>King's Cup</b></span>
+      <span class="pill"><span id="kcLeft">52 cards left</span></span>
+    </div>
+    <div class="grp">
+      <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off"></button>
+      <button class="icon-btn" type="button" data-open="mSettings" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
+      <button class="link-btn" type="button" data-leave>Leave</button>
+    </div>
+  </div>
+  <div class="stage" id="kcStage">
+    <div class="kc-table tablebox" id="kcTable">
+      <div class="kc-felt"></div>
+      <div class="kc-ring" id="kcRing"></div>
+      <div class="kc-cup" id="kcCup"><svg viewBox="0 0 100 120" aria-hidden="true"><defs><clipPath id="kcClip"><path d="M14 18h72l-8 88a8 8 0 0 1-8 7H30a8 8 0 0 1-8-7z"/></clipPath><linearGradient id="kcBeer" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd25a"/><stop offset="1" stop-color="#e88a00"/></linearGradient></defs><g clip-path="url(#kcClip)"><rect class="kc-liq" x="0" y="0" width="100" height="120" fill="url(#kcBeer)"/><rect class="kc-foam" x="0" y="0" width="100" height="10" fill="#fff8e6"/></g><path d="M14 18h72l-8 88a8 8 0 0 1-8 7H30a8 8 0 0 1-8-7z" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="3.5"/><path d="M86 34c14 0 14 34 0 36" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg><div class="kc-kings" id="kcKings"></div></div>
+      <div class="kc-tturn" id="kcTT"><span class="av" id="kcTTav"></span><span><b id="kcTTname">Your turn</b><small id="kcTThint">Drag a card to the cup, or tap one</small></span></div>
+      <div class="kc-show" id="kcShow" hidden>
+        <div class="kc-show-card">
+          <div class="kc-who" id="kcWho"></div>
+          <div class="kc-big" id="kcFly"><div id="kcBig"></div></div>
+          <span class="kc-kingn" id="kcKingN" hidden></span>
+          <h3 id="kcTitle"></h3>
+          <p id="kcDesc"></p>
+          <div class="kc-extra" id="kcExtra"></div>
+          <button class="btn btn-raise" id="kcNext" type="button">Next player</button>
+        </div>
+      </div>
+      <div class="kc-pass" id="kcPass" hidden><span class="kc-pass-to" id="kcPassTo">Pass the phone to</span><span class="av" id="kcPassAv"></span><b id="kcPassName"></b><span class="kc-pass-tap" id="kcPassTap">Tap when you have it</span></div>
+      <div class="overlay" id="kcEnd" hidden><div class="ov-card"><div class="kc-endcup">🍺👑</div><h2 id="kcEndT">King's Cup!</h2><p id="kcEndS"></p><button class="btn btn-raise" id="kcAgain" type="button">New game</button><button class="link-btn" type="button" data-leave>Back to home</button></div></div>
+    </div>
+  </div>
+  <section class="bar kc-bar" aria-label="King's Cup">
+    <div class="kc-turn"><span class="av" id="kcTurnAv"></span><b id="kcTurnName">Tap a card</b></div>
+    <div class="kc-players" id="kcPlayersRow"></div>
+    <div class="kc-side" id="kcSide"></div>
+    <div class="kc-btns"><button class="btn btn-fold btn-sm" id="kcPlayersBtn" type="button" aria-label="Players"><svg class="kc-ic"><use href="#i-users"/></svg><span class="tx">Players</span></button><button class="btn btn-fold btn-sm" id="kcRulesBtn" type="button" aria-label="Rules"><svg class="kc-ic"><use href="#i-rules"/></svg><span class="tx">Rules</span></button><button class="btn btn-fold btn-sm" id="kcNew" type="button" aria-label="New game"><svg class="kc-ic"><use href="#i-reshuffle"/></svg><span class="tx">New game</span></button></div>
+  </section>
+</div>
+
 <!-- ================= MODALS ================= -->
+<div class="modal" id="mKC" hidden role="dialog" aria-modal="true" aria-labelledby="kcSetT">
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="kcSetT">King's Cup</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg><use href="#i-close"/></svg></button></div>
+    <p class="note-p">Pass the phone. Tap a card. Do what it says.</p>
+    <div class="opt"><span class="label">Players</span>
+      <div class="kc-addrow"><input type="text" id="kcName" maxlength="16" placeholder="Player name" aria-label="Player name"><button class="btn btn-call btn-sm" id="kcAdd" type="button">Add</button></div>
+      <ul class="kc-list" id="kcList"></ul>
+      <p class="hint" id="kcSetupMsg"></p>
+    </div>
+    <p class="kc-note">🔞 For adults of legal drinking age. Any drink works: water, juice or soda. Know your limits, and never drink and drive.</p>
+    <button class="btn btn-raise" id="kcGo" type="button">Start</button>
+  </div>
+</div>
+<div class="modal" id="mKCRules" hidden role="dialog" aria-modal="true" aria-labelledby="kcRuT">
+  <div class="modal-card wide">
+    <div class="modal-head"><h2 id="kcRuT">Edit rules</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg><use href="#i-close"/></svg></button></div>
+    <p class="note-p">Change any card to your house rules. Saved on this phone.</p>
+    <ul class="kc-rules" id="kcRulesList" data-noi18n></ul>
+    <div class="row2"><button class="btn btn-fold btn-sm" id="kcReset" type="button">Reset to classic</button><button class="btn btn-raise btn-sm" type="button" data-close>Done</button></div>
+  </div>
+</div>
+
 <div class="modal" id="mSound" hidden role="dialog" aria-modal="true" aria-labelledby="sndTitle">
   <div class="modal-card">
     <div class="modal-head"><h2 id="sndTitle">Your sounds</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg><use href="#i-close"/></svg></button></div>
-    <p class="note-p">Add your favourite meme clips to the soundboard. Find one on <a href="https://www.myinstants.com/en/search/?name=meme" target="_blank" rel="noopener">myinstants.com</a>, press its download button, then pick the file here. Clips are trimmed to 8 seconds and everyone at the poker table hears them.</p>
+    <p class="note-p" id="sndIntro">Add your favourite meme clips to the soundboard. Find one on <a href="https://www.myinstants.com/en/search/?name=meme" target="_blank" rel="noopener">myinstants.com</a>, press its download button, then pick the file here. Clips are trimmed to 8 seconds and everyone at the poker table hears them.</p>
     <div id="sndForm" style="display:grid;gap:12px">
       <label class="file-pick"><input type="file" id="sndFile" accept="audio/*,video/mp4,video/webm"><span>Choose an audio file (MP3, WAV, M4A…)</span></label>
       <input type="text" id="sndName" maxlength="16" placeholder="Button name, e.g. Laughing dog" aria-label="Sound name">
@@ -1759,6 +2097,16 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
       <button class="btn btn-raise" id="sndUp" type="button">Add to soundboard</button>
     </div>
     <p class="note-p" id="sndNoEdit" hidden>Only the room owner can add sounds. You can play the ones already here.</p>
+    <div class="snd-folder" id="sndFolder" hidden>
+      <p class="note-p">On this website, sounds live in the site's <b>sounds</b> folder, so everyone at the table hears the same clips.</p>
+      <ol class="rules">
+        <li>Download a clip, for example from <a href="https://www.myinstants.com/en/search/?name=meme" target="_blank" rel="noopener">myinstants.com</a>. Short MP3s work best.</li>
+        <li>In your GitHub repository, open the <b>sounds</b> folder and upload the MP3 with a simple name, like <code>laughing-dog.mp3</code>.</li>
+        <li>Edit <code>sounds/sounds.json</code> and add a line for it:<br><code>{"file": "laughing-dog.mp3", "name": "Laughing dog", "icon": "🐶"}</code></li>
+        <li>Commit, wait a minute, then reload the game. It shows up under Your sounds.</li>
+      </ol>
+      <p class="note-p">Clips play for up to 8 seconds.</p>
+    </div>
     <p class="hint" id="sndMsg" aria-live="polite"></p>
     <ul class="snd-list" id="sndList"></ul>
   </div>
@@ -1813,7 +2161,7 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
   </div>
 </div>
 
-<!-- Online play outside Claude: peer-to-peer rooms (see README) -->
+<!-- Online play outside Claude: P2P room adapter (only used when window.claude is missing) -->
 <script src="net.js"></script>
 <script src="core.js"></script>
 <script src="app.js"></script>
@@ -1822,6 +2170,7 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
 <script src="mahjong.js"></script>
 <script src="mahjong4.js"></script>
 <script src="slots.js"></script>
+<script src="kingscup.js"></script>
 <script src="i18n.js"></script>
 </body>
 </html>
