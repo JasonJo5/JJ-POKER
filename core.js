@@ -51,13 +51,19 @@ function ac(){
 function env(g,t,a,peak,d){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(0.0001,t+d);}
 function tone(f,d,type,vol,delay,f2){const a=ac();if(!a)return;const t=a.currentTime+(delay||0);const o=a.createOscillator(),g=a.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);env(g,t,.01,vol||.1,d);o.connect(g).connect(master);o.start(t);o.stop(t+d+.05);}
 function noise(d,vol,freq,delay,q,type){const a=ac();if(!a)return;const t=a.currentTime+(delay||0);const n=Math.max(1,Math.floor(a.sampleRate*d));const buf=a.createBuffer(1,n,a.sampleRate);const ch=buf.getChannelData(0);for(let i=0;i<n;i++)ch[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);const s=a.createBufferSource();s.buffer=buf;const f=a.createBiquadFilter();f.type=type||'bandpass';f.frequency.value=freq||2000;f.Q.value=q||1.2;const g=a.createGain();g.gain.value=vol||.2;s.connect(f).connect(g).connect(master);s.start(t);}
+/* soft paper swish: noise that fades in and out while a filter sweeps up, so it sounds like a card sliding, not a slap */
+function swish(d,vol,f0,f1,delay){const a=ac();if(!a)return;const t=a.currentTime+(delay||0);const n=Math.max(1,Math.floor(a.sampleRate*d));const buf=a.createBuffer(1,n,a.sampleRate);const ch=buf.getChannelData(0);
+  for(let i=0;i<n;i++){const x=i/n;ch[i]=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*Math.min(1,x*1.6)),1.5)*(1-x*.6);}
+  const s=a.createBufferSource();s.buffer=buf;const f=a.createBiquadFilter();f.type='bandpass';f.Q.value=.9;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+d);
+  const hp=a.createBiquadFilter();hp.type='highpass';hp.frequency.value=900;const g=a.createGain();g.gain.value=vol;s.connect(hp).connect(f).connect(g).connect(master);s.start(t);}
 /* voice-ish: sawtooth through two formant filters */
 function voice(f0,f1,dur,delay,formants,vol){const a=ac();if(!a)return;const t=a.currentTime+(delay||0);const o=a.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur);const g=a.createGain();env(g,t,.03,vol||.25,dur);const mix=a.createGain();mix.gain.value=1;(formants||[700,1200]).forEach(fq=>{const bp=a.createBiquadFilter();bp.type='bandpass';bp.frequency.value=fq;bp.Q.value=6;o.connect(bp).connect(mix);});mix.connect(g).connect(master);o.start(t);o.stop(t+dur+.05);}
 function buzz(p){try{if(S.vib&&navigator.vibrate&&document.visibilityState==='visible')navigator.vibrate(p);}catch(e){}}
 const SFX={
   chip(n){for(let k=0;k<Math.min(n||2,4);k++){noise(.04,.35,4200,k*.07,4);tone(2400+Math.random()*600,.05,'sine',.05,k*.07);}},
-  card(delay){noise(.12,.22,1500,delay||0,.7);},
-  riffle(){for(let k=0;k<9;k++)noise(.03,.16,2600+k*90,k*.035,3);},
+  card(delay){swish(.11,.16,2200,6500,delay||0);},
+  flip(delay){swish(.07,.12,3200,7500,delay||0);tone(1900,.03,'sine',.012,(delay||0)+.05);},
+  riffle(){for(let k=0;k<10;k++)swish(.045,.07,2600+k*120,5200+k*150,k*.032);},
   check(){noise(.05,.45,500,0,2);noise(.05,.45,500,.12,2);},
   fold(){noise(.18,.15,900,0,.6);},
   turn(){buzz([30,60,30]);tone(660,.16,'sine',.12);tone(990,.24,'sine',.1,.13);},
@@ -235,6 +241,7 @@ const ACH=[
   {id:'mj_fast',ic:'⏱️',name:'Speed tiles',desc:'Clear an easy mahjong board in under 4 minutes',coins:500},
   {id:'mj_combo',ic:'🌀',name:'Combo breaker',desc:'Reach a ×5 mahjong combo',coins:250},
   {id:'p_72',ic:'7️⃣',name:'Seven-deuce king',desc:'Collect the 7-2 bounty',coins:400},
+  {id:'kc_cup',ic:'👑',name:'Long live the king',desc:"Finish a King's Cup game",coins:150},
   {id:'sl_big',ic:'🎰',name:'Reel deal',desc:'Hit a big win on Lucky Slots',coins:200},
   {id:'sl_jack',ic:'💰',name:'Jackpot!',desc:'Line up 7️⃣7️⃣7️⃣ on Lucky Slots',coins:1000},
   {id:'p_rabbit',ic:'🐇',name:'Rabbit hunter',desc:'Use the rabbit hunt',coins:50},
@@ -357,19 +364,33 @@ function decorate(el){
 }
 
 /* ---------- Custom sounds (uploaded by the owner, shared with everyone) ---------- */
-const SB={list:[],db:null,assets:null,canEdit:false,ready:false,audio:new Map(),listeners:[]};
+const SB={list:[],db:null,assets:null,canEdit:false,folder:false,ready:false,audio:new Map(),listeners:[]};
 function sbChanged(){SB.listeners.forEach(f=>{try{f();}catch(e){}});}
-function preload(it){if(SB.audio.has(it.id))return;try{const a=new Audio('/_blob/'+it.id);a.preload='auto';SB.audio.set(it.id,a);}catch(e){}}
+function preload(it){if(SB.audio.has(it.id))return;try{const a=new Audio(it.src||'/_blob/'+it.id);a.preload='auto';SB.audio.set(it.id,a);}catch(e){}}
+/* On a normal website (GitHub Pages etc.) sounds come from the site's own sounds/ folder,
+   listed in sounds/sounds.json, so every player loads the same clips. */
+async function loadFolderSounds(){
+  SB.folder=true;SB.canEdit=false;
+  try{
+    const r=await fetch('sounds/sounds.json',{cache:'no-cache'});if(!r.ok)throw 0;
+    const arr=await r.json();
+    SB.list=(Array.isArray(arr)?arr:[]).filter(x=>x&&typeof x.file==='string'&&/^[\w.\- ]{1,80}\.(mp3|wav|ogg|m4a|webm|mp4|aac)$/i.test(x.file)).slice(0,24)
+      .map(x=>({id:'f:'+x.file,src:'sounds/'+encodeURIComponent(x.file),name:cleanName(x.name)||x.file.replace(/\.[^.]+$/,'').slice(0,16),ic:typeof x.icon==='string'&&x.icon?x.icon.slice(0,4):'🔊'}));
+    SB.list.forEach(preload);
+  }catch(e){SB.list=[];}
+  SB.ready=true;sbChanged();
+}
 async function initSounds(){
-  if(!(window.claude&&typeof window.claude.use==='function'))return;
+  if(!(window.claude&&typeof window.claude.use==='function'))return loadFolderSounds();
   try{
     const [db,as]=await Promise.all([window.claude.use('db'),window.claude.use('assets').catch(()=>null)]);
+    if(!db)return loadFolderSounds();
     SB.db=db;SB.assets=as;SB.canEdit=!!(db&&as);
     if(db){db.doc('sounds/board').onSnapshot(snap=>{const d=snap&&snap.exists?snap.data():null;const items=d&&Array.isArray(d.items)?d.items.filter(x=>x&&typeof x.id==='string'&&/^[A-Za-z0-9_-]{8,64}$/.test(x.id)).slice(0,16).map(x=>({id:x.id,name:cleanName(x.name)||'Sound',ic:typeof x.ic==='string'?x.ic.slice(0,4):'🔊'})):[];SB.list=items;items.forEach(preload);SB.ready=true;sbChanged();},()=>{SB.ready=true;sbChanged();});}
     sbChanged();
   }catch(e){sbChanged();}
 }
-function playCustom(id){if(!S.sound||!S.memes)return false;const it=SB.list.find(x=>x.id===id);if(!it)return false;let a=SB.audio.get(id);if(!a){preload(it);a=SB.audio.get(id);}if(!a)return false;try{const c=a.cloneNode();c.volume=.9;c.play().catch(()=>{});}catch(e){}return true;}
+function playCustom(id){if(!S.sound||!S.memes)return false;const it=SB.list.find(x=>x.id===id);if(!it)return false;let a=SB.audio.get(id);if(!a){preload(it);a=SB.audio.get(id);}if(!a)return false;try{const c=a.cloneNode();c.volume=.9;c.play().catch(()=>{});setTimeout(()=>{try{c.pause();}catch(e){}},8000);}catch(e){}return true;}
 async function toUploadable(file){
   if(file.type==='video/mp4'||file.type==='video/webm')return{blob:file,type:file.type};
   const buf=await file.arrayBuffer();const ctx=new (window.AudioContext||window.webkitAudioContext)();
@@ -411,6 +432,33 @@ function shuffleAvatar(){myAvSeed=String(Math.floor(Math.random()*1e6));store.se
 const screens={};
 let current='home';
 function registerScreen(name,api){screens[name]=api;}
+/* ---------- Full screen ----------
+   Android/desktop: real full screen. iPhone Safari has no full-screen API for pages, so we explain
+   Add to Home Screen, which opens the game without the browser bars. */
+const isIOS=/iP(hone|od|ad)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const standalone=()=>matchMedia('(display-mode: fullscreen)').matches||matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+const canFS=()=>!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);
+function fsIcons(){document.querySelectorAll('.fs-btn').forEach(b=>{b.innerHTML=`<svg><use href="#i-${fsEl()?'unfull':'full'}"/></svg>`;b.setAttribute('aria-label',fsEl()?'Exit full screen':'Full screen');});}
+async function toggleFS(){
+  if(fsEl()){try{await (document.exitFullscreen||document.webkitExitFullscreen).call(document);}catch(e){}return;}
+  if(canFS()&&!isIOS){try{const el=document.documentElement;await (el.requestFullscreen?el.requestFullscreen({navigationUI:'hide'}):el.webkitRequestFullscreen());}catch(e){}return;}
+  fsTip(true);
+}
+function fsTip(force){
+  if(standalone())return;if(!force&&store.get('jj-fstip'))return;store.set('jj-fstip','1');
+  document.querySelectorAll('.fs-tip').forEach(x=>x.remove());
+  const t=document.createElement('div');t.className='fs-tip';
+  t.innerHTML=isIOS?`<b>Play full screen on iPhone</b><span>Tap <span class="share-ic">⬆︎</span> Share at the bottom of Safari, then <b>Add to Home Screen</b>. Open JJ POKER from your home screen and the browser bars are gone.</span><button class="btn btn-raise btn-sm" type="button">Got it</button>`
+    :`<b>Play full screen</b><span>Tap the <b>⤢</b> button at the top to hide the browser bars. You can also add JJ POKER to your home screen from the browser menu.</span><button class="btn btn-raise btn-sm" type="button">Got it</button>`;
+  t.querySelector('button').onclick=()=>t.remove();document.body.appendChild(t);setTimeout(()=>{if(t.isConnected)t.remove();},12000);
+}
+function initFS(){
+  if(!perf||standalone())return;
+  document.querySelectorAll('.gscreen .g-top .grp:last-child').forEach(g=>{if(g.querySelector('.fs-btn'))return;const b=document.createElement('button');b.type='button';b.className='icon-btn fs-btn';b.style.display='grid';b.onclick=toggleFS;g.insertBefore(b,g.firstChild);});
+  fsIcons();document.addEventListener('fullscreenchange',fsIcons);document.addEventListener('webkitfullscreenchange',fsIcons);
+}
+setTimeout(initFS,0);
 /* If a game screen still runs slowly, switch on battery saver once and say so. */
 let fpsChecked=false;
 function watchFps(){
@@ -431,7 +479,7 @@ function show(name){
   document.body.classList.toggle('in-game',name!=='home');
   current=name;window.scrollTo(0,0);
   if(screens[name]&&screens[name].show)screens[name].show();
-  if(name!=='home')watchFps();
+  if(name!=='home'){watchFps();if(perf&&!standalone())setTimeout(()=>{if(current!=='home')fsTip(false);},2500);}
 }
 
 setTimeout(initSounds,0);
@@ -477,7 +525,6 @@ function finisher(o){
     if(cfg.fx==='slam')burst(cx,r.bottom,['💨','💥'],12,{angle:-Math.PI/2,cone:2.8,dist:170,size:30,dur:1000});
     if(cfg.fx==='kick')burst(cx+90,cy,['💥','✨'],10,{dist:150,size:30,dur:900});
     if(cfg.fx==='slash'||cfg.fx==='rings')burst(cx,cy,['✨'],8,{dist:200,size:24,dur:1000});},560);
-  if(o.big&&S.sound&&'speechSynthesis' in window){try{const u=new SpeechSynthesisUtterance(`${list[0].name} wins. Flawless victory.`);u.pitch=.4;u.rate=.85;u.volume=.9;setTimeout(()=>speechSynthesis.speak(u),650);}catch(e){}}
   setTimeout(()=>{el.classList.add('out');setTimeout(()=>{el.remove();if(finEl===el)finEl=null;},380);},o.dur||2500);
 }
 return {perf,burst,finisher,speciesOf,SCENES,decorate,SB,playCustom,addSound,removeSound,onSounds:f=>SB.listeners.push(f),$,store,esc,money,num,cleanName,cleanText,sleep,S,saveS,applyS,resolvedTheme,onSettings:f=>listeners.push(f),animOn,
