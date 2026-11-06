@@ -573,17 +573,19 @@ function renderHome(){
 J.renderPokerHome=renderHome;
 
 /* ---------- Table rendering ---------- */
-const LAYOUT={wide:{seat:[[50,100],[7.5,47],[50,0],[92.5,47]]},tall:{seat:[[50,100],[14,66],[50,0],[86,66]]}};
+const LAYOUT={wide:{seat:[[50,100],[7.5,47],[50,0],[92.5,47]]},tall:{seat:[[50,100],[13,67],[50,0],[87,67]]}};
 const tableEl=$('table'),boardEl=$('board');
 const seatEls=[];
 for(let i=0;i<MAX;i++){const s=document.createElement('div');s.className='seat';tableEl.appendChild(s);seatEls.push(s);}
 const rot=i=>mySeat>=0?(i-mySeat+MAX)%MAX:i;
 function fitTable(){
   const st=$('stage');const W=st.clientWidth-16,H=st.clientHeight-8;if(W<=0||H<=0)return;
-  const sideways=innerWidth>innerHeight&&innerHeight<540;const tall=W/H<1.15||(!sideways&&W<620&&W/H<1.5);const ratio=tall?0.74:1.82;
+  const sideways=innerWidth>innerHeight&&innerHeight<540;const tall=W/H<1.15||(!sideways&&W<620&&W/H<1.5);
+  /* fill the space: the table stretches between a tall and a wide shape instead of keeping one fixed shape */
+  const ratio=tall?Math.max(.56,Math.min(.8,W/H)):Math.max(1.4,Math.min(1.95,W/H));
   const w=Math.max(160,Math.min(W,H*ratio));
   tableEl.style.width=w+'px';tableEl.style.height=(w/ratio)+'px';
-  if(tall!==isTall){isTall=tall;tableEl.classList.toggle('tall',tall);}tableEl.classList.toggle('short',!tall&&w/ratio<360);
+  if(tall!==isTall){isTall=tall;tableEl.classList.toggle('tall',tall);}tableEl.classList.toggle('short',!tall&&w/ratio<460);
 }
 new ResizeObserver(()=>{if(J.current!=='poker')return;fitTable();if(CV){const pv=PV;PV=null;renderAll(true);PV=pv;}}).observe($('stage'));
 const dealT=new Map();
@@ -627,8 +629,8 @@ function animateDiff(P,V){
     if(d>0)J.flyChips(whoEl(i),$('potbox'),Math.min(7,Math.max(3,Math.ceil(d/V.bb)+1)),newHand?300+i*120:0);
     if(!newHand&&p.l!==pp.l){if(p.l==='Check')SFX.check();else if(p.l==='Fold')SFX.fold();}
   });
-  if(newHand&&V.st){const nL=V.p.filter(q=>q.hc>0).length||1;SFX.riffle();const sh=$('shoe');sh.classList.remove('shuf');void sh.offsetWidth;sh.classList.add('shuf');V.p.forEach((p,i)=>{if(p.hc>0)for(let k=0;k<2;k++)SFX.card(((k*nL+((i-V.dealer-1+MAX)%MAX))*150+250)/1000);});}
-  if(!newHand&&V.board.length>P.board.length)for(let k=P.board.length;k<V.board.length;k++)SFX.card((k-P.board.length)*.14);
+  if(newHand&&V.st){const nL=V.p.filter(q=>q.hc>0).length||1;SFX.riffle();if(mySeat>=0&&V.p[mySeat]&&V.p[mySeat].hc>0){const ft=((2*nL)*150+250+650)/1000;SFX.flip(ft);SFX.flip(ft+.12);}const sh=$('shoe');sh.classList.remove('shuf');void sh.offsetWidth;sh.classList.add('shuf');V.p.forEach((p,i)=>{if(p.hc>0)for(let k=0;k<2;k++)SFX.card(((k*nL+((i-V.dealer-1+MAX)%MAX))*150+250)/1000);});}
+  if(!newHand&&V.board.length>P.board.length)for(let k=P.board.length;k<V.board.length;k++){SFX.card((k-P.board.length)*.14);SFX.flip((k-P.board.length)*.14+.22);}
   if(V.ho&&!P.ho&&V.hand===P.hand){
     V.p.forEach((p,i)=>{if(p.w)J.flyChips($('center'),whoEl(i),9,450,{coin:true});});
     trackResult(P,V);
@@ -661,7 +663,7 @@ function placeDealer(V){
   if(!(V.st&&V.hand>0&&V.p[V.dealer]&&V.p[V.dealer].k!=='e')){db.hidden=true;return;}
   const who=whoEl(V.dealer);if(!who)return;
   if(db.hidden)db.style.transition='none';db.hidden=false;const [x,y]=centerOf(who);const r=who.offsetWidth/2;const d=rot(V.dealer);
-  db.style.transform=`translate(${x+(d===3?-1:1)*r*.95}px,${y-r*.8}px)`;if(db.style.transition==='none'){void db.offsetWidth;db.style.transition='';}
+  db.style.transform=`translate(${x+(d===3?-1:1)*r*.95}px,${isTall&&d!==0?y+r*.75:y-r*.8}px)`;if(db.style.transition==='none'){void db.offsetWidth;db.style.transition='';}
 }
 function renderAll(noAnim){
   const V=CV;
@@ -719,7 +721,7 @@ function renderAll(noAnim){
     const avSeed=seedOf(p);
     const eqMax=Math.max(...V.p.map(q=>q.q>=0?q.q:-1));
     const eqHTML=p.q>=0?`<span class="eqb${p.q===eqMax?' lead':''}${p.q===0?' dead':''}">${p.q}%</span>`:'';
-    setH(el,`<div class="cards">${cards}</div>
+    setH(el,`<div class="cards${!isMe&&Array.isArray(p.sh)&&p.sh.length?' up':''}">${cards}</div>
       <div class="who"><div class="ring"></div><span class="av">${avatarSVG(avSeed,p.k==='b')}</span>${bubHTML}${p.w?CROWN:''}${eqHTML}</div>
       <div class="plate"><span class="nm">${esc(p.n||'Player')}${isMe?' <i>(you)</i>':p.k==='b'?' <i>· bot</i>':''}</span><span class="stk">${p.o&&p.c===0?(V.tr&&p.pl?`Out · ${ordS(p.pl)}`:'Busted'):money(p.c)}</span></div>
       ${ht&&(!isMe||p.w)?`<div class="htxt">${esc(ht)}</div>`:''}`);
@@ -826,6 +828,9 @@ function checkAmt(){
   $('rConfirm').textContent=ok?(v>=L.maxTo?`All-in ${money(v)}`:CV.cb===0?`Bet ${money(v)}`:`Raise to ${money(v)}`):'Raise';
   return ok;
 }
+/* last 5 seconds of your turn: soft tick and a buzz each second */
+let lastTick=-1;
+setInterval(()=>{if(J.current!=='poker'||!myTurn()){lastTick=-1;return;}const t=secsLeft();if(t>=0&&t<=5&&t!==lastTick&&t>0){lastTick=t;SFX.tone?SFX.tone(1400,.05,'sine',.035):J.tone(1400,.05,'sine',.035);J.buzz&&J.buzz(25);$('bar').classList.remove('tick');void $('bar').offsetWidth;$('bar').classList.add('tick');}},250);
 function tourClock(){const V=CV;if(!V||!V.tr)return;const left=V.st?Math.max(0,V.tr.nx-(Date.now()-recvAt)):V.tr.nx;const m=Math.floor(left/60000),sec=Math.floor(left/1000)%60;$('tourNext').textContent=V.over?'':` · ⏫ ${m}:${String(sec).padStart(2,'0')}`;}
 setInterval(()=>{if(J.current==='poker')tourClock();},1000);
 function renderControls(){
@@ -871,12 +876,12 @@ function renderControls(){
   }
   $('mainBtns').hidden=!(!sheetOpen&&(turn||(!showPre&&V&&V.st&&!V.over&&!V.ho&&p&&!showRebuy)));
   [bFold,bCall,bRaise].forEach(b=>b.disabled=!turn);
-  if(turn&&!wasTurn){SFX.turn();if(pre){const k=pre;pre=null;setTimeout(()=>applyPre(k),350);}}
+  if(turn&&!wasTurn){SFX.turn();if(J.animOn()&&mySeat>=0)setTimeout(()=>J.floatText(whoEl(mySeat),'Your turn!','gold'),150);if(pre){const k=pre;pre=null;setTimeout(()=>applyPre(k),350);}}
   wasTurn=turn;
   if(!turn){bCall.textContent=V&&p&&V.cb>p.b?'Call':'Check';bRaise.textContent='Raise';return;}
   const L=limits();
   bCall.textContent=L.toCall===0?'Check':(L.toCall>=L.p.c?`All-in ${money(L.toCall)}`:`Call ${money(L.toCall)}`);
-  bRaise.disabled=!L.canRaise;bRaise.textContent=V.cb===0?'Bet':'Raise';
+  bRaise.disabled=!L.canRaise;bRaise.innerHTML=`${V.cb===0?'Bet':'Raise'}${L.canRaise?`<small class="bsub">min ${money(L.minTo)}</small>`:''}`;
   if(sheetOpen){slider.min=L.minTo;slider.max=L.maxTo;fillSlider();}
 }
 function applyPre(k){
@@ -902,7 +907,9 @@ tableEl.addEventListener('click',e=>{const w=e.target.closest('.seat .who');if(!
 $('throwGrid').innerHTML=THROWS.map(t=>`<button type="button" data-k="${t.k}" title="${t.n}"><span>${t.ic}</span>${t.n}</button>`).join('');
 $('throwGrid').onclick=e=>{const b=e.target.closest('button[data-k]');if(!b||throwTarget<0)return;const now=Date.now();if(now-lastThrow<900)return;lastThrow=now;const to=throwTarget;closeThrow();sendThrow(mySeat,to,b.dataset.k);J.unlock('chatty');};
 document.addEventListener('click',e=>{if(!$('throwPop').hidden&&!e.target.closest('#throwPop'))closeThrow();});
-$('emojis').onclick=e=>{const b=e.target.closest('button[data-e]');if(!b||mySeat<0)return;sendReact(mySeat,Number(b.dataset.e));};
+$('emoBtn').onclick=e=>{e.stopPropagation();$('bar').classList.toggle('emo-open');};
+document.addEventListener('click',e=>{if($('bar').classList.contains('emo-open')&&!e.target.closest('#emojis')&&!e.target.closest('#emoBtn'))$('bar').classList.remove('emo-open');});
+$('emojis').onclick=e=>{$('bar').classList.remove('emo-open');const b=e.target.closest('button[data-e]');if(!b||mySeat<0)return;sendReact(mySeat,Number(b.dataset.e));};
 J.memeGrid($('memeGrid'),pick=>{$('memePop').hidden=true;sendMeme(pick);});
 $('memeBtn').onclick=e=>{e.stopPropagation();$('memePop').hidden=!$('memePop').hidden;};
 document.addEventListener('click',e=>{if(!$('memePop').hidden&&!e.target.closest('#memePop')&&!e.target.closest('#memeBtn'))$('memePop').hidden=true;});
@@ -1009,7 +1016,7 @@ setInterval(()=>{
 },1000);
 setInterval(updateRing,200);
 
-J._pk={hostChat:(a,b)=>hostChat(a,b),showdown:()=>showdown(),distribute,buildPots,eval7,describe,getG:()=>G,applyBounty,is72};
+J._pk={refresh:()=>showHost(),hostChat:(a,b)=>hostChat(a,b),showdown:()=>showdown(),distribute,buildPots,eval7,describe,getG:()=>G,applyBounty,is72};
 /* Boot */
 renderHome();initKeys();
 (async()=>{
