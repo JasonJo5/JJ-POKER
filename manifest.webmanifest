@@ -1,0 +1,16 @@
+{
+  "name": "JJ POKER",
+  "short_name": "JJ POKER",
+  "description": "Poker with friends, blackjack, mahjong and slots. Play money only.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#0f1318",
+  "theme_color": "#0f1318",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
