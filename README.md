@@ -1,6 +1,6 @@
 # JJ POKER
 
-Poker with friends, blackjack, 4-player mahjong, mahjong solitaire and Lucky Slots, in one web page.
+Poker with friends, blackjack, 4-player mahjong, mahjong solitaire, Lucky Slots and King's Cup, in one web page.
 Play money only: no real cash, no payouts.
 
 ## Put it on GitHub Pages
@@ -30,10 +30,27 @@ npm install
 npm run build
 ```
 
+## Adding your own meme sounds
+
+Sounds live in the `sounds` folder of this repository, so every player loads the same clips.
+
+1. Download a short clip (MP3 works best), for example from myinstants.com.
+2. Upload it into the `sounds` folder with a simple name, like `laughing-dog.mp3`.
+3. Edit `sounds/sounds.json` and list every clip, separated by commas:
+
+```json
+[
+  {"file": "laughing-dog.mp3", "name": "Laughing dog", "icon": "🐶"},
+  {"file": "bruh.mp3", "name": "Bruh", "icon": "😐"}
+]
+```
+
+4. Commit, wait about a minute for GitHub Pages to update, then reload the game.
+   The clips appear under **Your sounds** in the meme menu (♫). Each one plays for up to 8 seconds.
+
 ## What works differently from the Claude version
 
-- **Your sounds** (uploading your own meme clips) needs Claude's storage, so it isn't available here.
-  The 12 built-in meme sounds still work and everyone at the table hears them.
+- **Your sounds** come from the `sounds` folder (see above) instead of an upload button.
 - Coins, XP, achievements and settings are saved in each player's own browser.
 
 ## Files
@@ -48,5 +65,8 @@ npm run build
 | `mahjong4.js` | 4-player mahjong |
 | `mahjong.js` | Mahjong solitaire |
 | `slots.js` | Lucky Slots |
+| `kingscup.js` | King's Cup party drinking game (one phone, pass it around) |
 | `i18n.js` | English, 한국어, 中文, Bahasa Indonesia |
+| `sounds/` | Your own meme clips and `sounds.json`, the list of them |
+| `manifest.webmanifest`, `icon-*.png`, `apple-touch-icon.png` | Lets players add the game to their home screen and play full screen |
 | `net.js` | Built peer-to-peer room adapter (generated from `src/net-entry.js`) |
