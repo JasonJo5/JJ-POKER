@@ -32,7 +32,7 @@ $('feltSw').onclick=e=>{const b=e.target.closest('.sw');if(!b)return;S.felt=b.da
 $('backSw').onclick=e=>{const b=e.target.closest('.sw');if(!b)return;S.back=b.dataset.v;saveS();applyS();};
 document.querySelectorAll('[data-theme-btn]').forEach(b=>b.onclick=()=>{S.theme=b.dataset.themeBtn;saveS();applyS();});
 const syncLang=()=>{const cur=(window.JJ_I18N&&JJ_I18N.lang)||'en';document.querySelectorAll('#langSeg [data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===cur)));};
-$('langSeg').onclick=e=>{const b=e.target.closest('[data-lang]');if(!b)return;S.lang=b.dataset.lang;saveS();if(window.JJ_I18N)JJ_I18N.setLang(S.lang);syncLang();J.SFX.pop();};
+$('langSeg').onclick=e=>{const b=e.target.closest('[data-lang]');if(!b)return;S.lang=b.dataset.lang;saveS();if(window.JJ_I18N)JJ_I18N.setLang(S.lang);applyS();syncLang();J.SFX.pop();};
 setTimeout(syncLang,0);document.addEventListener('click',e=>{if(e.target.closest('[data-open="mSettings"]'))setTimeout(syncLang,0);});
 $('themeFlip').onclick=()=>{S.theme=J.resolvedTheme()==='dark'?'light':'dark';saveS();applyS();};
 const flipIc=()=>{const m=document.querySelector('meta[name=theme-color]');if(m)m.content=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#f4f5fa';$('themeFlip').innerHTML=`<svg><use href="#i-${J.resolvedTheme()==='dark'?'sun':'moon'}"/></svg>`;};J.onSettings(flipIc);flipIc();
@@ -48,7 +48,7 @@ $('ranks').innerHTML=R.map(([n,c])=>`<li><b>${n}</b><span class="mc">${c.split('
 J.memeGrid=(el,onPick)=>{
   if(!el)return;
   const draw=()=>{let h=J.MEMES.map((m,i)=>`<button type="button" data-m="${i}"><span>${m.ic}</span>${esc(m.name)}</button>`).join('');
-    const cs=J.SB.list;if(cs.length||J.SB.canEdit){h+=`<div class="memes-sep">Your sounds</div>`+cs.map(x=>`<button type="button" data-c="${esc(x.id)}"><span>${esc(x.ic)}</span>${esc(x.name)}</button>`).join('');if(J.SB.canEdit)h+=`<button type="button" class="add" data-add="1"><span>＋</span>Add sound</button>`;}
+    const cs=J.SB.list;if(cs.length||J.SB.canEdit||J.SB.folder){h+=`<div class="memes-sep">Your sounds</div>`+cs.map(x=>`<button type="button" data-c="${esc(x.id)}"><span>${esc(x.ic)}</span>${esc(x.name)}</button>`).join('');if(J.SB.canEdit||J.SB.folder)h+=`<button type="button" class="add" data-add="1"><span>＋</span>Add sound</button>`;}
     el.innerHTML=h;};
   draw();J.onSounds(draw);
   el.onclick=e=>{const b=e.target.closest('button');if(!b)return;
@@ -65,7 +65,7 @@ $('sndFile').onchange=()=>{const f=$('sndFile').files[0];if(f&&!$('sndName').val
 function renderSndList(){
   const ul=$('sndList');const cs=J.SB.list;
   ul.innerHTML=cs.length?cs.map(x=>`<li><button type="button" class="link-btn" data-play="${esc(x.id)}">${esc(x.ic)} ${esc(x.name)}</button>${J.SB.canEdit?`<button type="button" class="icon-btn" data-del="${esc(x.id)}" aria-label="Remove ${esc(x.name)}"><svg><use href="#i-close"/></svg></button>`:''}</li>`).join(''):'<li class="none">No custom sounds yet.</li>';
-  $('sndForm').hidden=!J.SB.canEdit;$('sndNoEdit').hidden=J.SB.canEdit;
+  $('sndForm').hidden=!J.SB.canEdit;$('sndNoEdit').hidden=J.SB.canEdit||J.SB.folder;$('sndFolder').hidden=!J.SB.folder;$('sndIntro').hidden=J.SB.folder;
 }
 J.onSounds(renderSndList);renderSndList();
 $('sndList').onclick=async e=>{const p=e.target.closest('[data-play]');if(p){J.playCustom(p.dataset.play);return;}const d=e.target.closest('[data-del]');if(d){d.disabled=true;try{await J.removeSound(d.dataset.del);}catch(err){$('sndMsg').textContent='Could not remove that sound.';}}};
