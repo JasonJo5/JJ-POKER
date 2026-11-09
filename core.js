@@ -253,6 +253,7 @@ const ACH=[
   {id:'cap_win',ic:'🂮',name:'Capsa king',desc:'Win a hand of Capsa',coins:250},
   {id:'cap_clean',ic:'🧹',name:'Clean sweep',desc:'Win Capsa while every bot still holds 8+ cards',coins:600},
   {id:'bus_off',ic:'🚌',name:'Next stop',desc:'Get off the bus in Ride the Bus',coins:150},
+  {id:'ls_jack',ic:'🎯',name:'Long shot pays',desc:'Hit a Jackpot answer in Long Shot',coins:200},
   {id:'fr_spin',ic:'☝️',name:'Point of no return',desc:'Spin Finger Roulette',coins:50},
   {id:'spin',ic:'🎡',name:'Wheel of fortune',desc:'Spin the daily wheel',coins:0},
   {id:'level5',ic:'⭐',name:'Regular',desc:'Reach level 5',coins:1000},
