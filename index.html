@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f4f5fa">
 <meta name="color-scheme" content="light dark">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="JJ POKER">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -890,10 +890,10 @@ body.in-game{overscroll-behavior:none}
   .g-top .icon-btn{width:36px;height:36px;border-radius:12px}
   .g-top .pill,.g-top .link-btn{height:36px;font-size:13px;padding:0 11px;border-radius:12px}
   .lamp,.neon{display:none}
-  .gscreen:not(.mj4){grid-template-columns:minmax(0,1fr) clamp(250px,36vw,330px);grid-template-rows:auto minmax(0,1fr)}
-  .gscreen:not(.mj4) .g-top{grid-column:1/-1}
-  .gscreen:not(.mj4) .stage{grid-column:1;grid-row:2;min-height:0}
-  .gscreen:not(.mj4) .bar{grid-column:2;grid-row:2;align-self:end;width:auto;max-height:100%;overflow-y:auto;margin:0 max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) 0;grid-template-columns:minmax(0,1fr);gap:8px;padding:10px;border-radius:22px;scrollbar-width:none}
+  .gscreen:not(.mj4):not(.caps){grid-template-columns:minmax(0,1fr) clamp(250px,36vw,330px);grid-template-rows:auto minmax(0,1fr)}
+  .gscreen:not(.mj4):not(.caps) .g-top{grid-column:1/-1}
+  .gscreen:not(.mj4):not(.caps) .stage{grid-column:1;grid-row:2;min-height:0}
+  .gscreen:not(.mj4):not(.caps) .bar{grid-column:2;grid-row:2;align-self:end;width:auto;max-height:100%;overflow-y:auto;margin:0 max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) 0;grid-template-columns:minmax(0,1fr);gap:8px;padding:10px;border-radius:22px;scrollbar-width:none}
   .bar .mebox{padding:5px 10px 5px 5px;gap:8px}
   .bar .mebox .av{width:34px;height:34px}
   .bar .mebox .mi{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
@@ -1452,17 +1452,17 @@ html.perf .stage{contain:layout}
 
 /* ---- landscape phones: top bar floats over the table, slimmer side panel ---- */
 @media (orientation:landscape) and (max-height:540px){
-  .gscreen:not(.mj4){grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr) clamp(214px,27vw,262px)}
-  .gscreen:not(.mj4) .g-top{position:absolute;left:0;top:0;width:calc(100% - clamp(214px,27vw,262px));pointer-events:none;padding:max(6px,env(safe-area-inset-top)) 8px 0 max(8px,env(safe-area-inset-left));z-index:9}
-  .gscreen:not(.mj4) .g-top>*{pointer-events:auto}
-  .gscreen:not(.mj4) .g-top{display:flex;justify-content:space-between;align-items:flex-start}
-  .gscreen:not(.mj4) .g-top .grp{flex-direction:row;align-items:center;gap:5px}
-  .gscreen:not(.mj4) .g-top .pill:not(#tourPill),.gscreen:not(.mj4) .g-top .link-btn{display:none!important}
-  .gscreen:not(.mj4) .g-top .icon-btn{width:34px;height:34px;border-radius:11px;opacity:.92}
-  .gscreen:not(.mj4) .stage{grid-row:1;grid-column:1}
-  .gscreen:not(.mj4) .bar{grid-row:1;align-self:center;max-height:calc(100% - 12px);margin:6px max(6px,env(safe-area-inset-right)) 6px 0;padding:8px;gap:6px}
-  .gscreen:not(.mj4) .bar .mebox .mi>span{display:none}
-  .gscreen:not(.mj4) .g-top .hide-sm{display:none}
+  .gscreen:not(.mj4):not(.caps){grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr) clamp(214px,27vw,262px)}
+  .gscreen:not(.mj4):not(.caps) .g-top{position:absolute;left:0;top:0;width:calc(100% - clamp(214px,27vw,262px));pointer-events:none;padding:max(6px,env(safe-area-inset-top)) 8px 0 max(8px,env(safe-area-inset-left));z-index:9}
+  .gscreen:not(.mj4):not(.caps) .g-top>*{pointer-events:auto}
+  .gscreen:not(.mj4):not(.caps) .g-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .gscreen:not(.mj4):not(.caps) .g-top .grp{flex-direction:row;align-items:center;gap:5px}
+  .gscreen:not(.mj4):not(.caps) .g-top .pill:not(#tourPill),.gscreen:not(.mj4):not(.caps) .g-top .link-btn{display:none!important}
+  .gscreen:not(.mj4):not(.caps) .g-top .icon-btn{width:34px;height:34px;border-radius:11px;opacity:.92}
+  .gscreen:not(.mj4):not(.caps) .stage{grid-row:1;grid-column:1}
+  .gscreen:not(.mj4):not(.caps) .bar{grid-row:1;align-self:center;max-height:calc(100% - 12px);margin:6px max(6px,env(safe-area-inset-right)) 6px 0;padding:8px;gap:6px}
+  .gscreen:not(.mj4):not(.caps) .bar .mebox .mi>span{display:none}
+  .gscreen:not(.mj4):not(.caps) .g-top .hide-sm{display:none}
   .emo-btn{display:grid}
   #game .bar .emojis{display:none}
   #game .bar.emo-open .emojis{display:flex;flex-wrap:wrap;position:absolute;left:8px;right:8px;bottom:calc(100% + 6px);z-index:12;padding:6px;gap:2px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lg);justify-content:center}
@@ -1647,6 +1647,301 @@ html.perf .kc-ring .kc-c .card{animation:none}
 @keyframes bartick{40%{box-shadow:0 0 0 3px #ff6b4a,0 0 30px rgba(255,107,74,.6),var(--shadow-lg)}}
 
 html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important}
+
+/* ===== King's Cup: mini games, sips, thumb master ===== */
+.kc-p{border:0;background:transparent;color:inherit;padding:0;font:inherit;cursor:pointer}
+.kc-p .av{position:relative;overflow:visible}
+.kc-sip{position:absolute;right:-6px;top:-5px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--gold,#ffc83d);color:#3a2700;font-style:normal;font-size:11px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 0 2px var(--surface)}
+.kc-p.tm b::after{content:" 👍"}.kc-p.qm.tm b::after{content:" ❓👍"}
+.kc-endm{font-weight:700;color:var(--ink)!important}
+.kc-endm:empty{display:none}
+.kc-play{height:46px;margin-top:2px}
+.kc-mini-ov{position:absolute;inset:0;z-index:40;display:grid;place-items:center;padding:12px;background:rgba(10,6,4,.72)}
+.kc-mini-ov.in .km-card{animation:pop .4s cubic-bezier(.2,1.4,.4,1) both}
+.km-card{position:relative;width:min(560px,100%);max-height:100%;overflow:auto;background:linear-gradient(180deg,#2a170a,#1a0d05);color:#fff;border-radius:28px;padding:18px 16px 16px;display:grid;gap:10px;justify-items:center;text-align:center;box-shadow:0 0 0 2px rgba(255,210,74,.5),0 30px 60px rgba(0,0,0,.5)}
+.km-card h3{font-family:var(--display);font-size:26px;font-weight:800;color:#ffd24a;margin:0}
+.km-how{margin:0;font-size:14px;line-height:1.45;opacity:.85;max-width:44ch}
+.km-x{position:absolute;right:10px;top:10px;background:rgba(255,255,255,.1);color:#fff;border-color:transparent}
+.km-stat{font-family:var(--display);font-weight:800;font-size:22px;min-height:32px;color:#fff}
+.km-stat.count{font-size:46px;color:#ffd24a;min-height:56px}
+.km-stat.beat,.km-num.beat{animation:kmbeat .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes kmbeat{from{transform:scale(1.6);opacity:.2}}
+.km-body{width:100%}
+.km-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px;width:100%}
+.km-grid.n2,.km-grid.n4{grid-template-columns:repeat(2,1fr)}
+.km-p{position:relative;display:grid;justify-items:center;gap:6px;padding:14px 6px 10px;border-radius:20px;border:0;background:rgba(255,255,255,.08);color:#fff;font:inherit;touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .12s,background .2s,box-shadow .2s}
+.km-p .av{width:56px;height:56px;box-shadow:0 0 0 3px rgba(255,255,255,.7)}
+.km-p b{font-size:14px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.km-p:not(:disabled):active{transform:scale(.94)}
+.km-p:disabled{opacity:.55}
+.km-n{position:absolute;right:8px;top:6px;font-style:normal;font-family:var(--display);font-weight:800;font-size:22px;color:#ffd24a}
+.km-p.pend{background:rgba(255,210,74,.25);box-shadow:0 0 0 2px #ffd24a}
+.km-p.done{background:rgba(34,201,149,.2);opacity:1}.km-p.done .km-n{color:#5ee3c5}
+.km-p.clash{background:rgba(255,80,80,.3);box-shadow:0 0 0 3px #ff5a5a;opacity:1;animation:shake .45s}
+.km-p.clash .km-n{color:#ff8a8a}
+@keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.km369{display:grid;gap:12px;justify-items:center;width:100%}
+.km-who{display:flex;align-items:center;gap:10px;font-size:18px}.km-who .av{width:44px;height:44px;box-shadow:0 0 0 3px #ffd24a}
+.km-num{font-family:var(--display);font-weight:800;font-size:clamp(72px,24vw,130px);line-height:1;color:#fff;text-shadow:0 6px 24px rgba(255,210,74,.45)}
+.km-bar{width:100%;height:10px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden}
+.km-bar i{display:block;height:100%;background:linear-gradient(90deg,#22c995,#ffd24a);transform-origin:left;border-radius:inherit}
+.km-bar i.low{background:#ff5a5a}
+.km-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.km-btns .btn{height:64px;font-size:17px;padding:0 6px;white-space:normal;line-height:1.1}
+.km-res{display:grid;gap:10px;justify-items:center;width:100%;padding-top:4px;animation:pop .4s cubic-bezier(.2,1.4,.4,1) both}
+.km-rt{font-family:var(--display);font-size:24px;font-weight:800;color:#ff8a6b}
+.km-rs{opacity:.8;font-size:14px}
+.km-dr{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.km-d{display:grid;justify-items:center;gap:4px}.km-d .av{width:60px;height:60px;box-shadow:0 0 0 3px #ff8a6b}.km-d i{font-style:normal;font-weight:800;color:#ffd24a}
+.km-res .btn{min-width:180px}
+.kc-mini-ov:has(.km-res:not([hidden])) .km-btns,.kc-mini-ov:has(.km-res:not([hidden])) .km-bar{display:none}
+@media (max-width:420px){.km-btns{grid-template-columns:1fr}.km-btns .btn{height:54px}.km-p .av{width:48px;height:48px}}
+
+/* ===== King's Cup: slide the details panel down, oval table when there is room ===== */
+.kc-bar{padding-top:20px}
+.kc-grip{position:absolute;left:50%;top:0;transform:translateX(-50%);width:120px;height:22px;border:0;padding:0;background:transparent;display:grid;place-items:center;cursor:grab;touch-action:none;z-index:2}
+.kc-grip i{display:block;width:46px;height:5px;border-radius:3px;background:var(--muted);opacity:.55;transition:width .2s,opacity .2s}
+.kc-grip:hover i{width:56px;opacity:.85}
+.kc-bar.drag{transition:none}
+.kc-bar.min .kc-players,.kc-bar.min .kc-side{display:none}
+.kc-bar.min{grid-template-columns:minmax(0,1fr) auto!important;grid-template-areas:"turn btns"!important;padding-bottom:8px}
+.kc-bar.min .kc-turn b{font-size:16px}
+.kc-bar:not(.min) .kc-side{animation:fade .25s}
+@media (orientation:landscape) and (max-height:540px){.kcs .bar.min{grid-template-columns:1fr!important;grid-template-areas:"turn" "btns"!important}}
+.kc-table.oval{aspect-ratio:auto}
+.kc-table.oval .kc-c{left:var(--x);top:var(--y);width:var(--kcw);margin:calc(var(--kcw)*-.7) 0 0 calc(var(--kcw)*-.5);--cw:var(--kcw);transform:rotate(var(--rot)) rotate(var(--w))}
+.kc-table.oval .kc-c:hover:not(.gone),.kc-table.oval .kc-c:focus-visible{transform:rotate(var(--rot)) translateY(calc(var(--kcw)*-.25)) rotate(var(--w)) scale(1.06)}
+.kc-table.oval .kc-c.gone{transform:rotate(var(--rot)) translateY(calc(var(--kcw)*1.2)) scale(.6)}
+.kc-table.oval .kc-ring.dealt .kc-c{animation-name:kcdealo}
+@keyframes kcdealo{from{left:50%;top:50%;transform:scale(.3);opacity:0}}
+.kc-table.oval .kc-cup{width:30cqw}
+.kc-table.oval .kc-big{--cw:31cqw}
+.kc-table.oval .kc-show:has(.kc-extra:not(:empty)) .kc-big{--cw:22cqw}
+.kc-table.oval .kc-show-card{width:80cqw;gap:2.4cqw}
+.kc-table.oval .kc-show h3{font-size:max(24px,8.6cqw)}
+.kc-table.oval .kc-show p{font-size:max(15px,4.2cqw);max-width:70cqw}
+.kc-table.oval .kc-tturn{top:68%}
+.kc-table.oval .kc-pass .av{width:36cqw;height:36cqw}
+
+/* ===== iPhone home-screen app: no blur under the clock, no gap at the bottom ===== */
+html.standalone .gscreen{height:var(--app-h,100dvh)}
+html.standalone .gscreen .g-top{padding-top:calc(env(safe-area-inset-top) + 8px)}
+html.standalone .bar{margin-bottom:max(6px,calc(env(safe-area-inset-bottom) - 12px))}
+html.standalone .nav{top:calc(env(safe-area-inset-top) + 6px)}
+
+/* ===== Home: three game sections ===== */
+.gsec-tabs{align-self:flex-end}
+.gsec{margin-bottom:26px}
+.gsec[hidden]{display:none}
+.gsec-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 12px;font-size:21px;font-weight:700;letter-spacing:-.01em}
+.gsec-ic{font-size:22px}
+.gsec-h small{font-size:14px;font-weight:500;color:var(--muted)}
+@media (max-width:640px){.gsec-tabs{width:100%;display:grid;grid-template-columns:repeat(4,1fr)}.gsec-tabs button{padding:0 6px;font-size:13px}}
+.gc-art.cap{background:radial-gradient(ellipse at 50% 20%,#14b8a6,#0f766e 60%,#064e48)}
+.gc-art.bus{background:radial-gradient(ellipse at 50% 25%,#facc15,#d97706 60%,#7c2d12)}
+.gc-art.fr{background:radial-gradient(ellipse at 50% 30%,#f472b6,#be185d 60%,#500724)}
+.bus-art{position:relative;width:170px;height:120px;--cw:52px}
+.bus-art span{position:absolute;left:50%;top:50%;transform:translate(-50%,-30%);font-size:62px;z-index:2;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35));animation:busdrive 3s ease-in-out infinite}
+.bus-art .card{position:absolute;left:calc(50% - 26px + (var(--k) - 1)*44px);top:4px;transform:rotate(calc((var(--k) - 1)*14deg))}
+@keyframes busdrive{0%,100%{transform:translate(-56%,-30%)}50%{transform:translate(-44%,-34%)}}
+
+/* ===== Ride the Bus ===== */
+:root[data-scene="default"] #busScreen .room-bg{background:radial-gradient(ellipse at 50% 40%,#3b2a0b,#160f04 70%)}
+.bus-table{position:relative;container-type:inline-size;display:grid;grid-template-rows:auto minmax(0,1fr) auto;justify-items:center;align-items:center;padding:4.5cqw 4cqw;gap:2cqw}
+.bus-felt{position:absolute;inset:0;border-radius:36px;background:radial-gradient(ellipse at 50% 35%,#1f8a5b,#11603d 55%,#0a3d27);box-shadow:0 0 0 10px #4a2a10,0 0 0 13px #8a5a2b,0 30px 60px rgba(0,0,0,.5),inset 0 0 50px rgba(0,0,0,.35)}
+.bus-felt::after{content:"";position:absolute;inset:0;border-radius:inherit;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.6px);background-size:16px 16px}
+.bus-head{position:relative;z-index:1;display:flex;align-items:center;gap:3cqw;color:#fff;width:100%;max-width:560px}
+.bus-head .av{width:max(44px,12cqw);height:max(44px,12cqw);flex:none;box-shadow:0 0 0 3px #ffd24a}
+.bus-head .av.py{display:grid;place-items:center;font-size:max(24px,7cqw);background:rgba(0,0,0,.25);box-shadow:none;border-radius:50%}
+.bus-head b{display:block;font-family:var(--display);font-weight:800;font-size:max(18px,5cqw);line-height:1.1}
+.bus-head span{display:block;font-size:max(12px,3.1cqw);opacity:.8;line-height:1.35;margin-top:2px}
+.bus-cards{position:relative;z-index:1;display:flex;gap:2.4cqw;justify-content:center;align-items:center;--cw:min(19cqw,120px)}
+.bus-slot{position:relative;display:grid;justify-items:center;gap:4px}
+.bus-slot .slot{width:var(--cw)}
+.bus-slot.now .card{box-shadow:0 0 0 3px #ffd24a,0 0 24px rgba(255,210,74,.6);animation:bob 1.4s ease-in-out infinite}
+.bus-slot.ok .card{box-shadow:0 0 0 4px #22c995,0 0 26px rgba(34,201,149,.6)}
+.bus-slot.bad .card{box-shadow:0 0 0 4px #ff5a5a,0 0 26px rgba(255,90,90,.6);animation:shake .45s .4s}
+.bus-k{font-style:normal;font-size:max(11px,2.6cqw);font-weight:700;color:rgba(255,255,255,.75)}
+.card.bflip{animation:busflip .5s cubic-bezier(.3,.7,.3,1) both}
+@keyframes busflip{0%{transform:rotateY(90deg) scale(1.15);filter:brightness(.7)}100%{transform:none}}
+.bus-msg{position:relative;z-index:1;min-height:max(46px,11cqw);display:grid;justify-items:center;align-content:center;gap:2px;text-align:center;color:#fff;font-size:max(14px,3.6cqw)}
+.bus-msg b{font-family:var(--display);font-size:max(20px,6cqw);font-weight:800;line-height:1.15}
+.bus-msg b.q{color:#fff}.bus-msg b.ok{color:#5ef0b8}.bus-msg b.bad{color:#ff8a8a}
+.bus-msg span{opacity:.8}
+.bus-pyr{display:grid;gap:1.6cqw;justify-items:center;--cw:min(14.5cqw,92px)}
+.pyr-row{position:relative;display:flex;gap:1.6cqw}
+.pyr-v{position:absolute;right:calc(100% + 2.4cqw);top:50%;transform:translateY(-50%);font-style:normal;font-size:max(11px,2.8cqw);font-weight:800;color:#ffd24a;white-space:nowrap}
+.pyr-c{cursor:default}
+.pyr-c.next{cursor:pointer}.pyr-c.next .card{box-shadow:0 0 0 3px #ffd24a,0 0 20px rgba(255,210,74,.6);animation:bob 1.4s ease-in-out infinite}
+.bus-ride{position:relative;display:grid;place-items:center}
+.bus-emoji{font-size:max(90px,30cqw);line-height:1;animation:busdrive2 1.6s ease-in-out infinite;filter:drop-shadow(0 14px 16px rgba(0,0,0,.4))}
+.bus-ride .av{position:absolute;width:13cqw;height:13cqw;top:16%;left:30%;box-shadow:0 0 0 3px #fff}
+.bus-ride.off .bus-emoji{animation:busaway 2.4s ease-in forwards}
+@keyframes busdrive2{50%{transform:translateY(-6px) rotate(-2deg)}}
+@keyframes busaway{to{transform:translateX(140%)}}
+.bus-pass{position:absolute;inset:0;z-index:12;border-radius:36px;display:grid;place-items:center;align-content:center;gap:2.4cqw;background:radial-gradient(circle,rgba(12,40,26,.97),rgba(6,20,12,.99) 70%);color:#fff;text-align:center;cursor:pointer}
+.bus-pass.in{animation:kcpass .4s cubic-bezier(.2,1.2,.4,1)}
+.bus-pass .av{width:30cqw;height:30cqw;max-width:180px;max-height:180px;box-shadow:0 0 0 1.2cqw #ffd24a,0 0 40px rgba(255,210,74,.5);animation:kchop 1s ease-in-out infinite}
+.bus-pass b{font-family:var(--display);font-weight:800;font-size:max(26px,8.4cqw);line-height:1}
+.bus-bar{grid-template-columns:1fr;gap:10px}
+.bus-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.bus-opts[data-n="1"]{grid-template-columns:1fr}
+.bus-opts[data-n="4"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+.bus-opts .btn{height:60px;font-size:18px;padding:0 8px}
+.bus-o{background:var(--surface2);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.bus-o.o-red{background:linear-gradient(180deg,#ff6b6b,#e5383b);color:#fff;box-shadow:none}
+.bus-o.o-black{background:linear-gradient(180deg,#3a4152,#151a24);color:#fff;box-shadow:none}
+.bus-o.o-higher::before{content:"▲";font-size:14px;color:#22c995}.bus-o.o-lower::before{content:"▼";font-size:14px;color:#ff6b6b}
+.bus-o.o-inside::before{content:"⇥⇤";font-size:13px;letter-spacing:-2px;opacity:.7}.bus-o.o-outside::before{content:"⇤⇥";font-size:13px;letter-spacing:-2px;opacity:.7}
+.bus-o .su{font-size:28px;line-height:1;color:var(--ink)}.bus-o .su.red{color:#e5383b}
+.bus-o small{font-size:11px;opacity:.7}
+.bus-opts[data-n="4"] .btn{flex-direction:column;gap:2px;height:64px}
+.bus-o .dot{width:14px;height:14px;border-radius:50%;background:currentColor;opacity:.5}
+.bus-players{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.bus-players::-webkit-scrollbar{display:none}
+.bus-pl{display:grid;justify-items:center;gap:2px;flex:none;min-width:58px;opacity:.6;transition:opacity .2s,transform .2s}
+.bus-pl.on{opacity:1;transform:translateY(-2px)}.bus-pl.on .av{box-shadow:0 0 0 3px var(--orange)}
+.bus-pl.rider b::before{content:"🚌 "}
+.bus-pl .av{position:relative;overflow:visible;width:34px;height:34px}
+.bus-pl b{font-size:11px;max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bus-mini{display:flex;gap:2px;min-height:16px}
+.bus-mini i{font-style:normal;font-size:10px;font-weight:800;min-width:13px;height:16px;padding:0 2px;border-radius:3px;background:#fff;color:#1a2233;display:grid;place-items:center;box-shadow:0 0 0 1px var(--line)}
+.bus-mini i.red{color:#e5383b}
+.bus-endlist{list-style:none;margin:0;padding:0;display:grid;gap:6px;width:100%;max-height:220px;overflow:auto}
+.bus-endlist li{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 6px;border-radius:14px;background:var(--surface2)}
+.bus-endlist .av{width:32px;height:32px}.bus-endlist b{flex:1;text-align:left}.bus-endlist span{font-weight:700;color:var(--orange)}
+.bus-table.wide{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"head head" "cards msg"}
+.bus-table.wide .bus-head{grid-area:head}.bus-table.wide .bus-cards{grid-area:cards;--cw:min(13cqw,110px)}.bus-table.wide .bus-msg{grid-area:msg;max-width:30cqw}.bus-table.wide .bus-pyr{--cw:min(8cqw,72px)}
+.bus-table.wide .bus-head b{font-size:max(17px,2.8cqw)}.bus-table.wide .bus-head span{font-size:max(12px,1.6cqw)}.bus-table.wide .bus-head .av{width:max(40px,6cqw);height:max(40px,6cqw)}.bus-table.wide .bus-msg b{font-size:max(18px,3cqw)}
+@media (max-width:760px){.bus-opts .btn{height:56px;font-size:17px}}
+@media (orientation:landscape) and (max-height:540px){.buss .bar{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:center}.bus-opts .btn{height:48px}}
+
+/* ===== King's Cup: messy ring, big turn name under the table when the panel is down ===== */
+.kc-c{width:12.2cqw;margin:-8.55cqw 0 0 -6.1cqw;--cw:12.2cqw;transform:rotate(var(--a)) translateY(calc(-35.5cqw + var(--rj,0cqw))) rotate(var(--w))}
+.kc-c:hover:not(.gone),.kc-c:focus-visible{transform:rotate(var(--a)) translateY(calc(-38.5cqw + var(--rj,0cqw))) rotate(var(--w)) scale(1.06)}
+.kc-c.gone{transform:rotate(var(--a)) translateY(-20cqw) scale(.6)}
+.kc-c .card{box-shadow:inset 0 0 0 calc(var(--cw)*.06) rgba(255,255,255,.95),0 2px 5px rgba(0,0,0,.45)}
+.kc-bigturn{display:none}
+#kcScreen:has(.kc-bar.min) .kc-bigturn{display:flex;position:absolute;left:50%;transform:translateX(-50%);top:var(--bt,auto);align-items:center;gap:12px;max-width:calc(100% - 20px);color:#fff;white-space:nowrap}
+.kc-bigturn .av{width:46px;height:46px;flex:none;box-shadow:0 0 0 3px #ffd24a}
+.kc-bigturn b{font-family:var(--display);font-weight:800;font-size:clamp(24px,7.4vw,38px);line-height:1.1;color:#ff8a5c;overflow:hidden;text-overflow:ellipsis;text-shadow:0 3px 12px rgba(0,0,0,.4)}
+.kc-bigturn.bump{animation:kcbump2 .55s cubic-bezier(.2,1.5,.4,1)}
+@keyframes kcbump2{from{transform:translateX(-50%) scale(.7);opacity:0}}
+#kcScreen:has(.kc-bar.min) .kc-tturn{display:none}
+.kc-bar.min .kc-turn{display:none}
+.kc-bar.min{grid-template-columns:1fr!important;grid-template-areas:"btns"!important}
+.kc-bar.min .kc-btns{justify-content:center}
+.kc-bar.min .kc-btns{flex-wrap:nowrap}.kc-bar.min .kc-btns .btn{width:auto;flex:1 1 0;min-width:0;padding:0 10px;gap:6px;font-size:14px}
+.kc-bar.min .kc-btns .tx{display:inline}
+
+/* ===== Capsa ===== */
+.gscreen .cap-bar{grid-template-columns:minmax(0,1fr);gap:8px;width:min(1000px,calc(100% - 16px))}
+.cap-hand{min-width:0;overflow:visible}
+.cap-table{position:relative;container-type:inline-size;--av:clamp(34px,4.6cqw,54px);--bw:clamp(16px,2.4cqw,30px);--fs:clamp(11px,1.25cqw,15px)}
+.cap-table.tall{--av:clamp(34px,10cqw,50px);--bw:clamp(14px,5cqw,22px);--fs:clamp(11px,3.1cqw,13px)}
+.cap-felt{position:absolute;inset:3%;border-radius:36px;background:radial-gradient(ellipse at 50% 38%,#1aa58a,#0e7563 52%,#08473c);border:clamp(8px,1.2cqw,14px) solid #3b2410;box-shadow:0 0 0 2px #7a4f22,0 40px 80px -20px rgba(0,0,0,.55),inset 0 0 60px rgba(0,0,0,.25)}
+.cap-felt::after{content:"";position:absolute;inset:0;border-radius:24px;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.6px);background-size:16px 16px}
+.cap-seat{position:absolute;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:3}
+.cap-seat.s2{left:50%;top:6%;transform:translateX(-50%)}
+.cap-seat.s1{right:5%;top:42%;transform:translateY(-50%);align-items:flex-end}
+.cap-seat.s3{left:5%;top:42%;transform:translateY(-50%);align-items:flex-start}
+.cap-who,.cap-me{position:relative;display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:999px;background:rgba(5,10,30,.5);color:#fff;font-size:var(--fs);line-height:1.2}
+.cap-who .av,.cap-me .av{width:var(--av);height:var(--av);flex:none;box-shadow:0 0 0 2px #fff}
+.cap-who b,.cap-me b{display:block;font-weight:700}.cap-who span,.cap-me span{opacity:.85}
+.cap-seat.turn .cap-who,.cap-me.turn{box-shadow:0 0 0 2px var(--gold),0 0 22px rgba(255,200,61,.6)}
+.cap-seat.win .cap-who,.cap-me.win{box-shadow:0 0 0 2px var(--mint),0 0 22px rgba(34,201,149,.6)}
+.cap-who .bubble{left:auto;right:-30px;top:-14px}
+.cap-pass{position:absolute;left:50%;top:-12px;transform:translateX(-50%);padding:2px 9px;border-radius:999px;background:#fff;color:#1a2233;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 4px 10px rgba(0,0,0,.3);animation:pop .3s cubic-bezier(.2,1.4,.4,1) both}
+.cap-backs{display:flex;--cw:var(--bw)}
+.cap-backs .card{margin-left:calc(var(--cw)*-.62);box-shadow:inset 0 0 0 calc(var(--cw)*.07) rgba(255,255,255,.9),0 2px 4px rgba(0,0,0,.3)}
+.cap-backs .card:first-child{margin-left:0}
+.cap-backs.open{--cw:calc(var(--bw)*1.25);flex-wrap:wrap;max-width:40cqw;justify-content:center}
+.cap-seat.s1 .cap-backs:not(.open),.cap-seat.s3 .cap-backs:not(.open){flex-direction:column}
+.cap-seat.s1 .cap-backs:not(.open) .card,.cap-seat.s3 .cap-backs:not(.open) .card{margin-left:0;margin-top:calc(var(--cw)*-1.12)}
+.cap-seat.s1 .cap-backs:not(.open) .card:first-child,.cap-seat.s3 .cap-backs:not(.open) .card:first-child{margin-top:0}
+.cap-one{position:absolute;right:-8px;bottom:-6px;font-style:normal;width:22px;height:22px;border-radius:50%;background:#ff5a5a;color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center;animation:pulse 1s ease-in-out infinite}
+.cap-center{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:8px;z-index:2;max-width:64cqw}
+.cap-play{display:flex;gap:4px;--cw:clamp(40px,7cqw,74px)}
+.tall .cap-play{--cw:clamp(38px,15cqw,64px)}
+.tall .cap-play.n5{--cw:clamp(34px,12.4cqw,56px);gap:2px}
+.cap-play .card{animation:capin .35s cubic-bezier(.2,1.2,.4,1) both}
+.cap-play .card:nth-child(2){animation-delay:.04s}.cap-play .card:nth-child(3){animation-delay:.08s}.cap-play .card:nth-child(4){animation-delay:.12s}.cap-play .card:nth-child(5){animation-delay:.16s}
+@keyframes capin{from{transform:translateY(30px) scale(.7);opacity:0}}
+.cap-lbl{padding:4px 12px;border-radius:999px;background:rgba(5,10,30,.5);color:#fff;font-size:var(--fs);white-space:nowrap}
+.cap-empty{font-family:var(--display);font-weight:800;font-size:clamp(22px,5cqw,40px);color:rgba(255,255,255,.35)}
+.cap-me{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);z-index:3}
+.cap-me .cap-pass{top:-12px}
+.cap-banner{z-index:12;pointer-events:auto;display:grid;gap:10px;width:min(440px,92%);max-width:none;padding:14px}
+.cap-banner b{font-size:clamp(18px,3cqw,24px)}
+.tall .cap-banner b{font-size:18px}
+.cap-scores{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.cap-sc{display:grid;justify-items:center;gap:2px;padding:6px 4px;border-radius:14px;background:var(--surface2);font-size:12px}
+.cap-sc .av{width:34px;height:34px}.cap-sc b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cap-sc i{font-style:normal;font-weight:800;font-size:16px;color:#ff6b6b}.cap-sc.w i{color:var(--mint,#22c995)}.cap-sc small{color:var(--muted)}
+.cap-status{font-size:14px;min-height:20px;line-height:1.35}
+.cap-selinfo{font-weight:700;color:var(--teal,#14b8a6)}.cap-selinfo.bad{color:#ff6b6b}
+.cap-hand{display:flex;justify-content:center;align-items:flex-end;padding:16px 4px 2px;min-height:calc(var(--cw,60px)*1.4 + 18px);--cw:60px}
+.cap-c{position:relative;padding:0;border:0;background:none;margin-left:var(--ov,-20px);transition:transform .16s cubic-bezier(.2,1.4,.4,1);cursor:pointer;touch-action:manipulation}
+.cap-c:first-child{margin-left:0}
+.cap-c .card{display:block;pointer-events:none}
+.cap-c:hover{transform:translateY(-6px)}
+.cap-c.sel{transform:translateY(-16px)}
+.cap-c.sel .card{box-shadow:0 0 0 3px var(--orange),0 14px 22px rgba(0,0,0,.35)}
+.cap-acts{display:grid;grid-template-columns:auto auto 1fr 1.4fr;gap:8px}
+.cap-acts .btn{height:52px;padding:0 12px}
+.cap-acts .cap-tool{font-size:14px}
+.cap-acts:has([data-a="next"]){grid-template-columns:1fr 1fr}
+@media (max-width:760px){.cap-acts{grid-template-columns:repeat(4,minmax(0,1fr))}.cap-acts .btn{height:48px;font-size:14px;padding:0 6px;white-space:normal;line-height:1.1}.cap-status{font-size:13px}.cap-who span{display:none}.cap-who{padding:3px 10px 3px 3px}}
+@media (orientation:landscape) and (max-height:540px){
+  .gscreen .cap-bar{grid-template-columns:minmax(0,1fr) minmax(190px,240px);grid-template-areas:"st acts" "hand acts";padding:6px 10px;gap:2px 10px;margin-bottom:max(4px,env(safe-area-inset-bottom))}
+  .cap-status{grid-area:st;font-size:12px;min-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cap-hand{grid-area:hand;padding-top:12px;min-height:0}
+  .cap-acts{grid-area:acts;grid-template-columns:1fr 1fr!important;align-content:center;gap:6px}
+  .cap-acts .btn{height:38px;font-size:13px}
+  .caps .g-top{padding-top:4px;padding-bottom:0}.caps .g-top .icon-btn{width:36px;height:36px}.caps .g-top .pill{height:36px}
+}
+.help-tabs button{padding:0 6px;font-size:13px}
+.cap-table.short .cap-seat.s2{flex-direction:row;top:5%;gap:10px}
+.cap-table.short .cap-center{top:52%}
+.cap-table.short .cap-play{--cw:clamp(34px,5.6cqw,60px)}
+.cap-table.short .cap-me{bottom:4%}
+.cap-table.short .cap-lbl{padding:2px 10px}
+
+/* ===== Finger Roulette ===== */
+:root[data-scene="default"] #frScreen .room-bg{background:radial-gradient(ellipse at 50% 45%,#3a0f2a,#14060f 70%)}
+.frs .stage{margin:0 8px 8px;border-radius:32px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 2px rgba(255,255,255,.08);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overflow:hidden;cursor:crosshair;transition:background .5s}
+.fr-center{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:10px;text-align:center;pointer-events:none;padding:20px;color:#fff;z-index:1}
+.fr-center b{font-family:var(--display);font-weight:800;font-size:clamp(22px,6vw,36px);line-height:1.15;max-width:16ch;text-shadow:0 4px 18px rgba(0,0,0,.4)}
+.fr-center span{opacity:.75;font-size:14px;max-width:34ch}
+#frHint{font-size:28px;letter-spacing:6px;animation:bob 1.6s ease-in-out infinite}
+.fr-lift{font-size:14px!important;opacity:.85!important}
+.fr-dot{position:absolute;left:0;top:0;width:0;height:0;z-index:3;pointer-events:auto;--s:clamp(96px,26vw,130px)}
+.fr-dot i{position:absolute;left:calc(var(--s)/-2);top:calc(var(--s)/-2);width:var(--s);height:var(--s);border-radius:50%;border:8px solid var(--c);box-shadow:0 0 24px var(--c),inset 0 0 18px color-mix(in srgb,var(--c) 50%,transparent);animation:frin .35s cubic-bezier(.2,1.5,.4,1) both,frspin 2.4s linear infinite;background:radial-gradient(circle,color-mix(in srgb,var(--c) 30%,transparent),transparent 65%)}
+.fr-dot i::after{content:"";position:absolute;inset:-18px;border-radius:50%;border:3px dashed color-mix(in srgb,var(--c) 70%,transparent);animation:frspin 6s linear infinite reverse}
+.fr-dot b{position:absolute;left:0;top:0;transform:translate(-50%,-50%);font-family:var(--display);font-weight:800;font-size:40px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+@keyframes frin{from{transform:scale(.2);opacity:0}}
+@keyframes frspin{to{rotate:360deg}}
+.fr-dot.arm i{animation:frpulse .5s ease-in-out infinite alternate}
+@keyframes frpulse{to{transform:scale(1.14)}}
+.fr-dot.hot i{transform:scale(1.3);border-width:14px;box-shadow:0 0 50px var(--c),0 0 0 6px #fff}
+.fr-dot.lose{opacity:.25;transition:opacity .4s}
+.fr-dot.win i{transform:scale(1.6);border-width:16px;box-shadow:0 0 70px var(--c),0 0 0 8px #fff;transition:transform .4s cubic-bezier(.2,1.5,.4,1)}
+.fr-dot.team.ta i{border-color:#ff7aa8;box-shadow:0 0 30px #ff7aa8}.fr-dot.team.tb i{border-color:#6fb6ff;box-shadow:0 0 30px #6fb6ff}
+.fr-dot.ord b{animation:pop .4s cubic-bezier(.2,1.5,.4,1) var(--dl,0ms) both}
+.fr-dot.gone{opacity:0;transition:opacity .3s}
+.frs .stage.flood{background:color-mix(in srgb,var(--flood) 32%,rgba(0,0,0,.2))}
+.frs .stage.arming{box-shadow:inset 0 0 0 3px #ffd24a,inset 0 0 40px rgba(255,210,74,.3)}
+.fr-bar{grid-template-columns:1fr}
+.fr-modes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.fr-modes button{padding:0 6px;font-size:13px;white-space:normal;line-height:1.1}
+.fr-art{position:relative;width:150px;height:120px}
+.fr-art i{position:absolute;width:44px;height:44px;border-radius:50%;border:5px solid var(--c);box-shadow:0 0 14px var(--c);left:calc(10px + var(--k)*26px);top:calc(20px + (var(--k) - 2)*(var(--k) - 2)*8px);animation:frpulse 1s ease-in-out infinite alternate;animation-delay:calc(var(--k)*.2s)}
+.fr-art span{position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-size:44px}
+html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
+
+.kc-resume .ov-card .btn{width:100%}
+.kc-resume .ov-card{min-width:min(300px,80cqw)}
+.kc-side .kc-mast{grid-column:1/-1}.kc-side .kc-mast ul{display:flex;gap:14px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -1707,7 +2002,7 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
         </div>
       </div>
       <div class="stats-row">
-        <div><b>3</b><span>games to lose at</span></div>
+        <div><b>9</b><span>games to lose at</span></div>
         <div><b>4</b><span>players per poker table</span></div>
         <div><b>12</b><span>meme sounds</span></div>
         <div><b>1</b><span>free spin every day</span></div>
@@ -1722,8 +2017,12 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
   </section>
 
   <section class="sec" id="games">
-    <div class="sec-head"><div><h2>Pick your poison</h2><p>Five games, zero real money, unlimited excuses.</p></div></div>
-    <div class="games">
+    <div class="sec-head"><div><h2>Pick your poison</h2><p>Nine games, zero real money, unlimited excuses.</p></div>
+      <div class="seg gsec-tabs" role="tablist" aria-label="Game sections"><button type="button" data-gsec="all" aria-pressed="true">All</button><button type="button" data-gsec="casino" aria-pressed="false">🎰 Casino</button><button type="button" data-gsec="casual" aria-pressed="false">🀄 Casual</button><button type="button" data-gsec="party" aria-pressed="false">🍻 Party</button></div>
+    </div>
+    <div class="gsec" data-gsec-pane="casino">
+      <h3 class="gsec-h"><span class="gsec-ic">🎰</span><span>Casino</span><small>Chips, cards and a robot dealer</small></h3>
+      <div class="games">
       <article class="game-card">
         <div class="gc-art pk"><span class="gc-tag">Online · 1–4 players</span><div class="stack" id="gcPoker"></div></div>
         <div class="gc-body">
@@ -1747,6 +2046,19 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
         </div>
       </article>
       <article class="game-card">
+        <div class="gc-art sl"><span class="gc-tag">Solo · coins</span><div class="stack" id="gcSL"></div></div>
+        <div class="gc-body">
+          <h3>Lucky Slots</h3>
+          <p>Pull the lever, line up three and watch the coins pour out. Jackpot pays 200×.</p>
+          <div class="gc-actions"><button class="btn btn-raise" id="slBtn" type="button">Play slots</button></div>
+        </div>
+      </article>
+      </div>
+    </div>
+    <div class="gsec" data-gsec-pane="casual">
+      <h3 class="gsec-h"><span class="gsec-ic">🀄</span><span>Casual</span><small>Relaxed games against bots</small></h3>
+      <div class="games">
+      <article class="game-card">
         <div class="gc-art mj"><span class="gc-tag">You + 3 bots · or solitaire</span><div class="stack" id="gcMJ"></div></div>
         <div class="gc-body">
           <h3>Mahjong</h3>
@@ -1755,13 +2067,18 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
         </div>
       </article>
       <article class="game-card">
-        <div class="gc-art sl"><span class="gc-tag">Solo · coins</span><div class="stack" id="gcSL"></div></div>
+        <div class="gc-art cap"><span class="gc-tag">You + 3 bots</span><div class="stack" id="gcCap"></div></div>
         <div class="gc-body">
-          <h3>Lucky Slots</h3>
-          <p>Pull the lever, line up three and watch the coins pour out. Jackpot pays 200×.</p>
-          <div class="gc-actions"><button class="btn btn-raise" id="slBtn" type="button">Play slots</button></div>
+          <h3>Capsa</h3>
+          <p>Big Two, Indonesian style. Play singles, pairs and 5-card combos higher than the last one. First to empty their hand wins.</p>
+          <div class="gc-actions"><button class="btn btn-call" id="capBtn" type="button">Play Capsa</button></div>
         </div>
       </article>
+      </div>
+    </div>
+    <div class="gsec" data-gsec-pane="party">
+      <h3 class="gsec-h"><span class="gsec-ic">🍻</span><span>Party</span><small>One phone, a group of friends, something to drink</small></h3>
+      <div class="games">
       <article class="game-card">
         <div class="gc-art kc"><span class="gc-tag">Party · one phone · 2–12 players</span><div class="stack" id="gcKC"></div></div>
         <div class="gc-body">
@@ -1770,6 +2087,23 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
           <div class="gc-actions"><button class="btn btn-violet" id="kcBtn" type="button">Start King's Cup</button></div>
         </div>
       </article>
+      <article class="game-card">
+        <div class="gc-art bus"><span class="gc-tag">Party · one phone · 2–10 players</span><div class="stack" id="gcBus"></div></div>
+        <div class="gc-body">
+          <h3>Ride the Bus</h3>
+          <p>Red or black, higher or lower, inside or outside, then the suit. Wrong guesses drink, and the unluckiest player rides the bus.</p>
+          <div class="gc-actions"><button class="btn btn-raise" id="busBtn" type="button">Start Ride the Bus</button></div>
+        </div>
+      </article>
+      <article class="game-card">
+        <div class="gc-art fr"><span class="gc-tag">Party · one phone · 2–10 fingers</span><div class="stack" id="gcFR"></div></div>
+        <div class="gc-body">
+          <h3>Finger Roulette</h3>
+          <p>Everyone puts a finger on the screen. The rings spin, the phone picks one. That finger drinks. Or picks teams, or who goes first.</p>
+          <div class="gc-actions"><button class="btn btn-violet" id="frBtn" type="button">Spin the fingers</button></div>
+        </div>
+      </article>
+      </div>
     </div>
   </section>
 
@@ -2052,10 +2386,23 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
         </div>
       </div>
       <div class="kc-pass" id="kcPass" hidden><span class="kc-pass-to" id="kcPassTo">Pass the phone to</span><span class="av" id="kcPassAv"></span><b id="kcPassName"></b><span class="kc-pass-tap" id="kcPassTap">Tap when you have it</span></div>
-      <div class="overlay" id="kcEnd" hidden><div class="ov-card"><div class="kc-endcup">🍺👑</div><h2 id="kcEndT">King's Cup!</h2><p id="kcEndS"></p><button class="btn btn-raise" id="kcAgain" type="button">New game</button><button class="link-btn" type="button" data-leave>Back to home</button></div></div>
+      <div class="overlay kc-resume" id="kcIdle" hidden><div class="ov-card"><div class="kc-endcup">🍺👑</div><h2 id="kcIdleT">No game running</h2><p id="kcIdleS">Add your players and start a new game.</p><button class="btn btn-raise" id="kcIdleGo" type="button">Start a game</button><button class="link-btn" type="button" data-leave>Back to home</button></div></div>
+      <div class="overlay kc-resume" id="kcResume" hidden><div class="ov-card"><div class="kc-endcup">🍺⏸️</div><h2 id="kcResT">Game in progress</h2><p id="kcResS"></p><button class="btn btn-raise" id="kcCont" type="button">Continue</button><button class="btn btn-fold" id="kcEndG" type="button">End game</button></div></div>
+      <div class="overlay" id="kcEnd" hidden><div class="ov-card"><div class="kc-endcup">🍺👑</div><h2 id="kcEndT">King's Cup!</h2><p id="kcEndS"></p><p class="kc-endm" id="kcEndM"></p><button class="btn btn-raise" id="kcAgain" type="button">New game</button><button class="link-btn" type="button" data-leave>Back to home</button></div></div>
+    </div>
+    <div class="kc-bigturn" id="kcBigTurn" aria-live="polite"><span class="av" id="kcBTav"></span><b id="kcBTname"></b></div>
+  </div>
+  <div class="kc-mini-ov" id="kcMini" hidden>
+    <div class="km-card">
+      <button class="icon-btn km-x" type="button" data-mx aria-label="Close"><svg><use href="#i-close"/></svg></button>
+      <h3 id="kmT"></h3><p class="km-how" id="kmHow"></p>
+      <div class="km-stat" id="kmStat"></div>
+      <div class="km-body" id="kmBody"></div>
+      <div class="km-res" id="kmRes" hidden></div>
     </div>
   </div>
-  <section class="bar kc-bar" aria-label="King's Cup">
+  <section class="bar kc-bar" id="kcBar" aria-label="King's Cup">
+    <button class="kc-grip" id="kcGrip" type="button" aria-label="Hide details" aria-expanded="true"><i></i></button>
     <div class="kc-turn"><span class="av" id="kcTurnAv"></span><b id="kcTurnName">Tap a card</b></div>
     <div class="kc-players" id="kcPlayersRow"></div>
     <div class="kc-side" id="kcSide"></div>
@@ -2063,11 +2410,101 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
   </section>
 </div>
 
+
+<!-- ================= RIDE THE BUS ================= -->
+<div class="gscreen buss" data-screen="bus" id="busScreen" hidden>
+  <div class="room-bg" aria-hidden="true" data-label="RIDE THE BUS" data-sub="NEXT STOP" data-side="1"></div>
+  <div class="g-top">
+    <div class="grp">
+      <button class="icon-btn" type="button" data-leave aria-label="Back to home"><svg><use href="#i-back"/></svg></button>
+      <span class="pill ttl"><b>Ride the Bus</b></span>
+      <span class="pill"><span id="busPhase">🚌</span></span>
+    </div>
+    <div class="grp">
+      <button class="icon-btn" type="button" id="busPlayersBtn" aria-label="Players"><svg><use href="#i-users"/></svg></button>
+      <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off"></button>
+      <button class="icon-btn" type="button" data-open="mSettings" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
+      <button class="link-btn" type="button" data-leave>Leave</button>
+    </div>
+  </div>
+  <div class="stage" id="busStage">
+    <div class="bus-table tablebox" id="busTable">
+      <div class="bus-felt"></div>
+      <div class="bus-head" id="busHead"></div>
+      <div class="bus-cards" id="busCards"></div>
+      <div class="bus-msg" id="busMsg" aria-live="polite"></div>
+      <div class="bus-pass" id="busPass" hidden><span class="kc-pass-to" id="busPassTo">Pass the phone to</span><span class="av" id="busPassAv"></span><b id="busPassName"></b><span class="kc-pass-tap" id="busPassTap">Tap when you have it</span></div>
+      <div class="overlay" id="busEnd" hidden><div class="ov-card"><div class="kc-endcup">🚌💨</div><h2 id="busEndT">Ride over</h2><ul class="bus-endlist" id="busEndList"></ul><p class="kc-endm" id="busEndM"></p><button class="btn btn-raise" id="busAgain" type="button">Play again</button><button class="link-btn" type="button" data-leave>Back to home</button></div></div>
+    </div>
+  </div>
+  <section class="bar bus-bar" aria-label="Ride the Bus">
+    <div class="bus-opts" id="busOpts"></div>
+    <div class="bus-players" id="busPlayers"></div>
+  </section>
+</div>
+
+
+<!-- ================= CAPSA ================= -->
+<div class="gscreen caps" data-screen="cap" id="capScreen" hidden>
+  <div class="room-bg" aria-hidden="true" data-label="CAPSA" data-sub="BIG TWO" data-side="1"></div>
+  <div class="g-top">
+    <div class="grp">
+      <button class="icon-btn" type="button" data-leave aria-label="Back to home"><svg><use href="#i-back"/></svg></button>
+      <span class="pill ttl"><b>Capsa</b></span>
+      <span class="pill">Hand <b id="capRound">#1</b></span>
+      <span class="pill hide-sm">You <b id="capPts">0</b></span>
+    </div>
+    <div class="grp">
+      <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off"></button>
+      <button class="icon-btn" type="button" data-open="mHelp" data-help="cap" aria-label="How to play"><svg><use href="#i-help"/></svg></button>
+      <button class="icon-btn" type="button" data-open="mSettings" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
+      <button class="link-btn" type="button" data-leave>Leave</button>
+    </div>
+  </div>
+  <div class="stage" id="capStage">
+    <div class="cap-table tablebox" id="capTable">
+      <div class="cap-felt"></div>
+      <div class="cap-seat s1" id="capS1"></div><div class="cap-seat s2" id="capS2"></div><div class="cap-seat s3" id="capS3"></div>
+      <div class="cap-center" id="capCenter"></div>
+      <div class="cap-me" id="capMe"></div>
+      <div class="banner cap-banner" id="capBanner" hidden><b id="capBanT"></b><div class="cap-scores" id="capBanS"></div></div>
+    </div>
+  </div>
+  <section class="bar cap-bar" aria-label="Your cards">
+    <div class="cap-status" id="capStatus"></div>
+    <div class="cap-hand" id="capHand"></div>
+    <div class="cap-acts" id="capActs"></div>
+  </section>
+</div>
+
+
+<!-- ================= FINGER ROULETTE ================= -->
+<div class="gscreen frs" data-screen="fr" id="frScreen" hidden>
+  <div class="room-bg" aria-hidden="true" data-label="FINGER ROULETTE" data-sub="ONE FINGER DRINKS" data-side="1"></div>
+  <div class="g-top">
+    <div class="grp">
+      <button class="icon-btn" type="button" data-leave aria-label="Back to home"><svg><use href="#i-back"/></svg></button>
+      <span class="pill ttl"><b>Finger Roulette</b></span>
+    </div>
+    <div class="grp">
+      <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off"></button>
+      <button class="icon-btn" type="button" data-open="mSettings" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
+      <button class="link-btn" type="button" data-leave>Leave</button>
+    </div>
+  </div>
+  <div class="stage fr-stage" id="frStage">
+    <div class="fr-center"><b id="frStatus" aria-live="polite">Everyone put a finger on the screen</b><span id="frHint"></span><span class="fr-lift" id="frLift" hidden></span></div>
+  </div>
+  <section class="bar fr-bar" aria-label="Mode">
+    <div class="seg fr-modes" id="frModes"><button type="button" data-fm="one" aria-pressed="true">Who drinks</button><button type="button" data-fm="two" aria-pressed="false">Two drink</button><button type="button" data-fm="teams" aria-pressed="false">Teams</button><button type="button" data-fm="order" aria-pressed="false">Who goes first</button></div>
+  </section>
+</div>
+
 <!-- ================= MODALS ================= -->
 <div class="modal" id="mKC" hidden role="dialog" aria-modal="true" aria-labelledby="kcSetT">
   <div class="modal-card">
     <div class="modal-head"><h2 id="kcSetT">King's Cup</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg><use href="#i-close"/></svg></button></div>
-    <p class="note-p">Pass the phone. Tap a card. Do what it says.</p>
+    <p class="note-p" id="kcSetSub">Pass the phone. Tap a card. Do what it says.</p>
     <div class="opt"><span class="label">Players</span>
       <div class="kc-addrow"><input type="text" id="kcName" maxlength="16" placeholder="Player name" aria-label="Player name"><button class="btn btn-call btn-sm" id="kcAdd" type="button">Add</button></div>
       <ul class="kc-list" id="kcList"></ul>
@@ -2150,13 +2587,14 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
 <div class="modal" id="mHelp" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
   <div class="modal-card wide">
     <div class="modal-head"><h2 id="helpTitle">How to play</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg><use href="#i-close"/></svg></button></div>
-    <div class="seg" role="tablist" style="display:grid;grid-template-columns:repeat(4,1fr)"><button type="button" data-help-tab="poker" aria-pressed="true">Poker</button><button type="button" data-help-tab="bj" aria-pressed="false">Blackjack</button><button type="button" data-help-tab="mj4" aria-pressed="false">Mahjong</button><button type="button" data-help-tab="mj" aria-pressed="false">Solitaire</button></div>
+    <div class="seg help-tabs" role="tablist" style="display:grid;grid-template-columns:repeat(5,1fr)"><button type="button" data-help-tab="poker" aria-pressed="true">Poker</button><button type="button" data-help-tab="bj" aria-pressed="false">Blackjack</button><button type="button" data-help-tab="mj4" aria-pressed="false">Mahjong</button><button type="button" data-help-tab="mj" aria-pressed="false">Solitaire</button><button type="button" data-help-tab="cap" aria-pressed="false">Capsa</button></div>
     <div data-help-pane="poker" style="display:grid;gap:14px">
       <ol class="rules"><li>Everyone gets 2 private cards. 5 shared cards land in the middle: 3, then 1, then 1.</li><li>Make the best 5-card hand from your 2 cards plus the 5 shared ones.</li><li>On your turn: <b>Fold</b> to give up, <b>Check</b> or <b>Call</b> to stay in, <b>Raise</b> to bet more.</li><li>Blinds go in automatically. Waiting? Tick <b>Check / Fold</b> or <b>Call any</b> to act ahead. Everyone gets 30 seconds per move.</li><li><b>Rabbit hunt</b> shows the cards that would have come after everyone folded. <b>Run it twice</b> deals the rest of the board twice when players are all-in, and the pot is split between the two runs. <b>7-2 bounty</b>: win a hand holding 7-2 and everyone pays you 5 big blinds.</li><li><b>Tap any player</b> to throw a tomato, a beer, a kiss and more. When everyone is all-in the cards flip up and each player's chance of winning is shown. Won without a showdown? Tap <b>Show my cards</b> to brag, or keep them hidden.</li></ol>
       <span class="label">Hand rankings, best to worst</span><ul class="ranks" id="ranks"></ul>
     </div>
     <div data-help-pane="bj" hidden><ol class="rules"><li>Bet with the chips, then press <b>Deal</b>. You and the dealer get two cards; one dealer card stays face down.</li><li>Get closer to <b>21</b> than the dealer without going over. Face cards are 10, aces are 1 or 11.</li><li><b>Hit</b> takes a card, <b>Stand</b> stops, <b>Double</b> doubles your bet for exactly one more card, <b>Split</b> turns a pair into two hands.</li><li>Blackjack (ace + 10-value card) pays 3 to 2. The dealer stands on all 17s. Tap 💡 for the textbook move.</li></ol></div>
     <div data-help-pane="mj4" hidden><ol class="rules"><li>Everyone holds 13 tiles. On your turn you draw one, then discard one. Tap a tile to pick it, tap again (or press Discard) to throw it.</li><li>Win with <b>4 sets + 1 pair</b>. A set is a <b>pong</b> (three alike) or a <b>chow</b> (three in a row, same suit). Seven pairs also wins.</li><li>When someone discards, you can <b>Pong</b> or <b>Kong</b> it from anyone, or <b>Chow</b> it from the player on your left. If it completes your hand, shout <b>Mahjong!</b></li><li>Fan make your win bigger: flushes, all pungs, dragon pungs, your seat wind, self-drawn and concealed hands. You have 20 seconds per move. Tap 💡 for a suggestion.</li></ol></div>
+    <div data-help-pane="cap" hidden><ol class="rules"><li>Everyone gets 13 cards. Lowest to highest: <b>3 4 5 6 7 8 9 10 J Q K A 2</b>. Suits from low to high: <b>♦ ♣ ♥ ♠</b>.</li><li>Whoever holds the <b>3♦</b> starts, and their first hand must use it.</li><li>Play a <b>single</b>, a <b>pair</b>, <b>three of a kind</b> or a <b>5-card hand</b>. The next player must play the same number of cards and beat it, or pass.</li><li>5-card hands, low to high: <b>straight</b>, <b>flush</b>, <b>full house</b>, <b>four of a kind</b> (plus one card), <b>straight flush</b>.</li><li>When everyone else passes, the table clears and the last player leads anything.</li><li>First to play all their cards wins. Everyone else loses a point per card left: double with 10+ cards, triple with 13, and double again if they still hold a 2.</li></ol></div>
     <div data-help-pane="mj" hidden><ol class="rules"><li>Tap two matching tiles to remove them. Flowers match any flower, seasons match any season.</li><li>A tile is <b>free</b> when no tile sits on top of it and its left or right side is open. Dimmed tiles are blocked.</li><li>Match quickly to build a combo for bonus points. Clear the board to win coins.</li><li>Stuck? <b>Hint</b> shows a pair, <b>Shuffle</b> rearranges the remaining tiles into a solvable layout, <b>Undo</b> takes back a match.</li></ol></div>
   </div>
 </div>
@@ -2171,6 +2609,9 @@ html.noanim *,html.noanim *::before,html.noanim *::after{animation-duration:.001
 <script src="mahjong4.js"></script>
 <script src="slots.js"></script>
 <script src="kingscup.js"></script>
+<script src="bus.js"></script>
+<script src="capsa.js"></script>
+<script src="party.js"></script>
 <script src="i18n.js"></script>
 </body>
 </html>
