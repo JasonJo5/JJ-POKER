@@ -80,6 +80,8 @@ const SFX={
   cash(){for(let k=0;k<4;k++)noise(.04,.3,4200,k*.06,4);tone(1760,.1,'triangle',.07,.26);tone(2350,.18,'triangle',.06,.33);},
   fight(){noise(.5,.55,220,0,.6);tone(110,.5,'sawtooth',.06,0,55);[220,277,330,440].forEach((f,i)=>tone(f,.35,'square',.035,.18+i*.08));},
   click(){tone(1200,.03,'square',.03);},
+  clap(delay){const d=delay||0;noise(.05,.55,1500,d,.7);noise(.035,.4,2600,d+.008,1.2);noise(.03,.25,900,d+.016,.8);},
+  beep(f){tone(f||880,.12,'square',.035);},
   match(){tone(1046,.12,'sine',.1);tone(1568,.18,'sine',.08,.06);},
   tick(){tone(1800,.02,'square',.04);},
   coins(){for(let k=0;k<6;k++)tone(1500+Math.random()*900,.07,'triangle',.05,k*.06);},
@@ -248,6 +250,10 @@ const ACH=[
   {id:'p_rit',ic:'🔁',name:'Twice as nice',desc:'Win both runs when running it twice',coins:300},
   {id:'mj4_win',ic:'🀄',name:'Mahjong!',desc:'Win a 4-player mahjong hand',coins:300},
   {id:'mj4_big',ic:'🐉',name:'Dragon tamer',desc:'Win a mahjong hand worth 3 fan or more',coins:600},
+  {id:'cap_win',ic:'🂮',name:'Capsa king',desc:'Win a hand of Capsa',coins:250},
+  {id:'cap_clean',ic:'🧹',name:'Clean sweep',desc:'Win Capsa while every bot still holds 8+ cards',coins:600},
+  {id:'bus_off',ic:'🚌',name:'Next stop',desc:'Get off the bus in Ride the Bus',coins:150},
+  {id:'fr_spin',ic:'☝️',name:'Point of no return',desc:'Spin Finger Roulette',coins:50},
   {id:'spin',ic:'🎡',name:'Wheel of fortune',desc:'Spin the daily wheel',coins:0},
   {id:'level5',ic:'⭐',name:'Regular',desc:'Reach level 5',coins:1000},
 ];
@@ -459,6 +465,9 @@ function initFS(){
   fsIcons();document.addEventListener('fullscreenchange',fsIcons);document.addEventListener('webkitfullscreenchange',fsIcons);
 }
 setTimeout(initFS,0);
+/* Home-screen app on iPhone: size game screens from the real window height (100dvh comes up short there). */
+function setAppH(){document.documentElement.style.setProperty('--app-h',window.innerHeight+'px');}
+if(standalone()){document.documentElement.classList.add('standalone');setAppH();addEventListener('resize',setAppH);addEventListener('orientationchange',()=>setTimeout(setAppH,250));}
 /* If a game screen still runs slowly, switch on battery saver once and say so. */
 let fpsChecked=false;
 function watchFps(){
