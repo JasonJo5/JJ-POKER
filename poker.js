@@ -106,7 +106,7 @@ function startHand(){
   if(!G.started||G.over)return;
   G.nextTok++;G.nextAt=0;
   const ps=G.players,now=Date.now();
-  ps.forEach((p,i)=>{if(!p.empty&&p.kind==='remote'&&p.gone&&now-p.goneAt>90000){log(`${p.name} left the table.`,'s');if(G.tour&&G.started&&!p.out){p.chips=0;}else ps[i]=blankSeat(i);}});
+  ps.forEach((p,i)=>{if(!p.empty&&p.kind==='remote'&&p.gone&&now-p.goneAt>600000){log(`${p.name} left the table.`,'s');if(G.tour&&G.started&&!p.out){p.chips=0;}else ps[i]=blankSeat(i);}});
   if(G.tour&&G.started)tourBust(ps.filter(p=>!p.empty&&!p.out&&p.chips<=0));
   ps.forEach(p=>{if(p.empty)return;if(p.chips<=0&&!p.out&&!G.tour)log(`${p.name} is out of money.`,'s');const out=p.chips<=0;p.startChips=p.chips;Object.assign(p,{hole:[],bet:0,total:0,folded:out,allIn:false,acted:false,out,last:'',win:false,show:false,handText:'',waiting:false});});
   G.enc={};G.resultSub='';G.board2=null;G.ritOn=false;G.ritBase=null;G.rabbit=null;G.rabbitOn=false;G.bounty=null;G.revealed=false;G.byFold=false;G.players.forEach(p=>{p.eq=-1;});
@@ -369,14 +369,28 @@ async function joinTable(code,peerHint){
   troom.on('state',onState);wireSocial();
   troom.onPeers(ch=>{for(const p of ch.peers)if(p.sameTab)myPeer=p.peer;if(hostPeer&&ch.left.some(p=>p.peer===hostPeer)){hostGone=true;hostPeer=null;renderAll();}});
   troom.presence({nm:nick(),pub:myPub}).catch(()=>{});
+  J.store.set('jj-pkjoin',JSON.stringify({code,at:Date.now()}));
   showGame();sendSit();renderAll();
 }
+function savedJoin(){try{const s=JSON.parse(J.store.get('jj-pkjoin')||'null');if(s&&CODE_RE.test(s.code)&&Date.now()-s.at<3*3600e3)return s;}catch(e){}return null;}
+/* Phone locked or app switched: when we come back, say hello again (the host gives our seat back),
+   and if the connection itself died, join the room again from scratch. */
+let hiddenAt=0;
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden'){hiddenAt=Date.now();return;}
+  if(mode!=='client'||!joinCode)return;const away=Date.now()-(hiddenAt||Date.now());
+  if(hostGone||(away>8000&&Date.now()-recvAt>12000)){rejoin();return;}
+  sendSit();
+});
+let rejoining=false;
+async function rejoin(){if(rejoining||mode!=='client')return;rejoining=true;const c=joinCode;const t=troom;troom=null;if(t)t.leave().catch(()=>{});try{await joinTable(c,null);}finally{rejoining=false;}}
+setInterval(()=>{if(mode==='client'&&document.visibilityState==='visible'&&joinCode&&(hostGone||Date.now()-recvAt>20000))rejoin();},10000);
 function sendSit(){if(mode==='client'&&troom)troom.emit('sit',{nm:nick(),pub:myPub,av:J.myAvSeed}).catch(()=>{});}
 async function onState(msg){
   if(mode!=='client'||!msg||!msg.data)return;const V=msg.data;
   if(!V||!Array.isArray(V.p)||V.p.length!==MAX||V.code!==joinCode)return;
   if(hostPeer&&msg.peer!==hostPeer)return;if(!hostPeer)hostPeer=msg.peer;
-  if(V.closed){CV=Object.assign({},CV||V,{closed:1});renderAll();return;}
+  if(V.closed){J.store.del('jj-pkjoin');CV=Object.assign({},CV||V,{closed:1});renderAll();return;}
   if(CV&&!hostGone&&V.seq<CV.seq)return;
   hostGone=false;CV=V;recvAt=Date.now();
   mySeat=V.p.findIndex(p=>p.k!=='e'&&p.pe&&p.pe===myPeer);
@@ -540,6 +554,7 @@ function showGame(){
 function leaveTable(){
   if(mode==='host'&&troom){const V=publicView();V.closed=1;V.enc={};V.log=[];troom.emit('state',V).catch(()=>{});}
   if(mode==='host'||mode==='practice')J.store.del('jj-save');
+  if(mode==='client')J.store.del('jj-pkjoin');
   const t=troom;troom=null;if(t)t.leave().catch(()=>{});
   if(G)G.id++;
   G=null;CV=null;PV=null;mode='home';mySeat=-1;pend=null;hostPeer=null;hostGone=false;
@@ -555,7 +570,9 @@ function renderHome(){
   if(J.current!=='home')return;
   const ok=net==='ok';$('createBtn').disabled=!ok;$('joinBtn').disabled=!ok;
   const sv=readSave(),rb=$('resumeBtn');
-  if(sv&&(sv.mode==='practice'||ok)){rb.hidden=false;rb.textContent=sv.mode==='host'?`Resume room ${sv.G.code} · hand ${sv.G.hand}`:`Resume bot game · ${money(sv.G.players[0].chips)}`;}else rb.hidden=true;
+  const sj=savedJoin();
+  if(sv&&(sv.mode==='practice'||ok)){rb.hidden=false;rb.textContent=sv.mode==='host'?`Resume room ${sv.G.code} · hand ${sv.G.hand}`:`Resume bot game · ${money(sv.G.players[0].chips)}`;}
+  else if(sj&&ok){rb.hidden=false;rb.textContent=`Rejoin table ${sj.code}`;}else rb.hidden=true;
   const ul=$('rooms');ul.innerHTML='';
   const list=room?room.peers().filter(p=>!p.sameTab&&p.presence&&p.presence.hosting&&typeof p.presence.hosting==='object'):[];
   const seen=new Set();
@@ -922,8 +939,8 @@ $('fillBots').onchange=()=>renderWait();
 $('ovBtn').onclick=()=>{if(G&&G.over)resetGame();};
 $('ovHome').onclick=()=>leaveTable();
 async function copyCode(btn){const code=CV&&CV.code||joinCode;if(!code)return;const old=btn.textContent;try{await navigator.clipboard.writeText(code);btn.textContent='Copied!';}catch(e){btn.textContent=code;}setTimeout(()=>{btn.textContent=old;},1600);}
-$('copyBtn').onclick=e=>copyCode(e.currentTarget);
-$('wbCopy').onclick=e=>copyCode(e.currentTarget);
+$('copyBtn').onclick=e=>{const code=CV&&CV.code||joinCode;if(J.invite&&code)J.invite(code,'poker');else copyCode(e.currentTarget);};
+$('wbCopy').onclick=e=>{const code=CV&&CV.code||joinCode;if(J.invite&&code)J.invite(code,'poker');else copyCode(e.currentTarget);};
 let leaveArm=0;
 $('leaveBtn').onclick=()=>{const b=$('leaveBtn');if(mode==='host'&&G&&G.started&&Date.now()-leaveArm>3000){leaveArm=Date.now();b.textContent='Tap again to close room';b.classList.add('warn');setTimeout(()=>{b.textContent='Leave';b.classList.remove('warn');},3000);return;}b.textContent='Leave';b.classList.remove('warn');leaveTable();};
 
@@ -989,7 +1006,7 @@ function openOpts(kind){optMode=kind;$('optsTitle').textContent=kind==='host'?'R
 $('optGo').onclick=()=>{J.closeModals();homeMsg('');S.rit=$('oRit').checked;S.b72=$('oB72').checked;J.saveS();const o={blinds:S.blinds,start:S.start,bots:S.bots,speed:S.speed,rit:S.rit,b72:S.b72,tour:!!S.tour,lvlMin:S.lvlMin||4};if(optMode==='host')hostTable(null,o);else startPractice(o);};
 $('createBtn').onclick=()=>openOpts('host');
 $('botBtn').onclick=()=>openOpts('bots');
-$('resumeBtn').onclick=()=>{const s=readSave();if(!s)return renderHome();if(s.mode==='host')hostTable(s);else{mode='practice';restore(s);showGame();resumeFlow();}};
+$('resumeBtn').onclick=()=>{const s=readSave();if(!s){const sj=savedJoin();if(sj&&net==='ok')return joinTable(sj.code);return renderHome();}if(s.mode==='host')hostTable(s);else{mode='practice';restore(s);showGame();resumeFlow();}};
 $('joinForm').onsubmit=e=>{e.preventDefault();homeMsg('');joinTable($('codeIn').value,null);};
 
 document.addEventListener('keydown',e=>{
@@ -1016,19 +1033,21 @@ setInterval(()=>{
 },1000);
 setInterval(updateRing,200);
 
+const netL=[];
+J.net={room:()=>room,state:()=>net,peer:()=>myPeer,pub:()=>myPub,seal,unseal,onChange:f=>netL.push(f),join:(code,peer)=>joinTable(code,peer),code:()=>(CV&&CV.code)||joinCode||(G&&G.code)||''};
 J._pk={refresh:()=>showHost(),hostChat:(a,b)=>hostChat(a,b),showdown:()=>showdown(),distribute,buildPots,eval7,describe,getG:()=>G,applyBounty,is72};
 /* Boot */
 renderHome();initKeys();
 (async()=>{
   const ok=window.claude&&typeof window.claude.use==='function';
-  if(!ok){net='none';renderHome();return;}
+  if(!ok){net='none';renderHome();netL.forEach(f=>{try{f()}catch(e){}});return;}
   try{
     const [r,u]=await Promise.all([window.claude.use('room'),window.claude.use('user').catch(()=>null)]);
     if(u&&!$('nick').value){try{const m=await u.me();if(m&&m.name){$('nick').value=cleanName(m.name.split(' ')[0]);J.renderMyAv&&J.renderMyAv();}}catch(e){}}
     if(!r){net='none';renderHome();return;}
     room=r;net='ok';
-    room.onPeers(ch=>{for(const p of ch.peers)if(p.sameTab)myPeer=p.peer;renderHome();},()=>{net='none';room=null;renderHome();});
-    renderHome();
+    room.onPeers(ch=>{for(const p of ch.peers)if(p.sameTab)myPeer=p.peer;renderHome();netL.forEach(f=>{try{f()}catch(e){}});},()=>{net='none';room=null;renderHome();netL.forEach(f=>{try{f()}catch(e){}});});
+    renderHome();netL.forEach(f=>{try{f()}catch(e){}});
   }catch(e){net='none';renderHome();}
 })();
 })();
