@@ -1891,7 +1891,7 @@ html.standalone .nav{top:calc(env(safe-area-inset-top) + 6px)}
 .cap-acts .btn{height:52px;padding:0 12px}
 .cap-acts .cap-tool{font-size:14px}
 .cap-acts:has([data-a="next"]){grid-template-columns:1fr 1fr}
-@media (max-width:760px){.cap-acts{grid-template-columns:repeat(4,minmax(0,1fr))}.cap-acts .btn{height:48px;font-size:14px;padding:0 6px;white-space:normal;line-height:1.1}.cap-status{font-size:13px}.cap-who span{display:none}.cap-who{padding:3px 10px 3px 3px}}
+@media (max-width:760px){.cap-acts{grid-template-columns:repeat(4,minmax(0,1fr))}.cap-acts .btn{height:48px;font-size:14px;padding:0 6px;white-space:normal;line-height:1.1}.cap-status{font-size:13px}.cap-who div>span{display:none}.cap-who{padding:3px 10px 3px 3px}}
 @media (orientation:landscape) and (max-height:540px){
   .gscreen .cap-bar{grid-template-columns:minmax(0,1fr) minmax(190px,240px);grid-template-areas:"st acts" "hand acts";padding:6px 10px;gap:2px 10px;margin-bottom:max(4px,env(safe-area-inset-bottom))}
   .cap-status{grid-area:st;font-size:12px;min-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1942,6 +1942,126 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
 .kc-resume .ov-card .btn{width:100%}
 .kc-resume .ov-card{min-width:min(300px,80cqw)}
 .kc-side .kc-mast{grid-column:1/-1}.kc-side .kc-mast ul{display:flex;gap:14px;flex-wrap:wrap}
+
+/* ===== Capsa online ===== */
+.cap-lobby{z-index:20}
+.cap-lobby .ov-card{width:min(420px,94%);max-height:96%;overflow:auto;gap:10px}
+.cap-lobby .ov-card>.btn{width:100%;height:52px}
+.cap-lob-art{display:flex;justify-content:center;--cw:46px;margin-bottom:-4px}
+.cap-lob-art .card{display:grid;place-items:center;align-content:center;font-weight:800;font-size:18px;line-height:1;color:#1a2233;margin:0 -6px;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.cap-lob-art .card.red{color:#e5383b}
+.cap-lob-art .card:nth-child(1){transform:rotate(-12deg)}.cap-lob-art .card:nth-child(3){transform:rotate(12deg)}
+.cap-join{display:grid;grid-template-columns:1fr auto;gap:8px;width:100%}
+.cap-join input{height:48px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface2);color:var(--ink);padding:0 14px;font:inherit;font-size:16px;min-width:0}
+.cap-join .btn{height:48px}
+.cap-lobmsg{margin:0;min-height:0;color:#ff6b6b;font-size:13px}.cap-lobmsg:empty{display:none}
+.cap-lobby h4{margin:6px 0 0;align-self:flex-start;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cap-open{width:100%;max-height:200px;overflow:auto}
+.cap-inv{height:36px}
+.cap-seat.gone .cap-who{opacity:.6}
+.cap-who.open{background:rgba(255,255,255,.08);border:1.5px dashed rgba(255,255,255,.35)}
+.cap-who.open .av{display:grid;place-items:center;font-size:22px;color:#fff;background:rgba(255,255,255,.12);box-shadow:none}
+.cap-tl{position:absolute;right:-12px;bottom:-8px;font-style:normal;min-width:24px;height:24px;padding:0 5px;border-radius:12px;background:var(--gold,#ffc83d);color:#3a2700;font-size:12px;font-weight:800;display:grid;place-items:center}
+.cap-mytl{font-style:normal;font-weight:800;color:var(--orange)}
+.cap-code{font-family:var(--display);font-weight:800;font-size:clamp(26px,6cqw,44px);color:#fff;letter-spacing:.06em}
+.cap-msg{color:#fff;opacity:.85;font-size:var(--fs);text-align:center;max-width:52cqw}
+.cap-acts[data-mode="wait"]{grid-template-columns:1fr 1.6fr!important}
+@media (max-width:760px){.cap-inv{display:none}}
+
+/* ===== Invites ===== */
+.inv-card{text-align:center;display:grid;gap:10px;justify-items:center;max-width:380px}
+.inv-game{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange)}
+.inv-qr{width:min(240px,64vw);aspect-ratio:1;padding:10px;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.inv-qr svg{display:block;width:100%;height:100%}
+.inv-qr[hidden]{display:none}
+.inv-code{font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:.08em}
+.inv-link{font-size:13px;color:var(--muted);word-break:break-all;max-width:100%}
+.inv-link[hidden]{display:none}
+.inv-btns{display:grid;gap:8px;width:100%}
+.inv-btns .btn{height:48px;width:100%}
+.inv-btns .btn[hidden]{display:none}
+.jl-name{height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface2);color:var(--ink);padding:0 16px;font:inherit;font-size:17px;width:100%}
+.jl-msg{margin:4px 0 0;color:#ff6b6b;font-size:13px;min-height:0}.jl-msg:empty{display:none}
+.jl-go{width:100%;height:52px;margin-top:10px}
+
+/* ===== Long Shot ===== */
+.gc-art.ls{background:radial-gradient(ellipse at 50% 30%,#6366f1,#3730a3 60%,#1e1b4b)}
+.ls-art{position:relative;display:flex;align-items:flex-end;gap:6px;height:110px}
+.ls-art span{display:grid;place-items:center;width:30px;border-radius:8px 8px 4px 4px;background:var(--tc);color:#111;font-weight:800;font-size:12px;height:calc(30px + var(--k,0)*16px);box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.ls-art b{position:absolute;right:-26px;top:-6px;font-size:38px}
+.ls-art.big{height:96px;justify-content:center}.ls-art.big span{width:28px}
+.ls-art.big span:nth-child(1){height:30px}.ls-art.big span:nth-child(2){height:44px}.ls-art.big span:nth-child(3){height:58px}.ls-art.big span:nth-child(4){height:72px}.ls-art.big span:nth-child(5){height:86px}
+.ls-art.big b{right:calc(50% - 110px);top:-10px}
+:root[data-scene="default"] #lsScreen .room-bg{background:radial-gradient(ellipse at 50% 30%,#2b2a6b,#0d0b25 72%)}
+.lss .stage{align-items:start;overflow:auto;padding:4px 0 16px}
+.ls-wrap{position:relative;z-index:2;width:min(580px,calc(100% - 20px));margin:0 auto;display:grid;gap:12px}
+.ls-card{background:var(--surface);color:var(--ink);border-radius:28px;padding:22px 18px 18px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:grid;gap:14px;animation:pop .35s cubic-bezier(.2,1.3,.4,1) both}
+.ls-card[hidden]{display:none}
+.ls-qt{font-family:var(--display);font-weight:800;font-size:clamp(26px,7vw,40px);line-height:1.1;text-align:center;letter-spacing:-.01em}
+.ls-hint{margin:-6px 0 0;text-align:center;color:var(--muted);font-size:13px}
+.ls-timer{display:flex;align-items:center;gap:10px}
+.ls-bar{flex:1;height:10px;border-radius:6px;background:var(--surface2);overflow:hidden}
+.ls-bar i{display:block;height:100%;transform-origin:left;background:linear-gradient(90deg,#22c995,#ffc83d);border-radius:inherit}
+.ls-bar i.low{background:#ff5a5a}
+.ls-timer b{font-variant-numeric:tabular-nums;min-width:26px;text-align:right;font-size:18px}
+.ls-input{display:grid;grid-template-columns:1fr auto;gap:8px}
+.ls-input input{height:58px;border-radius:16px;border:2px solid var(--line);background:var(--surface2);color:var(--ink);padding:0 16px;font:inherit;font-size:20px;min-width:0}
+.ls-input input:focus{outline:none;border-color:var(--orange)}
+.ls-input .btn{height:58px;padding:0 20px;font-size:17px}
+.ls-sent,.ls-answered{margin:0;text-align:center;color:var(--muted);font-size:14px}
+.ls-sent{font-weight:700;color:var(--ink)}
+.ls-rq{text-align:center;color:var(--muted);font-weight:600}
+.ls-mine{display:grid;justify-items:center;gap:8px;padding:16px 10px;border-radius:22px;background:var(--surface2);text-align:center}
+.ls-mine.tier-jack{background:linear-gradient(135deg,rgba(255,200,61,.3),rgba(255,138,76,.2));box-shadow:0 0 0 2px #ffc83d;animation:lsjack 1.2s ease-in-out 2}
+@keyframes lsjack{50%{box-shadow:0 0 0 4px #ffc83d,0 0 40px rgba(255,200,61,.7)}}
+.ls-ans b{font-family:var(--display);font-weight:800;font-size:30px;line-height:1.1;word-break:break-word}
+.ls-ans small{display:block;color:var(--muted);font-size:13px}
+.ls-tier{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:var(--tc);color:#111;font-weight:800;font-size:13px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.ls-tier.t-miss{color:#fff}.ls-tier.t-dark,.ls-tier.t-long{color:#fff}
+.ls-pay{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;color:var(--orange)}
+.ls-miss{margin:0;color:var(--muted);font-size:14px}
+.ls-tag{margin:0;font-weight:700;font-size:14px}.ls-tag.split{color:#ff8a6b}.ls-tag.only{color:#22c995}
+.ls-ex{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ls-ex div{padding:10px 12px;border-radius:16px;background:var(--surface2)}
+.ls-ex h4{margin:0 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ls-ex p{margin:0;font-size:14px;line-height:1.4;text-transform:capitalize}
+.ls-next{height:54px}
+.ls-others,.ls-endlist,.ls-board{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ls-others:empty,.ls-endlist:empty,.ls-board:empty{display:none}
+.ls-others li,.ls-board li{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border-radius:14px;background:var(--surface2)}
+.ls-others .av,.ls-board .av{width:30px;height:30px;flex:none}
+.ls-others b,.ls-board b{font-size:14px}
+.ls-oa{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:14px}
+.ls-others .ls-tier{font-size:10px;padding:3px 8px}
+.ls-others i,.ls-board i{font-style:normal;font-weight:800;color:var(--orange);min-width:34px;text-align:right}
+.ls-board li b{flex:1}.ls-board li.me{box-shadow:0 0 0 2px var(--orange)}.ls-board li.gone{opacity:.5}
+.ls-board .rk{width:26px;text-align:center;font-weight:800}
+#lsEnd h2{margin:0;text-align:center;font-family:var(--display)}
+.ls-total{text-align:center;font-family:var(--display);font-weight:800;font-size:40px;color:var(--orange);line-height:1}
+.ls-total:empty{display:none}
+.ls-emoji{text-align:center;font-size:28px;letter-spacing:4px}.ls-emoji:empty{display:none}
+.ls-endlist li{display:grid;grid-template-columns:1fr auto auto;grid-template-areas:"q q q" "a t p";gap:2px 8px;align-items:center;padding:8px 12px;border-radius:14px;background:var(--surface2)}
+.ls-endlist .ls-q{grid-area:q;color:var(--muted);font-size:12px}
+.ls-endlist b{grid-area:a;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ls-endlist .ls-tier{grid-area:t;font-size:10px;padding:3px 8px}
+.ls-endlist i{grid-area:p;font-style:normal;font-weight:800;color:var(--orange);min-width:30px;text-align:right}
+.ls-endbtns{display:grid;gap:8px}.ls-endbtns .btn{height:50px}.ls-endbtns .btn[hidden]{display:none}
+.ls-players{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.ls-players[hidden]{display:none}
+.ls-pl{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;flex:none;font-size:13px}
+.ls-pl .av{width:28px;height:28px}.ls-pl i{font-style:normal;font-weight:800;color:#ffc83d}
+.ls-pl.me{box-shadow:0 0 0 2px var(--orange)}.ls-pl.done::after{content:"✓";color:#22c995;font-weight:800}.ls-pl.gone{opacity:.45}
+.ls-lobby{z-index:20;position:fixed}
+.ls-lobby .ov-card{width:min(440px,94%);max-height:94%;overflow:auto;gap:10px}
+.ls-tagl{margin:0;font-weight:700}.ls-howl{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+.ls-mode{width:100%;display:grid;gap:2px;text-align:left;padding:12px 16px;border-radius:18px;border:1.5px solid var(--line);background:var(--surface2);color:var(--ink);font:inherit;cursor:pointer;transition:transform .12s,border-color .2s}
+.ls-mode b{font-size:16px}.ls-mode small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.ls-mode:hover:not(:disabled){border-color:var(--orange);transform:translateY(-1px)}
+.ls-mode:disabled{opacity:.6;cursor:default}
+.ls-mode.on{background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(168,85,247,.14));border-color:rgba(129,140,248,.6)}
+.ls-best{margin:0;font-size:13px;color:var(--muted)}.ls-best:empty{display:none}
+@media (max-width:420px){.ls-ex{grid-template-columns:1fr}.ls-card{padding:18px 14px 14px;border-radius:24px}.ls-input .btn{padding:0 14px}}
+.ls-total.sm{font-family:inherit;font-size:15px;font-weight:500;color:var(--muted);line-height:1.45}
 </style>
 </head>
 <body>
@@ -2002,7 +2122,7 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
         </div>
       </div>
       <div class="stats-row">
-        <div><b>9</b><span>games to lose at</span></div>
+        <div><b>10</b><span>games to lose at</span></div>
         <div><b>4</b><span>players per poker table</span></div>
         <div><b>12</b><span>meme sounds</span></div>
         <div><b>1</b><span>free spin every day</span></div>
@@ -2017,7 +2137,7 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
   </section>
 
   <section class="sec" id="games">
-    <div class="sec-head"><div><h2>Pick your poison</h2><p>Nine games, zero real money, unlimited excuses.</p></div>
+    <div class="sec-head"><div><h2>Pick your poison</h2><p>Ten games, zero real money, unlimited excuses.</p></div>
       <div class="seg gsec-tabs" role="tablist" aria-label="Game sections"><button type="button" data-gsec="all" aria-pressed="true">All</button><button type="button" data-gsec="casino" aria-pressed="false">🎰 Casino</button><button type="button" data-gsec="casual" aria-pressed="false">🀄 Casual</button><button type="button" data-gsec="party" aria-pressed="false">🍻 Party</button></div>
     </div>
     <div class="gsec" data-gsec-pane="casino">
@@ -2103,6 +2223,14 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
           <div class="gc-actions"><button class="btn btn-violet" id="frBtn" type="button">Spin the fingers</button></div>
         </div>
       </article>
+      <article class="game-card">
+        <div class="gc-art ls"><span class="gc-tag">Solo or online · 1–12 players</span><div class="stack" id="gcLS"></div></div>
+        <div class="gc-body">
+          <h3>Long Shot</h3>
+          <p>Name a fruit, a sport, a K-pop group… Common answers pay a little, rare ones pay big. Play today's 7, or online where matching a friend splits the pot.</p>
+          <div class="gc-actions"><button class="btn btn-call" id="lsBtn" type="button">Play Long Shot</button></div>
+        </div>
+      </article>
       </div>
     </div>
   </section>
@@ -2142,7 +2270,7 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
   <div class="g-top">
     <div class="grp">
       <button class="icon-btn" type="button" data-leave aria-label="Back to home"><svg><use href="#i-back"/></svg></button>
-      <span class="pill" id="roomPill"><span id="roomLbl" class="hide-sm">Room</span><b id="codeTxt">—</b><button class="mini" id="copyBtn" type="button">Copy</button></span>
+      <span class="pill" id="roomPill"><span id="roomLbl" class="hide-sm">Room</span><b id="codeTxt">—</b><button class="mini" id="copyBtn" type="button">Invite</button></span>
       <span class="pill hide-sm" id="blindPill">Blinds <b id="blindTxt">$10/$20</b></span><span class="pill tour-pill" id="tourPill" hidden>🏆 <b id="tourLv">Lv 1</b><span id="tourNext"></span></span>
       <span class="pill hide-sm">Hand <b id="handNo">0</b></span>
     </div>
@@ -2167,7 +2295,7 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
         <div class="waitbox" id="waitbox" hidden>
           <span class="label">Room code</span>
           <span class="code-big" id="wbCode">t-0000</span>
-          <button class="link-btn" id="wbCopy" type="button" style="height:34px">Copy code</button>
+          <button class="link-btn" id="wbCopy" type="button" style="height:34px">📲 Invite friends</button>
           <div class="who-row" id="wbWho"></div>
           <p id="wbText">Waiting for friends.</p>
           <label class="toggle" id="fillWrap"><input type="checkbox" class="switch" id="fillBots"> Fill empty seats with bots</label>
@@ -2453,6 +2581,7 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
       <span class="pill ttl"><b>Capsa</b></span>
       <span class="pill">Hand <b id="capRound">#1</b></span>
       <span class="pill hide-sm">You <b id="capPts">0</b></span>
+      <button class="btn btn-violet btn-sm cap-inv" id="capInvite" type="button" hidden>📲 Invite</button>
     </div>
     <div class="grp">
       <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off"></button>
@@ -2467,6 +2596,18 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
       <div class="cap-seat s1" id="capS1"></div><div class="cap-seat s2" id="capS2"></div><div class="cap-seat s3" id="capS3"></div>
       <div class="cap-center" id="capCenter"></div>
       <div class="cap-me" id="capMe"></div>
+      <div class="overlay cap-lobby" id="capLobby" hidden><div class="ov-card">
+        <div class="cap-lob-art" aria-hidden="true"><div class="card face"><span>2</span><span>♠</span></div><div class="card face red"><span>2</span><span>♥</span></div><div class="card face red"><span>3</span><span>♦</span></div></div>
+        <h2>Capsa</h2><p id="capLobS">Big Two, Indonesian style</p>
+        <button class="btn btn-raise" id="capBots" type="button">🤖 Play with bots</button>
+        <button class="btn btn-call" id="capHost" type="button">🌐 Host an online table</button>
+        <button class="btn btn-fold" id="capRejoin" type="button" hidden></button>
+        <div class="cap-join"><input id="capJoinIn" type="text" maxlength="10" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Table code, like c-4k2m"><button class="btn btn-fold" id="capJoinB" type="button">Join</button></div>
+        <p class="cap-lobmsg" id="capLobMsg" aria-live="polite"></p>
+        <h4 id="capOpenH">Open tables</h4>
+        <ul class="rooms cap-open" id="capOpen"></ul>
+        <button class="link-btn" id="capLobBack" type="button">Back to home</button>
+      </div></div>
       <div class="banner cap-banner" id="capBanner" hidden><b id="capBanT"></b><div class="cap-scores" id="capBanS"></div></div>
     </div>
   </div>
@@ -2500,6 +2641,68 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
   </section>
 </div>
 
+
+<!-- ================= LONG SHOT ================= -->
+<div class="gscreen lss" data-screen="ls" id="lsScreen" hidden>
+  <div class="room-bg" aria-hidden="true" data-label="LONG SHOT" data-sub="THE RARER THE RICHER" data-side="1"></div>
+  <div class="g-top">
+    <div class="grp">
+      <button class="icon-btn" type="button" data-leave aria-label="Back to home"><svg><use href="#i-back"/></svg></button>
+      <span class="pill ttl"><b>Long Shot</b></span>
+      <span class="pill"><b id="lsRound">1 / 7</b></span>
+      <span class="pill">🎯 <b id="lsScore">0</b></span>
+      <button class="btn btn-violet btn-sm cap-inv" id="lsInvite" type="button" hidden>📲 Invite</button>
+    </div>
+    <div class="grp">
+      <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off"></button>
+      <button class="icon-btn" type="button" data-open="mSettings" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
+      <button class="link-btn" type="button" data-leave>Leave</button>
+    </div>
+  </div>
+  <div class="stage" id="lsStage">
+    <div class="ls-wrap">
+      <div class="ls-players" id="lsPlayers" hidden></div>
+      <section class="ls-card" id="lsQ">
+        <div class="ls-qt" id="lsQt" aria-live="polite"></div>
+        <p class="ls-hint" id="lsHint"></p>
+        <div class="ls-timer"><div class="ls-bar"><i id="lsBar"></i></div><b id="lsSec">25</b></div>
+        <div class="ls-input"><input id="lsIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="Type your answer"><button class="btn btn-raise" id="lsGo" type="button">Bet it</button></div>
+        <p class="ls-sent" id="lsSent" hidden></p>
+        <p class="ls-answered" id="lsAnswered" hidden></p>
+      </section>
+      <section class="ls-card" id="lsRev" hidden>
+        <div class="ls-rq" id="lsRq"></div>
+        <div class="ls-mine" id="lsMine"></div>
+        <ul class="ls-others" id="lsOthers"></ul>
+        <div class="ls-ex" id="lsEx"></div>
+        <button class="btn btn-raise ls-next" id="lsNext" type="button">Next</button>
+      </section>
+      <section class="ls-card" id="lsEnd" hidden>
+        <h2 id="lsEndT">Final payout</h2>
+        <div class="ls-total" id="lsTotal"></div>
+        <div class="ls-emoji" id="lsEmoji"></div>
+        <ul class="ls-endlist" id="lsEndList"></ul>
+        <ul class="ls-board" id="lsBoard"></ul>
+        <div class="ls-endbtns"><button class="btn btn-call" id="lsShare" type="button">Copy result</button><button class="btn btn-raise" id="lsAgain" type="button">Play again</button><button class="btn btn-fold" id="lsHome" type="button">Back</button></div>
+      </section>
+    </div>
+    <div class="overlay ls-lobby" id="lsLobby" hidden><div class="ov-card">
+      <div class="ls-art big" aria-hidden="true"><span style="--tc:#9aa4b2">10</span><span style="--tc:#22c995">30</span><span style="--tc:#3b82f6">60</span><span style="--tc:#a855f7">85</span><span style="--tc:#ffc83d">100</span><b>🎯</b></div>
+      <h2>Long Shot</h2><p class="ls-tagl" id="lsTag"></p><p class="ls-howl" id="lsHow"></p>
+      <button class="ls-mode" id="lsDaily" type="button"></button>
+      <button class="ls-mode" id="lsFree" type="button"></button>
+      <button class="ls-mode on" id="lsHostB" type="button"></button>
+      <button class="btn btn-fold" id="lsRejoin" type="button" hidden></button>
+      <div class="cap-join"><input id="lsJoinIn" type="text" maxlength="10" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Game code"><button class="btn btn-fold" id="lsJoinB" type="button">Join</button></div>
+      <p class="cap-lobmsg" id="lsLobMsg" aria-live="polite"></p>
+      <h4 id="lsOpenH">Open games</h4>
+      <ul class="rooms cap-open" id="lsOpen"></ul>
+      <p class="ls-best" id="lsBest"></p>
+      <button class="link-btn" type="button" data-leave>Back to home</button>
+    </div></div>
+  </div>
+</div>
+
 <!-- ================= MODALS ================= -->
 <div class="modal" id="mKC" hidden role="dialog" aria-modal="true" aria-labelledby="kcSetT">
   <div class="modal-card">
@@ -2512,6 +2715,26 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
     </div>
     <p class="kc-note">🔞 For adults of legal drinking age. Any drink works: water, juice or soda. Know your limits, and never drink and drive.</p>
     <button class="btn btn-raise" id="kcGo" type="button">Start</button>
+  </div>
+</div>
+<div class="modal" id="mInvite" hidden role="dialog" aria-modal="true" aria-labelledby="invT">
+  <div class="modal-card inv-card">
+    <div class="modal-head"><h2 id="invT">Invite friends</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg><use href="#i-close"/></svg></button></div>
+    <div class="inv-game" id="invG" data-noi18n></div>
+    <div class="inv-qr" id="invQR"></div>
+    <div class="inv-code" id="invCode" data-noi18n></div>
+    <p class="note-p" id="invS"></p>
+    <div class="inv-link" id="invLink" data-noi18n></div>
+    <div class="inv-btns"><button class="btn btn-raise" id="invShare" type="button">Share</button><button class="btn btn-call" id="invCopyL" type="button">Copy link</button><button class="btn btn-fold" id="invCopyC" type="button">Copy code</button></div>
+  </div>
+</div>
+<div class="modal" id="mJoinLink" hidden role="dialog" aria-modal="true" aria-labelledby="jlT">
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="jlT">Join table</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg><use href="#i-close"/></svg></button></div>
+    <p class="note-p" id="jlS"></p>
+    <input class="jl-name" id="jlName" type="text" maxlength="16" autocomplete="nickname" placeholder="Your name">
+    <p class="jl-msg" id="jlMsg" aria-live="polite"></p>
+    <button class="btn btn-raise jl-go" id="jlGo" type="button">Join table</button>
   </div>
 </div>
 <div class="modal" id="mKCRules" hidden role="dialog" aria-modal="true" aria-labelledby="kcRuT">
@@ -2599,7 +2822,8 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
   </div>
 </div>
 
-<!-- Online play outside Claude: P2P room adapter (only used when window.claude is missing) -->
+<!-- Website copy: online play outside Claude (P2P room adapter), invite links/QR, offline mode -->
+<script>window.JJ_WEB=1</script>
 <script src="net.js"></script>
 <script src="core.js"></script>
 <script src="app.js"></script>
@@ -2612,6 +2836,9 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
 <script src="bus.js"></script>
 <script src="capsa.js"></script>
 <script src="party.js"></script>
+<script src="longshot.js"></script>
+<script src="qr.js"></script>
+<script src="online.js"></script>
 <script src="i18n.js"></script>
 </body>
 </html>
