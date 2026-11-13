@@ -105,11 +105,53 @@ J.onSettings(() => { if (J.current === 'fr') labels(); });
 J._fr = {F, addPt, rmPt};
 $('gcFR').innerHTML = '<div class="fr-art">' + [0, 1, 2, 3, 4].map(k => `<i style="--c:${COL[k]};--k:${k}"></i>`).join('') + '<span>☝️</span></div>';
 
+/* ---------- home: Continue strip (games in progress) ---------- */
+const CT = {
+  en:{cont:'Continue',kc:"King's Cup",kcS:'{n} cards left',cap:'Capsa',capBots:'Hand #{n} vs bots',capOn:'Table {c}',capRe:'Rejoin table {c}',bus:'Ride the Bus',busS:'Game in progress',pk:'Poker Card'},
+  ko:{cont:'이어하기',kc:'킹스컵',kcS:'카드 {n}장 남음',cap:'캡사',capBots:'봇과 {n}번째 판',capOn:'{c} 방',capRe:'{c} 방 다시 들어가기',bus:'버스 타기',busS:'게임 중',pk:'포커 카드'},
+  zh:{cont:'继续',kc:'国王杯',kcS:'剩 {n} 张牌',cap:'锄大地',capBots:'和机器人第 {n} 局',capOn:'牌桌 {c}',capRe:'重新加入 {c}',bus:'坐巴士',busS:'游戏进行中',pk:'扑克牌'},
+  id:{cont:'Lanjutkan',kc:"King's Cup",kcS:'Sisa {n} kartu',cap:'Capsa',capBots:'Ronde #{n} lawan bot',capOn:'Meja {c}',capRe:'Gabung lagi ke {c}',bus:'Naik Bus',busS:'Permainan berjalan',pk:'Kartu Poker'},
+};
+const ct = J.party.t(CT);
+function contItems() {
+  const out = [], rb = $('resumeBtn');
+  if (rb && !rb.hidden) out.push({ic: '🃏', t: ct('pk'), s: rb.textContent, go: () => rb.click()});
+  try { const g = JSON.parse(J.store.get('jj-kcgame') || 'null'); if (g && Array.isArray(g.deck)) { const left = g.deck.filter(d => !d[1]).length; if (left && (g.kings | 0) < 4) out.push({ic: '👑', t: ct('kc'), s: ct('kcS', {n: left}), go: () => $('kcBtn').click()}); } } catch (e) {}
+  const C = J._cap && J._cap.C;
+  if (C && C.on && C.mode !== 'idle') out.push({ic: '🂡', t: ct('cap'), s: C.mode === 'bots' ? ct('capBots', {n: C.handNo}) : ct('capOn', {c: C.code}), go: () => $('capBtn').click()});
+  else { try { const j = JSON.parse(J.store.get('jj-capjoin') || 'null'); if (j && j.code && Date.now() - j.at < 3 * 3600e3) out.push({ic: '🂡', t: ct('cap'), s: ct('capRe', {c: j.code}), go: () => { $('capBtn').click(); setTimeout(() => { const r = $('capRejoin'); if (r && !r.hidden) r.click(); }, 120); }}); } catch (e) {} }
+  const B = J._bus && J._bus.B; if (B && B.on) out.push({ic: '🚌', t: ct('bus'), s: ct('busS'), go: () => $('busBtn').click()});
+  return out;
+}
+let contGo = [];
+function renderCont() {
+  const box = $('contStrip'); if (!box) return; const items = contItems(); contGo = items.map(i => i.go);
+  box.hidden = !items.length; if (!items.length) return;
+  box.querySelector('.cont-h').textContent = ct('cont');
+  $('contRow').innerHTML = items.map((it, k) => `<button type="button" class="cont-it" data-ci="${k}"><span class="ic">${it.ic}</span><span><b>${J.esc(it.t)}</b><span class="s">${J.esc(it.s)}</span></span><span class="go">›</span></button>`).join('');
+}
+$('contRow').addEventListener('click', e => { const b = e.target.closest('[data-ci]'); if (b && contGo[+b.dataset.ci]) { SFX.click(); contGo[+b.dataset.ci](); } });
+new MutationObserver(() => { if (!$('home').hidden) renderCont(); }).observe($('home'), {attributes: true, attributeFilter: ['hidden']});
+if ($('resumeBtn')) new MutationObserver(renderCont).observe($('resumeBtn'), {attributes: true, attributeFilter: ['hidden'], childList: true, characterData: true, subtree: true});
+J.onSettings(renderCont); setTimeout(renderCont, 300);
+J.renderCont = renderCont;
+
 /* ---------- home: Casino / Casual / Party ---------- */
 const tabs = document.querySelector('.gsec-tabs');
 if (tabs) {
   const setSec = k => { tabs.querySelectorAll('[data-gsec]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.gsec === k))); document.querySelectorAll('[data-gsec-pane]').forEach(p => { p.hidden = k !== 'all' && p.dataset.gsecPane !== k; }); J.store.set('jj-gsec', k); };
   tabs.addEventListener('click', e => { const b = e.target.closest('[data-gsec]'); if (b) { setSec(b.dataset.gsec); SFX.click(); } });
   const saved = J.store.get('jj-gsec'); if (saved && tabs.querySelector(`[data-gsec="${saved}"]`)) setSec(saved);
+  // swipe left/right over the games to move between All / Casino / Casual / Party
+  const order = ['all', 'casino', 'casual', 'party']; let sw = null;
+  const area = $('games');
+  area.addEventListener('touchstart', e => { if (e.touches.length !== 1 || e.target.closest('input,.cont-row,.rooms')) { sw = null; return; } sw = {x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now()}; }, {passive: true});
+  area.addEventListener('touchend', e => {
+    if (!sw) return; const tch = e.changedTouches[0], dx = tch.clientX - sw.x, dy = tch.clientY - sw.y, fast = Date.now() - sw.t < 600; sw = null;
+    if (!fast || Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * .6) return;
+    const cur = (tabs.querySelector('[aria-pressed="true"]') || {}).dataset; const i = order.indexOf(cur ? cur.gsec : 'all');
+    const n = Math.max(0, Math.min(order.length - 1, i + (dx < 0 ? 1 : -1))); if (n === i) return;
+    setSec(order[n]); SFX.whoosh && SFX.whoosh(); const top = tabs.getBoundingClientRect().top; if (top < 0 || top > innerHeight * .6) tabs.scrollIntoView({block: 'start', behavior: 'smooth'});
+  }, {passive: true});
 }
 })();
