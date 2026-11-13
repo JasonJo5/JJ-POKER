@@ -253,7 +253,6 @@ const ACH=[
   {id:'cap_win',ic:'🂮',name:'Capsa king',desc:'Win a hand of Capsa',coins:250},
   {id:'cap_clean',ic:'🧹',name:'Clean sweep',desc:'Win Capsa while every bot still holds 8+ cards',coins:600},
   {id:'bus_off',ic:'🚌',name:'Next stop',desc:'Get off the bus in Ride the Bus',coins:150},
-  {id:'ls_jack',ic:'🎯',name:'Long shot pays',desc:'Hit a Jackpot answer in Long Shot',coins:200},
   {id:'fr_spin',ic:'☝️',name:'Point of no return',desc:'Spin Finger Roulette',coins:50},
   {id:'spin',ic:'🎡',name:'Wheel of fortune',desc:'Spin the daily wheel',coins:0},
   {id:'level5',ic:'⭐',name:'Regular',desc:'Reach level 5',coins:1000},
@@ -488,9 +487,15 @@ function show(name){
   document.querySelectorAll('[data-screen]').forEach(el=>el.hidden=el.dataset.screen!==name);
   document.body.classList.toggle('in-game',name!=='home');
   current=name;window.scrollTo(0,0);
+  if(name!=='home')wakeOn();else wakeOff();
   if(screens[name]&&screens[name].show)screens[name].show();
   if(name!=='home'){watchFps();if(perf&&!standalone())setTimeout(()=>{if(current!=='home')fsTip(false);},2500);}
 }
+/* Keep the screen awake while a game is open, so a phone doesn't lock mid-hand (and drop out of an online table). */
+let wake=null;
+async function wakeOn(){try{if(!('wakeLock' in navigator)||wake||document.visibilityState!=='visible')return;wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;});}catch(e){wake=null;}}
+function wakeOff(){try{if(wake)wake.release();}catch(e){}wake=null;}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&current&&current!=='home')wakeOn();});
 
 setTimeout(initSounds,0);
 /* ---------- Particle burst ---------- */

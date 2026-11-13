@@ -1984,84 +1984,69 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
 .jl-msg{margin:4px 0 0;color:#ff6b6b;font-size:13px;min-height:0}.jl-msg:empty{display:none}
 .jl-go{width:100%;height:52px;margin-top:10px}
 
-/* ===== Long Shot ===== */
-.gc-art.ls{background:radial-gradient(ellipse at 50% 30%,#6366f1,#3730a3 60%,#1e1b4b)}
-.ls-art{position:relative;display:flex;align-items:flex-end;gap:6px;height:110px}
-.ls-art span{display:grid;place-items:center;width:30px;border-radius:8px 8px 4px 4px;background:var(--tc);color:#111;font-weight:800;font-size:12px;height:calc(30px + var(--k,0)*16px);box-shadow:0 6px 14px rgba(0,0,0,.25)}
-.ls-art b{position:absolute;right:-26px;top:-6px;font-size:38px}
-.ls-art.big{height:96px;justify-content:center}.ls-art.big span{width:28px}
-.ls-art.big span:nth-child(1){height:30px}.ls-art.big span:nth-child(2){height:44px}.ls-art.big span:nth-child(3){height:58px}.ls-art.big span:nth-child(4){height:72px}.ls-art.big span:nth-child(5){height:86px}
-.ls-art.big b{right:calc(50% - 110px);top:-10px}
-:root[data-scene="default"] #lsScreen .room-bg{background:radial-gradient(ellipse at 50% 30%,#2b2a6b,#0d0b25 72%)}
-.lss .stage{align-items:start;overflow:auto;padding:4px 0 16px}
-.ls-wrap{position:relative;z-index:2;width:min(580px,calc(100% - 20px));margin:0 auto;display:grid;gap:12px}
-.ls-card{background:var(--surface);color:var(--ink);border-radius:28px;padding:22px 18px 18px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:grid;gap:14px;animation:pop .35s cubic-bezier(.2,1.3,.4,1) both}
-.ls-card[hidden]{display:none}
-.ls-qt{font-family:var(--display);font-weight:800;font-size:clamp(26px,7vw,40px);line-height:1.1;text-align:center;letter-spacing:-.01em}
-.ls-hint{margin:-6px 0 0;text-align:center;color:var(--muted);font-size:13px}
-.ls-timer{display:flex;align-items:center;gap:10px}
-.ls-bar{flex:1;height:10px;border-radius:6px;background:var(--surface2);overflow:hidden}
-.ls-bar i{display:block;height:100%;transform-origin:left;background:linear-gradient(90deg,#22c995,#ffc83d);border-radius:inherit}
-.ls-bar i.low{background:#ff5a5a}
-.ls-timer b{font-variant-numeric:tabular-nums;min-width:26px;text-align:right;font-size:18px}
-.ls-input{display:grid;grid-template-columns:1fr auto;gap:8px}
-.ls-input input{height:58px;border-radius:16px;border:2px solid var(--line);background:var(--surface2);color:var(--ink);padding:0 16px;font:inherit;font-size:20px;min-width:0}
-.ls-input input:focus{outline:none;border-color:var(--orange)}
-.ls-input .btn{height:58px;padding:0 20px;font-size:17px}
-.ls-sent,.ls-answered{margin:0;text-align:center;color:var(--muted);font-size:14px}
-.ls-sent{font-weight:700;color:var(--ink)}
-.ls-rq{text-align:center;color:var(--muted);font-weight:600}
-.ls-mine{display:grid;justify-items:center;gap:8px;padding:16px 10px;border-radius:22px;background:var(--surface2);text-align:center}
-.ls-mine.tier-jack{background:linear-gradient(135deg,rgba(255,200,61,.3),rgba(255,138,76,.2));box-shadow:0 0 0 2px #ffc83d;animation:lsjack 1.2s ease-in-out 2}
-@keyframes lsjack{50%{box-shadow:0 0 0 4px #ffc83d,0 0 40px rgba(255,200,61,.7)}}
-.ls-ans b{font-family:var(--display);font-weight:800;font-size:30px;line-height:1.1;word-break:break-word}
-.ls-ans small{display:block;color:var(--muted);font-size:13px}
-.ls-tier{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:var(--tc);color:#111;font-weight:800;font-size:13px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
-.ls-tier.t-miss{color:#fff}.ls-tier.t-dark,.ls-tier.t-long{color:#fff}
-.ls-pay{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;color:var(--orange)}
-.ls-miss{margin:0;color:var(--muted);font-size:14px}
-.ls-tag{margin:0;font-weight:700;font-size:14px}.ls-tag.split{color:#ff8a6b}.ls-tag.only{color:#22c995}
-.ls-ex{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ls-ex div{padding:10px 12px;border-radius:16px;background:var(--surface2)}
-.ls-ex h4{margin:0 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.ls-ex p{margin:0;font-size:14px;line-height:1.4;text-transform:capitalize}
-.ls-next{height:54px}
-.ls-others,.ls-endlist,.ls-board{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.ls-others:empty,.ls-endlist:empty,.ls-board:empty{display:none}
-.ls-others li,.ls-board li{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border-radius:14px;background:var(--surface2)}
-.ls-others .av,.ls-board .av{width:30px;height:30px;flex:none}
-.ls-others b,.ls-board b{font-size:14px}
-.ls-oa{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:14px}
-.ls-others .ls-tier{font-size:10px;padding:3px 8px}
-.ls-others i,.ls-board i{font-style:normal;font-weight:800;color:var(--orange);min-width:34px;text-align:right}
-.ls-board li b{flex:1}.ls-board li.me{box-shadow:0 0 0 2px var(--orange)}.ls-board li.gone{opacity:.5}
-.ls-board .rk{width:26px;text-align:center;font-weight:800}
-#lsEnd h2{margin:0;text-align:center;font-family:var(--display)}
-.ls-total{text-align:center;font-family:var(--display);font-weight:800;font-size:40px;color:var(--orange);line-height:1}
-.ls-total:empty{display:none}
-.ls-emoji{text-align:center;font-size:28px;letter-spacing:4px}.ls-emoji:empty{display:none}
-.ls-endlist li{display:grid;grid-template-columns:1fr auto auto;grid-template-areas:"q q q" "a t p";gap:2px 8px;align-items:center;padding:8px 12px;border-radius:14px;background:var(--surface2)}
-.ls-endlist .ls-q{grid-area:q;color:var(--muted);font-size:12px}
-.ls-endlist b{grid-area:a;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ls-endlist .ls-tier{grid-area:t;font-size:10px;padding:3px 8px}
-.ls-endlist i{grid-area:p;font-style:normal;font-weight:800;color:var(--orange);min-width:30px;text-align:right}
-.ls-endbtns{display:grid;gap:8px}.ls-endbtns .btn{height:50px}.ls-endbtns .btn[hidden]{display:none}
-.ls-players{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
-.ls-players[hidden]{display:none}
-.ls-pl{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;flex:none;font-size:13px}
-.ls-pl .av{width:28px;height:28px}.ls-pl i{font-style:normal;font-weight:800;color:#ffc83d}
-.ls-pl.me{box-shadow:0 0 0 2px var(--orange)}.ls-pl.done::after{content:"✓";color:#22c995;font-weight:800}.ls-pl.gone{opacity:.45}
-.ls-lobby{z-index:20;position:fixed}
-.ls-lobby .ov-card{width:min(440px,94%);max-height:94%;overflow:auto;gap:10px}
-.ls-tagl{margin:0;font-weight:700}.ls-howl{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
-.ls-mode{width:100%;display:grid;gap:2px;text-align:left;padding:12px 16px;border-radius:18px;border:1.5px solid var(--line);background:var(--surface2);color:var(--ink);font:inherit;cursor:pointer;transition:transform .12s,border-color .2s}
-.ls-mode b{font-size:16px}.ls-mode small{color:var(--muted);font-size:12.5px;line-height:1.35}
-.ls-mode:hover:not(:disabled){border-color:var(--orange);transform:translateY(-1px)}
-.ls-mode:disabled{opacity:.6;cursor:default}
-.ls-mode.on{background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(168,85,247,.14));border-color:rgba(129,140,248,.6)}
-.ls-best{margin:0;font-size:13px;color:var(--muted)}.ls-best:empty{display:none}
-@media (max-width:420px){.ls-ex{grid-template-columns:1fr}.ls-card{padding:18px 14px 14px;border-radius:24px}.ls-input .btn{padding:0 14px}}
-.ls-total.sm{font-family:inherit;font-size:15px;font-weight:500;color:var(--muted);line-height:1.45}
+/* ===== Phones sideways: keep Blackjack and Slots clear of the top buttons ===== */
+@media (orientation:landscape) and (max-height:540px){
+  #bjScreen .stage,#slScreen .stage{margin-top:46px;margin-bottom:22px}
+}
+
+/* ===== Mahjong on narrow phones: your hand in two rows, so tiles are big enough to tap ===== */
+.m4-hand[data-rows="2"]{display:grid;grid-template-columns:repeat(var(--cols,7),var(--tw));justify-content:center;align-items:end;gap:7px 4px;padding-top:14px}
+.m4-hand[data-rows="2"] .m4-mymelds{grid-column:1/-1;justify-self:center;margin:0 0 2px!important}
+.m4-hand[data-rows="2"] .mt.drawn{margin-left:0;box-shadow:inset 0 0 0 2px var(--orange),0 2px 0 #1aa37a,0 6px 10px rgba(0,0,0,.25)}
+.m4-hand[data-rows="2"] .mt.sel{transform:translateY(-8px)}
+@media (max-width:440px){.mj4 .say{max-width:72vw}}
+
+/* ===== Continue strip: games in progress, one tap away ===== */
+.cont-strip{margin-top:16px;max-width:520px}
+.cont-h{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px 4px}
+.cont-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 6px}
+.cont-row::-webkit-scrollbar{display:none}
+.cont-it{flex:none;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:18px;border:1.5px solid color-mix(in srgb,var(--orange) 45%,var(--line));background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;box-shadow:var(--shadow);text-align:left;max-width:78vw;transition:transform .15s}
+.cont-it:active{transform:scale(.97)}
+.cont-it .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:22px;flex:none;background:var(--bg-2,var(--surface2))}
+.cont-it b{display:block;font-size:15px;line-height:1.2}
+.cont-it span.s{display:block;font-size:12.5px;color:var(--muted);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56vw}
+.cont-it .go{margin-left:4px;color:var(--orange);font-weight:800;font-size:18px}
+
+/* ===== Phones: an app-style home, games first ===== */
+@media (max-width:760px){
+  .home{padding-bottom:calc(98px + env(safe-area-inset-bottom))}
+  .hero{display:block;padding:6px 0 0}
+  .hero .eyebrow,.hero h1,.hero p.lead,.hero .stats-row,.hero-art{display:none}
+  .player-card{margin-top:6px;padding:10px 12px;gap:12px}
+  .player-card .av-pick .av{width:52px;height:52px}
+  .cont-strip{margin-top:12px}
+  #games.sec{padding-top:14px}
+  #games .sec-head{margin-bottom:10px;gap:8px}
+  #games .sec-head h2{font-size:22px}
+  #games .sec-head p{display:none}
+  #games .sec-head{position:sticky;top:calc(62px + env(safe-area-inset-top));z-index:15;margin:0 -4px 10px;padding:6px 4px 8px;background:linear-gradient(var(--bg) 78%,transparent)}
+  #games .sec-head>div:first-child{display:none}
+  .gsec-tabs{box-shadow:0 10px 24px -14px rgba(0,0,0,.45)}
+  .game-card .gc-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .game-card .gc-actions .row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+  .game-card .gc-actions .row2 .btn{height:46px}
+  .game-card .join-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;width:100%}
+  .game-card .join-row input{height:46px;width:100%}
+  .game-card .join-row .btn{height:46px;padding:0 18px}
+  .game-card .rooms{width:100%}
+  .gsec{margin-bottom:18px}
+  .gsec-h{font-size:17px;margin-bottom:8px}.gsec-h small{display:none}
+  .games{grid-template-columns:1fr!important;gap:10px}
+  .game-card{display:grid;grid-template-columns:92px minmax(0,1fr);grid-template-areas:"art title" "art desc" "act act";column-gap:12px;padding:12px;border-radius:22px}
+  .game-card:hover{transform:none}
+  .game-card .gc-body{display:contents}
+  .game-card .gc-art{grid-area:art;height:92px;width:92px;border-radius:16px;align-self:start}
+  .game-card .gc-art>*:not(.gc-tag){transform:scale(.5);transform-origin:center}
+  .game-card .gc-tag{display:none}
+  .game-card .gc-body>h3{grid-area:title;font-size:18px;align-self:end;margin-top:4px}
+  .game-card .gc-body>p{grid-area:desc;font-size:13px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;align-self:start;margin-top:2px}
+  .game-card .gc-actions{grid-area:act;margin-top:10px}
+  .game-card .gc-actions>.btn{height:46px}
+  .ach-grid .ach b,.ach-grid .ach span,.ach small{font-size:12.5px}
+  .tabbar span{font-size:12px}
+}
+@media (max-width:760px) and (orientation:landscape){.gsec-tabs{position:static}}
 </style>
 </head>
 <body>
@@ -2121,8 +2106,9 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
           <div class="lvl">Level <b id="lvlTxt">1</b><span class="xpbar"><i id="xpFill" style="width:0"></i></span><span id="xpTxt">0 XP</span></div>
         </div>
       </div>
+      <div class="cont-strip" id="contStrip" hidden><span class="cont-h">Continue</span><div class="cont-row" id="contRow"></div></div>
       <div class="stats-row">
-        <div><b>10</b><span>games to lose at</span></div>
+        <div><b>9</b><span>games to lose at</span></div>
         <div><b>4</b><span>players per poker table</span></div>
         <div><b>12</b><span>meme sounds</span></div>
         <div><b>1</b><span>free spin every day</span></div>
@@ -2137,7 +2123,7 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
   </section>
 
   <section class="sec" id="games">
-    <div class="sec-head"><div><h2>Pick your poison</h2><p>Ten games, zero real money, unlimited excuses.</p></div>
+    <div class="sec-head"><div><h2>Pick your poison</h2><p>Nine games, zero real money, unlimited excuses.</p></div>
       <div class="seg gsec-tabs" role="tablist" aria-label="Game sections"><button type="button" data-gsec="all" aria-pressed="true">All</button><button type="button" data-gsec="casino" aria-pressed="false">🎰 Casino</button><button type="button" data-gsec="casual" aria-pressed="false">🀄 Casual</button><button type="button" data-gsec="party" aria-pressed="false">🍻 Party</button></div>
     </div>
     <div class="gsec" data-gsec-pane="casino">
@@ -2221,14 +2207,6 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
           <h3>Finger Roulette</h3>
           <p>Everyone puts a finger on the screen. The rings spin, the phone picks one. That finger drinks. Or picks teams, or who goes first.</p>
           <div class="gc-actions"><button class="btn btn-violet" id="frBtn" type="button">Spin the fingers</button></div>
-        </div>
-      </article>
-      <article class="game-card">
-        <div class="gc-art ls"><span class="gc-tag">Solo or online · 1–12 players</span><div class="stack" id="gcLS"></div></div>
-        <div class="gc-body">
-          <h3>Long Shot</h3>
-          <p>Name a fruit, a sport, a K-pop group… Common answers pay a little, rare ones pay big. Play today's 7, or online where matching a friend splits the pot.</p>
-          <div class="gc-actions"><button class="btn btn-call" id="lsBtn" type="button">Play Long Shot</button></div>
         </div>
       </article>
       </div>
@@ -2642,67 +2620,6 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
 </div>
 
 
-<!-- ================= LONG SHOT ================= -->
-<div class="gscreen lss" data-screen="ls" id="lsScreen" hidden>
-  <div class="room-bg" aria-hidden="true" data-label="LONG SHOT" data-sub="THE RARER THE RICHER" data-side="1"></div>
-  <div class="g-top">
-    <div class="grp">
-      <button class="icon-btn" type="button" data-leave aria-label="Back to home"><svg><use href="#i-back"/></svg></button>
-      <span class="pill ttl"><b>Long Shot</b></span>
-      <span class="pill"><b id="lsRound">1 / 7</b></span>
-      <span class="pill">🎯 <b id="lsScore">0</b></span>
-      <button class="btn btn-violet btn-sm cap-inv" id="lsInvite" type="button" hidden>📲 Invite</button>
-    </div>
-    <div class="grp">
-      <button class="icon-btn sound-toggle" type="button" aria-label="Sound on or off"></button>
-      <button class="icon-btn" type="button" data-open="mSettings" aria-label="Settings"><svg><use href="#i-gear"/></svg></button>
-      <button class="link-btn" type="button" data-leave>Leave</button>
-    </div>
-  </div>
-  <div class="stage" id="lsStage">
-    <div class="ls-wrap">
-      <div class="ls-players" id="lsPlayers" hidden></div>
-      <section class="ls-card" id="lsQ">
-        <div class="ls-qt" id="lsQt" aria-live="polite"></div>
-        <p class="ls-hint" id="lsHint"></p>
-        <div class="ls-timer"><div class="ls-bar"><i id="lsBar"></i></div><b id="lsSec">25</b></div>
-        <div class="ls-input"><input id="lsIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="Type your answer"><button class="btn btn-raise" id="lsGo" type="button">Bet it</button></div>
-        <p class="ls-sent" id="lsSent" hidden></p>
-        <p class="ls-answered" id="lsAnswered" hidden></p>
-      </section>
-      <section class="ls-card" id="lsRev" hidden>
-        <div class="ls-rq" id="lsRq"></div>
-        <div class="ls-mine" id="lsMine"></div>
-        <ul class="ls-others" id="lsOthers"></ul>
-        <div class="ls-ex" id="lsEx"></div>
-        <button class="btn btn-raise ls-next" id="lsNext" type="button">Next</button>
-      </section>
-      <section class="ls-card" id="lsEnd" hidden>
-        <h2 id="lsEndT">Final payout</h2>
-        <div class="ls-total" id="lsTotal"></div>
-        <div class="ls-emoji" id="lsEmoji"></div>
-        <ul class="ls-endlist" id="lsEndList"></ul>
-        <ul class="ls-board" id="lsBoard"></ul>
-        <div class="ls-endbtns"><button class="btn btn-call" id="lsShare" type="button">Copy result</button><button class="btn btn-raise" id="lsAgain" type="button">Play again</button><button class="btn btn-fold" id="lsHome" type="button">Back</button></div>
-      </section>
-    </div>
-    <div class="overlay ls-lobby" id="lsLobby" hidden><div class="ov-card">
-      <div class="ls-art big" aria-hidden="true"><span style="--tc:#9aa4b2">10</span><span style="--tc:#22c995">30</span><span style="--tc:#3b82f6">60</span><span style="--tc:#a855f7">85</span><span style="--tc:#ffc83d">100</span><b>🎯</b></div>
-      <h2>Long Shot</h2><p class="ls-tagl" id="lsTag"></p><p class="ls-howl" id="lsHow"></p>
-      <button class="ls-mode" id="lsDaily" type="button"></button>
-      <button class="ls-mode" id="lsFree" type="button"></button>
-      <button class="ls-mode on" id="lsHostB" type="button"></button>
-      <button class="btn btn-fold" id="lsRejoin" type="button" hidden></button>
-      <div class="cap-join"><input id="lsJoinIn" type="text" maxlength="10" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Game code"><button class="btn btn-fold" id="lsJoinB" type="button">Join</button></div>
-      <p class="cap-lobmsg" id="lsLobMsg" aria-live="polite"></p>
-      <h4 id="lsOpenH">Open games</h4>
-      <ul class="rooms cap-open" id="lsOpen"></ul>
-      <p class="ls-best" id="lsBest"></p>
-      <button class="link-btn" type="button" data-leave>Back to home</button>
-    </div></div>
-  </div>
-</div>
-
 <!-- ================= MODALS ================= -->
 <div class="modal" id="mKC" hidden role="dialog" aria-modal="true" aria-labelledby="kcSetT">
   <div class="modal-card">
@@ -2836,7 +2753,6 @@ html.perf .fr-dot i,html.perf .fr-dot i::after{animation-name:frin}
 <script src="bus.js"></script>
 <script src="capsa.js"></script>
 <script src="party.js"></script>
-<script src="longshot.js"></script>
 <script src="qr.js"></script>
 <script src="online.js"></script>
 <script src="i18n.js"></script>

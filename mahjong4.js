@@ -186,7 +186,7 @@ setInterval(()=>{
 /* ---------- speech ---------- */
 function seatEl(s){return s===0?$('m4Me'):$('m4S'+s);}
 function shout(s,txt){J.floatText(seatEl(s).querySelector('.av')||seatEl(s),txt);SFX.pop();}
-function say(s,txt){const el=seatEl(s);if(!el)return;const t=$('m4Table').getBoundingClientRect(),r=(el.querySelector('.av')||el).getBoundingClientRect();const b=document.createElement('div');b.className='say';b.textContent=txt;b.style.left=(r.left+r.width/2-t.left)+'px';b.style.top=(r.top-t.top-6)+'px';$('m4Table').appendChild(b);setTimeout(()=>b.remove(),2600);}
+function say(s,txt){const el=seatEl(s);if(!el)return;const t=$('m4Table').getBoundingClientRect(),r=(el.querySelector('.av')||el).getBoundingClientRect();const b=document.createElement('div');b.className='say';b.textContent=txt;const cx=r.left+r.width/2;b.style.left=(cx-t.left)+'px';b.style.top=(r.top-t.top-6)+'px';$('m4Table').appendChild(b);const w=b.offsetWidth,vw=document.documentElement.clientWidth;let dx=cx-w/2<8?8-(cx-w/2):cx+w/2>vw-8?vw-8-(cx+w/2):0;if(dx){b.style.left=(cx-t.left+dx)+'px';b.style.setProperty('--tail',(-dx)+'px');}setTimeout(()=>b.remove(),2600);}
 
 /* ---------- rendering ---------- */
 const tileH=(c,cls,extra)=>`<span class="mt${cls?' '+cls:''}"${extra||''}>${J.mjFace(face(c))}</span>`;
@@ -221,6 +221,9 @@ function fitHand(){
   const dr=el.querySelector(':scope>.mt.drawn');const extra=dr?parseFloat(getComputedStyle(dr).marginLeft)||0:0;
   let units=n;const md=el.querySelector('.m4-mymelds');
   if(md&&getComputedStyle(md).order!=='-1'){units+=md.querySelectorAll('.mt').length*.7+(parseFloat(getComputedStyle(md).marginLeft)||0)/30+M.melds[0].length*.1;}
+  // narrow phone held upright: two rows of tiles, about twice as wide and much easier to tap
+  if(innerWidth<=440&&innerHeight>innerWidth&&n>=8){const per=Math.ceil(n/2),g=4;const tw2=Math.floor(Math.min(48,(W-g*(per-1)-4)/per));el.dataset.rows='2';el.style.setProperty('--cols',per);el.style.setProperty('--tw',tw2+'px');return;}
+  delete el.dataset.rows;
   const tw=Math.floor(Math.max(18,Math.min(innerHeight<540&&innerWidth>innerHeight?42:62,(W-gap*(n-1)-extra-4)/units)));el.style.setProperty('--tw',tw+'px');
 }
 function renderActs(){

@@ -4,7 +4,7 @@
 const CACHE = 'jj-poker-v1';
 const FILES = [
   './', 'index.html', 'core.js', 'app.js', 'poker.js', 'blackjack.js', 'mahjong.js', 'mahjong4.js', 'slots.js',
-  'kingscup.js', 'bus.js', 'capsa.js', 'party.js', 'longshot.js', 'online.js', 'qr.js', 'i18n.js', 'net.js',
+  'kingscup.js', 'bus.js', 'capsa.js', 'party.js', 'online.js', 'qr.js', 'i18n.js', 'net.js',
   'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'sounds/sounds.json',
 ];
 

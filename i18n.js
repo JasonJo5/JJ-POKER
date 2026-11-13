@@ -7,6 +7,8 @@ const LANGS = [['en','English'],['ko','한국어'],['zh','中文'],['id','Bahasa
 const IDX = {ko:1, zh:2, id:3};
 // [English, Korean, Chinese, Indonesian]
 const T = [
+['Nine games, zero real money, unlimited excuses.','게임 아홉, 진짜 돈 제로, 핑계는 무한.','九款游戏，零真钱，借口无限。','Sembilan permainan, nol uang asli, alasan tak terbatas.'],
+['Continue','이어하기','继续','Lanjutkan'],
 ['Long Shot','롱샷','冷门王','Long Shot'],
 ['Solo or online · 1–12 players','혼자 또는 온라인 · 1–12명','单人或在线 · 1–12人','Sendiri atau online · 1–12 pemain'],
 ["Name a fruit, a sport, a K-pop group… Common answers pay a little, rare ones pay big. Play today's 7, or online where matching a friend splits the pot.",'과일, 스포츠, K팝 그룹… 흔한 답은 조금, 희귀한 답은 크게! 오늘의 7문제나 친구와 온라인으로. 친구와 답이 같으면 반만 받아요.','说一种水果、运动、韩流组合……常见答案分少，冷门答案分多。玩今日7题，或和朋友在线玩，和朋友答案一样就平分。','Sebutkan buah, olahraga, grup K-pop… Jawaban umum dapat sedikit, yang langka dapat banyak. Main 7 soal hari ini, atau online di mana jawaban sama dengan teman dibagi dua.'],
